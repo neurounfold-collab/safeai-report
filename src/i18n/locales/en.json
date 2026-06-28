@@ -1,0 +1,1211 @@
+{
+  "branding": {
+    "name": "safeAI.report",
+    "standardName": "TOEFL AI Literacy Standard Certification",
+    "authority": "Professor Adel El Bouzagaoui"
+  },
+  "legalAnchors": {
+    "processingEntity": "Global Capital Intelligence LLC",
+    "academicInstitution": "L'INSTITUT ARTICLE 4 (A4I)",
+    "registry": {
+      "rna": "W343030686",
+      "siret": "92288647800010",
+      "registryLine": "RNA: W343030686 | SIRET: 92288647800010",
+      "address": "975 Avenue de Fès, 34080 Montpellier, France",
+      "ice": "001625897000071",
+      "iceStatement": "Educational Services & Certifications executed under ICE: 001625897000071."
+    },
+    "copyright": "© 2026 L'INSTITUT ARTICLE 4 (A4I). All rights reserved.",
+    "ecosystemTransparency": "Credentials are immutably verified on the Sovereign Algorithmic Governance Ledger. Processing by Global Capital Intelligence LLC. Academic authority under L'INSTITUT ARTICLE 4 (A4I)."
+  },
+  "infrastructure": {
+    "ledgerHost": "WaqfLedger.tech",
+    "protocol": "Sovereign Algorithmic Governance Ledger",
+    "encryptionProtocol": "AES-256 Cryptographic Block Hashing",
+    "targetFramework": "EU AI Act Article 4 Compliance Metrics"
+  },
+  "growthMarketing": {
+    "allowFreeTierWithSocialUnlock": true,
+    "socialUnlockLabel": "Universal Open-Access: Every diagnostic evaluation layer across all fields is 100% complimentary and open to the public to support international statutory research under EU AI Act Article 4.",
+    "linkedInSharePayload": {
+      "title": "I just earned my Official Article 4 AI Literacy Certification Badge!",
+      "summary": "Verified by L'Institut Article 4 (A4I). Compliance audited via WaqfLedger.tech.",
+      "hashtags": "AILiteracy EUAIAct SafeAI RegTech",
+      "verificationUrl": "https://safeai.report/verification"
+    }
+  },
+  "monetization": {
+    "currency": "USD",
+    "openAccessSubtitle": "Open-Access Research Validation — all diagnostic tiers complimentary under EU AI Act Article 4",
+    "institutionalCta": "Explore Institutional Research Support"
+  },
+  "monetizationTiers": {
+    "title": "Evaluation Tiers & Institutional Research Benchmarks",
+    "publicTiers": {
+      "level01": {
+        "level": "Level 01",
+        "name": "Assurance Certification Badge",
+        "allowSocialUnlock": true,
+        "cta": "Launch Level 01 Diagnostic Examination — Open Access"
+      },
+      "level02": {
+        "level": "Level 02",
+        "name": "Executive Governance Badge",
+        "allowSocialUnlock": true,
+        "cta": "Launch Level 02 Diagnostic Examination — Open Access"
+      },
+      "level03": {
+        "level": "Level 03",
+        "name": "Institutional Partner Badge",
+        "allowSocialUnlock": true,
+        "cta": "Launch Level 03 Diagnostic Examination — Open Access"
+      }
+    },
+    "institutionalB2B": {
+      "name": "Infrastructure Node Sponsorship",
+      "price": "$3,500",
+      "priceAmount": "3500",
+      "currency": "USD",
+      "allottedTokens": "50",
+      "description": "Recommended institutional track at $3,500 USD / year — sponsors core WaqfLedger infrastructure nodes, unlocks advanced registrar analytics telemetry, and accelerates global rollout of the standardized TOEFL for AI Literacy protocol.",
+      "cta": "Explore Infrastructure Node Sponsorship",
+      "features": {
+        "tokens": "Institutional Open-Access Contribution — universal Article 4 diagnostic access for faculty and research cohorts",
+        "dashboard": "Dedicated Institutional Dashboard & Analytics Telemetry Workspace",
+        "logging": "Immutable Verification Logging natively on WaqfLedger.tech",
+        "syllabus": "Authorized Article 4 Training Syllabus Framework Packages"
+      }
+    }
+  },
+  "page_titles": {
+    "home": "safeAI.report — TOEFL AI Literacy Standard Certification",
+    "academy": "Sovereign Academy — Article 4 AI Literacy Training",
+    "industrial": "Institutional Research Support & Node Contribution",
+    "verify": "Sovereign Provenance Registry & Verification Gateway",
+    "contact": "Contact Us",
+    "help": "Help & Support",
+    "privacy": "Privacy Policy & Registry Data Sovereignty",
+    "terms": "Terms of Service"
+  },
+  "nav": {
+    "home": "Home",
+    "academy": "Academy",
+    "industrial": "Academic Centers",
+    "verify": "Verify",
+    "contact": "Contact",
+    "help": "Help",
+    "support": "Support"
+  },
+  "hero": {
+    "headline": "TOEFL AI Literacy Standard Certification",
+    "subheading": "Official Article 4 compliance metrics and verifiable certification badges under the academic authority of L'INSTITUT ARTICLE 4 (A4I), processed by Global Capital Intelligence LLC.",
+    "cta_academy": "Start Certification",
+    "cta_industrial": "Institutional Research Support"
+  },
+  "features": {
+    "title": "Core Capabilities",
+    "compliance": {
+      "title": "Article 4 Compliance Metrics",
+      "description": "Structured evaluation aligned with EU AI Act Article 4 Compliance Metrics."
+    },
+    "verification": {
+      "title": "Immutable Verification",
+      "description": "AES-256 Cryptographic Block Hashing with immutable logging on WaqfLedger.tech."
+    },
+    "governance": {
+      "title": "Sovereign Governance Ledger",
+      "description": "Sovereign Algorithmic Governance Ledger protocol for institutional audit readiness."
+    }
+  },
+  "footer": {
+    "email": "support@safeai.report",
+    "support": "Support",
+    "contact": "Contact Us",
+    "registrarContact": "Contact Office of the Registrar",
+    "compliance_statement": "Developed under the academic authority of Professor Adel El Bouzagaoui. Processing by Global Capital Intelligence LLC."
+  },
+  "landing": {
+    "hero": {
+      "citationLead": "EU AI Act Article 4 mandates deployer AI literacy and human oversight verification for staff operating high-risk AI systems. safeAI.report operates the TOEFL AI Literacy Standard — 30 diagnostic scenarios, 3 governance tracks, 85% pass threshold, SHA-256 credential logging via WaqfLedger.tech — under L'INSTITUT ARTICLE 4 (A4I). Statutory enforcement: August 2026.",
+      "headline": "The 2027 High-Risk Deferral is a Blindspot. Article 4 Enforcement Begins August 2026.",
+      "subheadline": "The European Union's recent Digital Omnibus package delayed high-risk AI system obligations, but Article 4 (AI Literacy) remains an immediate regulatory requirement. Is your human risk layer quantified?",
+      "universalOpenAccess": "Open-access tier: 3 diagnostic tracks (Level 01–03), 30 scenarios per examination, 0 USD public evaluation fee.",
+      "diagnosticDashboardCta": "Launch Free Institutional Diagnostic (A4-ALAM Matrix) ➔",
+      "executiveBriefingCta": "Request Closed-Door Executive Briefing (Access Registry) ➔"
+    },
+    "waqfLedgerBadge": "Credential protocol: AES-256 block hashing · SHA-256 state validation · WaqfLedger.tech ledger nodes",
+    "framework": {
+      "title": "Article 4 Human Oversight Metric Domains",
+      "description": "Measured competencies: operator intervention boundaries, transparency disclosure compliance, procurement due diligence, high-risk audit workflows."
+    },
+    "process": {
+      "sectionTitle": "Article 4 Evaluation Protocol Sequence",
+      "step1": "1. Session Initialization (Universal Open-Access)",
+      "step2": "2. Cisco-Grade 30-Scenario Evaluation Runtime",
+      "step3": "3. Cryptographic Registry Provenance Anchoring on WaqfLedger.tech"
+    },
+    "collaboration": {
+      "title": "Institutional Research Contribution Registry",
+      "body": "Voluntary infrastructure nodes: USD 3,500/year institutional track · 50 examination tokens · WaqfLedger.tech node sponsorship. Diagnostic tiers Level 01–03: 0 USD evaluation fee.",
+      "cta": "Review Academic Center Parameters"
+    },
+    "intake": {
+      "title": "Executive Access Registry — Closed-Door Briefing Intake",
+      "executiveBriefingHint": "Executive briefing pathway selected — complete the access registry intake below. Our registrar will dispatch authorized closed-door briefing parameters within two business days.",
+      "email": "Institutional Email",
+      "message": "Briefing Scope & Compliance Context",
+      "messagePlaceholder": "Designate your organization, Article 4 deployment scope, and executive briefing requirements.",
+      "submit": "Submit Access Registry Request",
+      "submitting": "Dispatching to registrar…",
+      "success": "Registry intake received. Our registrar will respond within two business days.",
+      "error": "Registry dispatch failed. Retry or contact the registrar directly."
+    },
+    "pricing": {
+      "mostPopularBadge": "Universal Open-Access Research Validation",
+      "institutionalLabel": "Institutional Open-Access Contribution",
+      "descriptions": {
+        "level01": "Validates individual competency in everyday operational risk mitigation, operator responsibility boundaries, and baseline algorithmic transparency standards.",
+        "level02": "Validates executive competency in AI procurement oversight, vendor disclosure auditing, and corporate liability exposure mitigation.",
+        "level03": "Validates expert competency in high-risk deployments, complex human-in-the-loop auditing, and cryptographic ledger hash orchestration."
+      },
+      "level01": {
+        "beginExamCta": "Launch Diagnostic Examination — Universal Open-Access"
+      }
+    }
+  },
+  "auth": {
+    "portal": {
+      "title": "Secure Authentication & Verification Entry",
+      "subtitle": "Encrypted gateway for Article 4 certification sessions and institutional B2B workspace access.",
+      "tabsAria": "Access portal navigation",
+      "waqfLedgerCaption": "The examination engine is an open-access public service; permanent institutional certificate provenance, tamper-proof state auditing, and validation ledger indexing are securely anchored via WaqfLedger.tech infrastructure nodes."
+    },
+    "tabs": {
+      "examinee": "Student / Examinee Access",
+      "registrar": "Institutional Registrar Portal"
+    },
+    "examinee": {
+      "emailLabel": "Registered Email Address",
+      "emailPlaceholder": "Enter your email to begin open-access evaluation...",
+      "partnerIdLabel": "Institutional Partner ID (Optional)",
+      "partnerIdPlaceholder": "Leave blank for standard open-access validation",
+      "submit": "Initialize Certification Session"
+    },
+    "registrar": {
+      "emailLabel": "Institutional Domain Email",
+      "emailPlaceholder": "Enter your authorized academic center domain email...",
+      "passcodeLabel": "Security Access Passcode",
+      "passcodePlaceholder": "Enter your B2B workspace security passcode...",
+      "submit": "Authenticate B2B Workspace"
+    },
+    "tokenGuide": {
+      "title": "Universal Open-Access Evaluation Gateway",
+      "universalAccess": "Universal Open-Access: Every diagnostic evaluation layer across all fields is 100% complimentary and open to the public to support international statutory research under EU AI Act Article 4."
+    }
+  },
+  "verify": {
+    "pageTitle": "Immutable Credential Provenance Audit",
+    "pageSubtitle": "High-density audit desk for sovereign ledger reconciliation. Submit a sealed SHA-256 state hash to query structural provenance on WaqfLedger.tech.",
+    "deskTitle": "Audit Desk — Ledger Provenance Lookup",
+    "searchPlaceholder": "Paste 64-Character Cryptographic State Hash (SHA-256)...",
+    "searchButton": "Audit Ledger Provenance",
+    "provenanceTitle": "Structural Provenance Payload",
+    "statusValid": "SAFEAI MINTED • VALID COMPLIANCE NODE",
+    "loading": "Querying WaqfLedger.tech sovereign ledger network...",
+    "validationEmpty": "Enter a 64-character SHA-256 state hash to initiate ledger provenance audit.",
+    "validationInvalid": "State hash must be exactly 64 hexadecimal characters (SHA-256).",
+    "validationModified": "Hash modified — re-audit ledger provenance to refresh verification state.",
+    "fields": {
+      "targetFramework": "Target Framework",
+      "academicAuthority": "Academic Authority",
+      "processingEntity": "Verified Processing Entity",
+      "timestamp": "Timestamp",
+      "stateHash": "Cryptographic State Hash",
+      "ledgerHost": "Ledger Network"
+    },
+    "verificationUrl": "https://safeai.report/verification",
+    "portal": {
+      "pageTitle": "Sovereign Provenance Registry & Verification Gateway",
+      "pageSubtitle": "Direct ledger inspection node for independent corporate audits, institutional accreditation tracking, and EU AI Act Article 4 certification validation.",
+      "deskTitle": "Term Lookup Terminal — Cryptographic State Hash Inspection",
+      "searchPlaceholder": "Enter 64-Character SHA-256 State Hash for Registry Lookup...",
+      "searchButton": "Initiate Verification Scan",
+      "scanningLabel": "Executing sovereign ledger integrity scan...",
+      "statusValid": "🟢 STATUS: VALIDATED & PROVENANCE SEALED",
+      "statusFailed": "🔴 STATUS: REGISTRY CHECK FAILED. UNVERIFIED OR ALTERED HASH STRING",
+      "receiptTitle": "Secure Ledger Receipt",
+      "registryAuthorityValue": "WaqfLedger.tech",
+      "institutionalHolder": "Registered Institutional Credential ({credentialId})",
+      "validationEmpty": "Enter a 64-character SHA-256 state hash to initiate cryptographic verification.",
+      "validationInvalid": "State hash must be exactly 64 hexadecimal characters (SHA-256).",
+      "validationModified": "Hash modified — re-initiate verification scan to refresh registry state.",
+      "waqfLedgerCaption": "The examination engine is an open-access public service; permanent institutional certificate provenance, tamper-proof state auditing, and validation ledger indexing are securely anchored via WaqfLedger.tech infrastructure nodes.",
+      "fields": {
+        "candidateName": "Certified Candidate",
+        "complianceLevel": "Compliance Level",
+        "timestamp": "Registry Timestamp",
+        "registryAuthority": "Registry Authority",
+        "stateHash": "Cryptographic State Hash"
+      },
+      "vault": {
+        "title": "Mathematical Verification Vault — Corporate Audit Container",
+        "rawPayloadLabel": "Un-Hashed Raw Metadata Contract (Pre-Digest Canonical Layout)",
+        "auditCallout": "⚖️ Independent Provenance Audit: We do not request blind trust. You can independently verify the cryptographic honesty of this ledger signature in any secure local terminal shell.",
+        "copyCommand": "Copy Command",
+        "copySuccess": "Command copied to clipboard."
+      }
+    }
+  },
+  "exam": {
+    "player": {
+      "scenarioPrefix": "Scenario",
+      "scenarioOf": "of",
+      "regulatoryCategory": "Regulatory Category",
+      "selectOption": "Select the most compliant course of action",
+      "continue": "Continue",
+      "certificationTitle": "Institutional Certification Granted",
+      "certificationSubtitle": "Your compliance credential meets the EU AI Act Article 4 institutional threshold. Complete your LinkedIn achievement broadcast to reveal your verified badge.",
+      "weightedScore": "Weighted Compliance Score",
+      "threshold": "Institutional Threshold",
+      "credentialTier": "Certification Level",
+      "badgeName": "Official Badge",
+      "ledgerLogged": "Immutable record eligible for WaqfLedger.tech",
+      "credentialLockTitle": "Verify Your Compliance Credential",
+      "linkedinAchievementClaim": "Claim Certificate via LinkedIn Achievement Broadcast",
+      "failedTitle": "Certification Threshold Not Met",
+      "failedSubtitle": "A minimum weighted compliance score is required for institutional certification",
+      "retryExam": "Review Scenarios & Retry",
+      "navigationBlocked": "Compliance credential pending verification. Complete your LinkedIn achievement broadcast to proceed.",
+      "waqfLedgerCaption": "The examination engine is an open-access public service; permanent institutional certificate provenance, tamper-proof state auditing, and validation ledger indexing are securely anchored via WaqfLedger.tech infrastructure nodes.",
+      "identityTitle": "Enter Full Legal Identity for Certificate Issuance",
+      "identityNote": "Ensure accuracy. This identity will be permanently etched into our cryptographic verification ledger and cannot be altered post-examination.",
+      "initializeExam": "Initialize Examination Framework",
+      "compositeScoreLabel": "Composite Literacy Score (Sc)",
+      "compositeThresholdNotice": "Composite literacy score Sc fell below the {threshold}% registry firewall threshold for your organizational cohort.",
+      "compositeBand": {
+        "exposure": "Regulatory Exposure Band",
+        "developing": "Remediation Development Band",
+        "certified": "Institutional Compliance Band"
+      },
+      "cohort": {
+        "title": "Designate Your Organizational Cohort Profile",
+        "subtitle": "The A4-ALAM Matrix applies role-adaptive pillar weights (w1–w4) to compute your composite literacy score Sc = Σ(wi × Pi) before certification dispatch.",
+        "confirm": "Confirm Cohort & Proceed",
+        "ExL": {
+          "label": "Cohort 1",
+          "name": "Executive Layer (ExL)"
+        },
+        "CLL": {
+          "label": "Cohort 2",
+          "name": "Compliance & Legal Layer (CLL)"
+        },
+        "OEL": {
+          "label": "Cohort 3",
+          "name": "Operational & Engineering Layer (OEL)"
+        }
+      },
+      "registryFirewall": {
+        "title": "Your Human Layer Presents Regulatory Exposure for the August 2026 Deadline.",
+        "subtitle": "Apply for the Closed Executive Registry to secure organizational remediation frameworks."
+      },
+      "registryForm": {
+        "email": "Institutional Email",
+        "message": "Remediation Scope & Executive Context",
+        "messagePlaceholder": "Designate your organization, Article 4 exposure vectors, and closed-door registry requirements.",
+        "submit": "Submit Closed Executive Registry Application",
+        "submitting": "Dispatching registry intake…",
+        "success": "Registry intake received. Our registrar will dispatch remediation frameworks within two business days.",
+        "error": "Registry dispatch failed. Retry or contact the registrar directly."
+      }
+    }
+  },
+  "academy": {
+    "title": "Sovereign Academy — EU AI Act Article 4 Compliance",
+    "submitExam": "Submit Verification Assessment",
+    "upcoming": {
+      "sectionTitle": "Upcoming Institutional Cohorts & Executive Masterclasses",
+      "ctaButton": "Secure Priority Access Reservation",
+      "course01": {
+        "title": "EU AI Act Article 4 Implementation Strategy for C-Suite",
+        "timeline": "Cohort Launch: Q3 2026",
+        "description": "An intensive corporate governance roadmap engineered for procurement officers, legal teams, and executive leadership steering high-risk enterprise systems."
+      },
+      "course02": {
+        "title": "Advanced High-Risk Algorithmic Auditing Masterclass",
+        "timeline": "Applications Opening Soon",
+        "description": "Deep technical validation training for compliance architects and data scientists covering bias mitigation thresholds, data lineage tracking, and cryptographic ledger verification."
+      }
+    },
+    "hub": {
+      "metaDescription": "Article 4 diagnostic preparation hub: 3 tracks, 9 modules, 30-scenario examinations, 85% pass threshold, WaqfLedger.tech SHA-256 credential logging under L'INSTITUT ARTICLE 4 (A4I).",
+      "citationLead": "EU AI Act Article 4 deployer literacy preparation hub: 3 tracks (Level 01 operational, Level 02 executive, Level 03 auditor), 9 curriculum modules, 30-scenario standardized examination per tier, 85% compliance pass threshold, WaqfLedger.tech SHA-256 provenance logging. Authority: L'INSTITUT ARTICLE 4 (A4I). Enforcement: August 2026.",
+      "headline": "Article 4 Diagnostic Preparation Hub",
+      "subtitle": "9 modules · 3 governance tracks · 30 scenarios per examination · Open-access evaluation (0 USD) · AES-256 / SHA-256 credential protocol",
+      "trackPickerLabel": "Preparation Tier Selection",
+      "curriculumLabel": "Curriculum Module Index",
+      "faqSectionTitle": "Article 4 Protocol Reference Index",
+      "tracks": {
+        "level01": {
+          "tierBadge": "Foundational Track",
+          "title": "Level 01 Prep: Foundational AI Literacy",
+          "target": "Everyday operational users and deployers.",
+          "overview": "Establish baseline human-in-the-loop competencies, operator accountability boundaries, and introductory algorithmic transparency standards required under EU AI Act Article 4 deployer obligations."
+        },
+        "level02": {
+          "tierBadge": "Executive Track",
+          "title": "Level 02 Prep: Executive Corporate Governance",
+          "target": "Procurement managers, legal leads, and C-Suite officers.",
+          "overview": "Develop executive-grade procurement oversight, vendor disclosure auditing, and corporate liability exposure mitigation aligned with institutional Article 4 governance expectations."
+        },
+        "level03": {
+          "tierBadge": "Auditor Track",
+          "title": "Level 03 Prep: High-Risk System Auditing",
+          "target": "Technical auditors and algorithmic validation architects.",
+          "overview": "Master high-risk deployment auditing workflows, complex human-in-the-loop validation, data lineage provenance checks, and cryptographic ledger hash orchestration on WaqfLedger.tech."
+        }
+      },
+      "curriculum": {
+        "level01": {
+          "lesson1": {
+            "title": "Human-in-the-Loop Operator Boundaries",
+            "intro": "Article 4 requires deployers to ensure staff can meaningfully supervise AI-assisted outputs before those outputs influence end-user decisions.",
+            "paragraph1": "Operational personnel must recognize when an algorithmic recommendation crosses from informational support into a decision that requires documented human validation.",
+            "paragraph2": "This module maps the escalation threshold — the point at which an operator must pause automation, invoke override protocols, or route the output to independent review.",
+            "flow": {
+              "title": "Operator Intervention Compliance Stream",
+              "step1": {
+                "label": "Detect",
+                "body": "Monitor AI output signals against pre-defined risk categories.",
+                "item1": "Flag confidence scores below institutional threshold",
+                "item2": "Identify outputs affecting fundamental rights"
+              },
+              "step2": {
+                "label": "Evaluate",
+                "body": "Apply Article 4 escalation criteria before release.",
+                "item1": "Cross-reference deployer responsibility matrix",
+                "item2": "Confirm human reviewer is authorized for override"
+              },
+              "step3": {
+                "label": "Document",
+                "body": "Record intervention decision for audit provenance.",
+                "item1": "Log timestamp, reviewer identity, and rationale",
+                "item2": "Prepare WaqfLedger.tech credential trail if escalated"
+              }
+            }
+          },
+          "lesson2": {
+            "title": "Risk Recognition & Transparency Disclosures",
+            "intro": "Deployers must communicate known limitations of AI systems to downstream users and internal stakeholders with sufficient clarity.",
+            "paragraph1": "Transparency is not a marketing exercise — it is a regulatory obligation that shapes how operators interpret and challenge algorithmic outputs.",
+            "paragraph2": "Learn to distinguish between informational disclosures (system capabilities) and operational warnings (known failure modes requiring human oversight).",
+            "flow": {
+              "title": "Transparency Disclosure Pipeline",
+              "step1": {
+                "label": "Inventory",
+                "body": "Catalog system capabilities and known limitations.",
+                "item1": "Map input data dependencies",
+                "item2": "Document model version and training cutoff"
+              },
+              "step2": {
+                "label": "Communicate",
+                "body": "Deliver disclosures to operators and end users.",
+                "item1": "Use plain-language operator briefing sheets",
+                "item2": "Embed warnings in workflow UI touchpoints"
+              },
+              "step3": {
+                "label": "Validate",
+                "body": "Confirm comprehension before operational deployment.",
+                "item1": "Conduct literacy attestation checkpoints",
+                "item2": "Archive disclosure acknowledgments for audit"
+              }
+            }
+          },
+          "lesson3": {
+            "title": "Baseline Accountability & Incident Response",
+            "intro": "When AI-assisted processes produce adverse outcomes, deployers bear accountability for whether adequate human oversight was exercised.",
+            "paragraph1": "Incident response under Article 4 begins with demonstrating that operators possessed sufficient literacy to recognize, escalate, and intervene appropriately.",
+            "paragraph2": "This module establishes the minimum documentation standard for post-incident review and regulatory inquiry readiness.",
+            "flow": {
+              "title": "Incident Accountability Workflow",
+              "step1": {
+                "label": "Contain",
+                "body": "Isolate the AI-assisted process upon adverse signal detection.",
+                "item1": "Suspend automated decision propagation",
+                "item2": "Notify designated human oversight lead"
+              },
+              "step2": {
+                "label": "Investigate",
+                "body": "Reconstruct the human-in-the-loop decision chain.",
+                "item1": "Review operator intervention logs",
+                "item2": "Assess literacy training completion status"
+              },
+              "step3": {
+                "label": "Remediate",
+                "body": "Implement corrective literacy and oversight measures.",
+                "item1": "Schedule targeted re-training if gap identified",
+                "item2": "Update escalation protocols and re-certify operators"
+              }
+            }
+          },
+          "microCheck": {
+            "title": "Inline Micro-Knowledge Check",
+            "q1": {
+              "prompt": "An AI chatbot recommends denying a customer refund. What is your first Article 4-compliant action?",
+              "context": "Consider whether the output requires human validation before affecting the customer's fundamental economic rights.",
+              "options": {
+                "a": "Accept the AI recommendation and process the denial immediately",
+                "b": "Pause automation and escalate to an authorized human reviewer before the decision affects the customer",
+                "c": "Request the chatbot generate additional justification text, then proceed",
+                "d": "Forward the case to the vendor support team without internal review"
+              }
+            },
+            "q2": {
+              "prompt": "Your team deploys a new AI scheduling tool without operator briefing materials. Which Article 4 obligation is most immediately at risk?",
+              "context": "Evaluate transparency and sufficient AI literacy among staff operating the system.",
+              "options": {
+                "a": "Cross-border data transfer authorization under GDPR",
+                "b": "Model accuracy benchmarking requirements",
+                "c": "Deployer AI literacy and transparency obligations for operating staff",
+                "d": "Vendor intellectual property licensing compliance"
+              }
+            },
+            "q3": {
+              "prompt": "An operator overrides an AI recommendation but does not log the decision. What compliance gap does this create?",
+              "context": "Think about audit provenance and demonstrable human oversight under institutional thresholds.",
+              "options": {
+                "a": "Non-compliance with model retraining frequency mandates",
+                "b": "Loss of audit provenance and inability to demonstrate human oversight",
+                "c": "Breach of vendor service-level agreement terms",
+                "d": "Exceeding automated processing throughput limits"
+              }
+            }
+          }
+        },
+        "level02": {
+          "lesson1": {
+            "title": "AI Procurement Due-Diligence Framework",
+            "intro": "Executive leaders must validate that vendor AI systems meet Article 4 literacy and oversight requirements before institutional adoption.",
+            "paragraph1": "Procurement diligence extends beyond technical specifications to include deployer training obligations, transparency documentation, and liability allocation clauses.",
+            "paragraph2": "This module structures the executive checklist for evaluating third-party AI vendors against EU AI Act compliance expectations.",
+            "flow": {
+              "title": "Executive Procurement Validation Stream",
+              "step1": {
+                "label": "Scope",
+                "body": "Define AI system role and institutional risk exposure.",
+                "item1": "Classify deployment impact tier",
+                "item2": "Map affected stakeholder populations"
+              },
+              "step2": {
+                "label": "Audit",
+                "body": "Review vendor transparency and literacy support packages.",
+                "item1": "Request Article 4 compliance attestations",
+                "item2": "Evaluate operator training materials provided"
+              },
+              "step3": {
+                "label": "Contract",
+                "body": "Embed governance clauses and liability boundaries.",
+                "item1": "Define human oversight responsibility matrix",
+                "item2": "Require incident notification and audit access rights"
+              }
+            }
+          },
+          "lesson2": {
+            "title": "Corporate Liability & Risk Attribution Models",
+            "intro": "C-Suite officers must understand how AI literacy gaps translate into corporate liability exposure under the EU AI Act.",
+            "paragraph1": "Risk attribution models map which organizational roles bear responsibility when AI-assisted decisions produce regulatory or reputational harm.",
+            "paragraph2": "Legal leads use these models to structure board reporting, insurance coverage, and internal governance policies.",
+            "flow": {
+              "title": "Corporate Risk Attribution Matrix",
+              "step1": {
+                "label": "Identify",
+                "body": "Map AI touchpoints across business units.",
+                "item1": "Inventory high-impact decision workflows",
+                "item2": "Assign executive ownership per deployment"
+              },
+              "step2": {
+                "label": "Attribute",
+                "body": "Link literacy gaps to liability exposure zones.",
+                "item1": "Score departments by oversight maturity",
+                "item2": "Flag units lacking certified operators"
+              },
+              "step3": {
+                "label": "Govern",
+                "body": "Implement board-level oversight reporting.",
+                "item1": "Establish quarterly literacy compliance reviews",
+                "item2": "Mandate certification for high-risk role holders"
+              }
+            }
+          },
+          "lesson3": {
+            "title": "Vendor Disclosure & Governance Reporting",
+            "intro": "Executive governance requires continuous monitoring of vendor AI transparency and deployer literacy support throughout the contract lifecycle.",
+            "paragraph1": "Static due-diligence at procurement is insufficient — governance reporting must track vendor updates, model changes, and evolving regulatory expectations.",
+            "paragraph2": "This module defines the reporting cadence and documentation standards for institutional Article 4 governance committees.",
+            "flow": {
+              "title": "Governance Reporting Cycle",
+              "step1": {
+                "label": "Monitor",
+                "body": "Track vendor model updates and disclosure changes.",
+                "item1": "Subscribe to vendor transparency changelogs",
+                "item2": "Assess impact on operator literacy requirements"
+              },
+              "step2": {
+                "label": "Report",
+                "body": "Deliver structured governance briefings to leadership.",
+                "item1": "Summarize compliance posture quarterly",
+                "item2": "Highlight literacy gaps requiring remediation"
+              },
+              "step3": {
+                "label": "Certify",
+                "body": "Validate executive competency via formal assessment.",
+                "item1": "Require Level 02 examination for governance leads",
+                "item2": "Log credentials to WaqfLedger.tech registry"
+              }
+            }
+          },
+          "microCheck": {
+            "title": "Inline Micro-Knowledge Check",
+            "q1": {
+              "prompt": "A vendor claims their AI tool is 'fully automated' and requires no operator training. How should procurement respond under Article 4?",
+              "context": "Evaluate deployer literacy obligations regardless of vendor marketing language.",
+              "options": {
+                "a": "Proceed with purchase since automation reduces staffing costs",
+                "b": "Delegate compliance verification entirely to the vendor",
+                "c": "Reject the claim and require vendor-provided operator training materials before procurement approval",
+                "d": "Classify the tool as low-risk based on vendor marketing materials"
+              }
+            },
+            "q2": {
+              "prompt": "Your legal team discovers an AI vendor updated their model without notifying your organization. Which governance process failed?",
+              "context": "Consider continuous vendor disclosure monitoring and contract enforcement mechanisms.",
+              "options": {
+                "a": "Continuous vendor disclosure monitoring and contract enforcement",
+                "b": "Annual financial audit of vendor accounts",
+                "c": "Employee satisfaction survey for AI tool users",
+                "d": "Internal marketing review of vendor branding"
+              }
+            },
+            "q3": {
+              "prompt": "The board asks who is liable when an uncertified employee approves an AI-generated credit denial. What framework do you reference?",
+              "context": "Apply corporate risk attribution and literacy certification requirements.",
+              "options": {
+                "a": "Generic terms-of-service acceptance log",
+                "b": "Vendor penetration test report",
+                "c": "Annual revenue forecast model",
+                "d": "Corporate risk attribution framework linking literacy certification to liability zones"
+              }
+            }
+          }
+        },
+        "level03": {
+          "lesson1": {
+            "title": "High-Risk System Classification & Audit Scope",
+            "intro": "Technical auditors must accurately classify AI deployments under EU AI Act risk tiers to scope audit procedures appropriately.",
+            "paragraph1": "Misclassification is the most common root cause of inadequate oversight architecture — auditors must validate classification against both system capability and deployment context.",
+            "paragraph2": "This module establishes the audit scope definition protocol for high-risk system validation engagements.",
+            "flow": {
+              "title": "High-Risk Classification Audit Stream",
+              "step1": {
+                "label": "Classify",
+                "body": "Apply EU AI Act Annex III criteria to the deployment.",
+                "item1": "Map system outputs to regulated use cases",
+                "item2": "Document classification rationale with evidence"
+              },
+              "step2": {
+                "label": "Scope",
+                "body": "Define audit boundaries and human oversight test points.",
+                "item1": "Identify critical decision nodes requiring intervention",
+                "item2": "Set sampling methodology for scenario validation"
+              },
+              "step3": {
+                "label": "Baseline",
+                "body": "Establish pre-audit compliance posture documentation.",
+                "item1": "Collect operator literacy certification records",
+                "item2": "Archive system configuration and model provenance"
+              }
+            }
+          },
+          "lesson2": {
+            "title": "Human-in-the-Loop Auditing Methodology",
+            "intro": "Complex auditing workflows must validate not only that human oversight exists, but that it is exercised competently under realistic operational conditions.",
+            "paragraph1": "Auditors simulate adverse scenarios to test whether operators recognize escalation triggers and execute intervention protocols within institutional time thresholds.",
+            "paragraph2": "This module covers the Cisco-grade scenario methodology used in the formal 30-scenario certification runtime.",
+            "flow": {
+              "title": "HITL Audit Execution Pipeline",
+              "step1": {
+                "label": "Design",
+                "body": "Construct regulatory scenarios matching deployment risk profile.",
+                "item1": "Align scenarios to Article 4 oversight metrics",
+                "item2": "Include edge cases for fundamental rights impact"
+              },
+              "step2": {
+                "label": "Execute",
+                "body": "Observe operator responses under controlled conditions.",
+                "item1": "Measure intervention latency and decision quality",
+                "item2": "Document override rationale and escalation paths"
+              },
+              "step3": {
+                "label": "Score",
+                "body": "Apply weighted compliance scoring against institutional threshold.",
+                "item1": "Calculate tier-weighted percentage per scenario block",
+                "item2": "Determine certification eligibility at 85% threshold"
+              }
+            }
+          },
+          "lesson3": {
+            "title": "Data Lineage Provenance & Ledger Hash Orchestration",
+            "intro": "Expert auditors validate that certification credentials and audit artifacts are immutably logged with cryptographic integrity on WaqfLedger.tech.",
+            "paragraph1": "Data lineage provenance tracks how training data, model versions, and operator decisions chain together for regulatory inquiry reconstruction.",
+            "paragraph2": "Ledger hash orchestration ensures that successful certifications produce verifiable AES-256 block hashes on the Sovereign Algorithmic Governance Ledger.",
+            "flow": {
+              "title": "Cryptographic Provenance Validation Stream",
+              "step1": {
+                "label": "Trace",
+                "body": "Reconstruct data lineage from source to model output.",
+                "item1": "Verify training data provenance documentation",
+                "item2": "Validate model version control and change logs"
+              },
+              "step2": {
+                "label": "Hash",
+                "body": "Generate integrity digest for audit artifact bundle.",
+                "item1": "Apply AES-256 block hashing protocol",
+                "item2": "Include examination score and tier metadata"
+              },
+              "step3": {
+                "label": "Register",
+                "body": "Commit credential hash to WaqfLedger.tech registry.",
+                "item1": "Confirm immutable ledger entry receipt",
+                "item2": "Provide verification URL for third-party audit"
+              }
+            }
+          },
+          "microCheck": {
+            "title": "Inline Micro-Knowledge Check",
+            "q1": {
+              "prompt": "An AI hiring tool is deployed internally for resume screening only, but outputs influence interview selection. How do you classify this system?",
+              "context": "Apply high-risk classification criteria based on deployment impact, not stated internal use labels.",
+              "options": {
+                "a": "High-risk AI system — employment-related decision influence regardless of internal use labeling",
+                "b": "Minimal-risk internal productivity tool with no compliance requirements",
+                "c": "Excluded general-purpose AI with no deployer obligations",
+                "d": "Low-risk scheduling assistant outside Annex III scope"
+              }
+            },
+            "q2": {
+              "prompt": "During a HITL audit, an operator consistently overrides AI recommendations within 2 seconds without reading the output. What does this indicate?",
+              "context": "Evaluate whether human oversight is substantive or performative under Article 4 standards.",
+              "options": {
+                "a": "Exemplary efficiency demonstrating operator AI literacy mastery",
+                "b": "Performative oversight — intervention without substantive review violates Article 4 standards",
+                "c": "Evidence of optimal human-AI collaboration velocity",
+                "d": "Confirmation that escalation protocols are functioning correctly"
+              }
+            },
+            "q3": {
+              "prompt": "A certification hash on WaqfLedger.tech fails third-party verification. What is your first investigative step?",
+              "context": "Consider data lineage integrity and AES-256 digest reconstruction procedures.",
+              "options": {
+                "a": "Issue a new certification without ledger verification",
+                "b": "Contact the candidate to re-take the examination immediately",
+                "c": "Reconstruct the data lineage and verify AES-256 digest integrity against source artifacts",
+                "d": "Remove the credential from public display without investigation"
+              }
+            }
+          }
+        }
+      },
+      "conversion": {
+        "readiness": "Module sequence complete. Proceed to standardized 30-scenario Article 4 examination. Pass threshold: 85%. Credential anchoring: WaqfLedger.tech SHA-256 state hash.",
+        "openAccessNotice": "Diagnostic tiers Level 01, Level 02, Level 03: 0 USD evaluation fee · 30 scenarios per tier · Article 4 deployer compliance benchmark.",
+        "cohortMatrixNotice": "At examination initialization, designate your organizational cohort (ExL, CLL, or OEL). The A4-ALAM Matrix computes your composite literacy score Sc = Σ(wi × Pi) with role-adaptive pillar weights before credential dispatch.",
+        "level01Cta": "Launch Level 01 Diagnostic Examination — Open-Access Research Validation",
+        "level02Cta": "Launch Level 02 Diagnostic Examination — Open-Access Research Validation",
+        "level03Cta": "Launch Level 03 Diagnostic Examination — Open-Access Research Validation"
+      },
+      "authority": {
+        "label": "Academic Certification Authority",
+        "socialLabel": "Verified Entity Profiles",
+        "linkedIn": "LinkedIn — Director Profile",
+        "x": "X (Twitter) — Professional Profile"
+      },
+      "faq": {
+        "q1": {
+          "question": "What are EU AI Act Article 4 human oversight metrics?",
+          "answer": "Article 4 human oversight metrics measure whether deployers and their staff possess sufficient AI literacy to operate, supervise, and intervene in AI systems responsibly — including risk recognition, escalation protocols, and transparency obligations under the EU AI Act."
+        },
+        "q2": {
+          "question": "How does the 30-Scenario Diagnostic Certification Core work?",
+          "answer": "The diagnostic core presents 30 Cisco-grade regulatory scenarios evaluating human-in-the-loop decision-making. A weighted compliance score of 85% or higher grants an institutional certification badge with immutable logging on WaqfLedger.tech."
+        },
+        "q3": {
+          "question": "Who certifies credentials on safeAI.report?",
+          "answer": "Certifications are issued under L'INSTITUT ARTICLE 4 (A4I) and the academic authority of Professor Adel El Bouzagaoui, with processing by Global Capital Intelligence LLC."
+        },
+        "q4": {
+          "question": "What is the Advanced AI Literacy track for legal professionals?",
+          "answer": "An upcoming Udemy micro-credential syllabus for judges, magistrates, and legal professionals covering deployer liability, high-risk AI classification, judicial human-oversight architecture, and cryptographic credential verification."
+        }
+      }
+    },
+    "faq": {
+      "q1": {
+        "question": "How are credentials logged to WaqfLedger.tech?",
+        "answer": "Successful certifications are immutably recorded via AES-256 Cryptographic Block Hashing on the Sovereign Algorithmic Governance Ledger at WaqfLedger.tech."
+      },
+      "q2": {
+        "question": "What is the TOEFL AI Literacy Standard Certification?",
+        "answer": "The standardized certification pathway established under L'INSTITUT ARTICLE 4 (A4I) to document deployer literacy under EU AI Act Article 4 Compliance Metrics."
+      }
+    },
+    "badge": {
+      "institutionTitle": "L'INSTITUT ARTICLE 4 (A4I)",
+      "subtitle": "OFFICIAL COMPLIANCE PROVENANCE CERTIFICATE",
+      "registryNetwork": "REGISTRY NETWORK: WaqfLedger.tech",
+      "auditHashLabel": "AUDIT HASH:",
+      "status": "STATUS: SECURELY RECORDED & PROVENANCE SEALED",
+      "signatureName": "Adel El Bouzagaoui",
+      "signatureTitle": "Director of Regulatory Research, L'Institut Article 4",
+      "certifiedCandidate": "Certified Candidate",
+      "hashPending": "Generating integrity digest…",
+      "tier": {
+        "level01": "Certified AI Literacy Deployer (Foundational). This credential confirms verified baseline competency under EU AI Act Article 4 obligations, validating human-centric risk recognition, operator accountability boundaries, and introductory algorithmic transparency standards.",
+        "level02": "Certified AI Procurement & Risk Manager. This credential confirms advanced corporate competency in institutional vendor management, structural risk attribution models, automated transparency disclosures, and corporate liability exposure mitigation.",
+        "level03": "Certified High-Risk System Compliance Auditor. This credential confirms supreme expert competency in cross-border high-risk deployments, complex human-in-the-loop auditing workflows, data lineage provenance validation, and cryptographic ledger hash orchestration."
+      }
+    },
+    "sharing": {
+      "linkedin": {
+        "postText": "I validated my regulatory competency through the open-access TOEFL for AI Literacy institutional benchmark under EU AI Act Article 4.\n\nStandardized Human Risk Layer Verification · Empirical Institutional Audit · Open-Access Research Validation\n\nVerified by L'INSTITUT ARTICLE 4 (A4I). Immutable compliance record on WaqfLedger.tech.\n\nVerify my audit record: {verifyUrl}\nSHA-256 State Hash: {hash}\n\n#AILiteracy #EUAIAct #SafeAI #RegTech",
+        "copySuccess": "Open-access achievement broadcast copied to clipboard — paste into LinkedIn to publish your Empirical Institutional Audit record."
+      }
+    }
+  },
+  "industrial": {
+    "title": "Institutional Research Support & Node Contribution",
+    "subtitle": "Voluntary Research Support Grant ($1,500 USD / year) and Infrastructure Node Sponsorship ($3,500 USD / year) — voluntary tracks that fund global rollout of the standardized TOEFL for AI Literacy protocol, WaqfLedger.tech validation nodes, and open-access data telemetry.",
+    "pricing": {
+      "title": "Graduated Institutional Open-Access Contribution Matrix"
+    }
+  },
+  "forms": {
+    "fullNamePlaceholder": "Enter your full legal name...",
+    "emailPlaceholder": "Enter institutional email address...",
+    "submitButton": "Submit Institutional Inquiry"
+  },
+  "academicCenters": {
+    "page": {
+      "eyebrow": "Institutional Research Support",
+      "title": "Institutional Research Support & Contribution Matrix",
+      "subtitle": "Institutional Open-Access Contribution is entirely voluntary — designed to offset sovereign cloud compute costs, fund open-access data telemetry, and support doctoral data compilation overhead that powers the global rollout of the standardized TOEFL for AI Literacy protocol. All Article 4 assessments remain universally open-access.",
+      "contributionMatrix": {
+        "title": "Institutional Research Support & Node Contribution Matrix",
+        "introduction": "Participation is structured strictly as a voluntary contribution to support global open-access research, subsidize cloud bandwidth, and offset ongoing doctoral compilation data overhead — explicitly NOT commercial software licensing. Two graduated support tracks assist protocol deployment worldwide: the Voluntary Research Support Grant ($1,500 USD / year) offsets foundational testing framework compute costs, while Infrastructure Node Sponsorship ($3,500 USD / year) sponsors WaqfLedger infrastructure nodes, registrar analytics telemetry, and Article 4 syllabus framework delivery.",
+        "recommendedBadge": "Recommended",
+        "waqfLedgerFootnote": "While every assessment tier remains a universal open-access public good, permanent validation trails, tamper-proof state auditing, and certificate verification indexing are natively powered and secured via the {ledgerHost} global infrastructure network.",
+        "tiers": {
+          "ledgerNote": "Evaluation access is free; permanent validation trails and certificate verification indexing on {ledgerHost} secure every attestation.",
+          "contributor": {
+            "tierLabel": "Tier A",
+            "name": "Institutional Research Contributor",
+            "supportLabel": "Voluntary Research Support Grant",
+            "rate": "$1,500 USD / Year",
+            "description": "Voluntary Research Support Grant — offsets foundational testing framework compute costs and assists global rollout of the standardized TOEFL for AI Literacy protocol.",
+            "checkoutCta": "Support via Stripe — Voluntary Research Support Grant"
+          },
+          "sponsor": {
+            "tierLabel": "Tier B",
+            "name": "Authorized Academic Center & Node Sponsor",
+            "supportLabel": "Infrastructure Node Sponsorship",
+            "rate": "$3,500 USD / Year",
+            "description": "Infrastructure Node Sponsorship — sponsors core WaqfLedger infrastructure nodes, unlocks advanced registrar analytics telemetry workspace, and accesses Article 4 Syllabus Framework Packages while accelerating TOEFL for AI Literacy protocol deployment.",
+            "checkoutCta": "Support via Stripe — Infrastructure Node Sponsorship"
+          }
+        }
+      },
+      "pitch": {
+        "quote": "Institutional Open-Access Contribution sustains the universal research mandate while anchoring verified Article 4 compliance infrastructure to {ledgerHost} — accelerating the standardized TOEFL for AI Literacy protocol for faculty, post-graduate researchers, and cohort personnel alike."
+      },
+      "alternativePayments": {
+        "trigger": "Alternative Contribution Channels (International Wires, Wise, Mercury USD) ➔",
+        "panelTitle": "Alternative Contribution Channels (International Wires, Wise, Mercury USD)",
+        "option1": {
+          "title": "Digital Clearing Transfer (Wise)",
+          "description": "Instant settlement via sovereign digital clearing rails. Opens your selected gateway in a secure background tab.",
+          "wiseCta": "Continue via Wise"
+        },
+        "option2": {
+          "title": "Sovereign Swift/IBAN Wire (Mercury USD)",
+          "description": "Route through Mercury USD corporate clearing at Column N.A. Selecting this pathway auto-scrolls to the intake form and flags your request for authorized institutional invoice and bank wire details.",
+          "action": "Request Authorized Institutional Invoice & Bank Wire Details",
+          "actionTier": {
+            "contributor": "Request Wire Invoice — Tier A Grant ($1,500 USD / Year)",
+            "sponsor": "Request Wire Invoice — Tier B Node Sponsorship ($3,500 USD / Year)"
+          }
+        }
+      },
+      "pillars": {
+        "title": "Three Pillars of Institutional Research Value",
+        "security": {
+          "title": "Zero-Fraud Security Architecture",
+          "description": "Permanently seal examination metrics via SHA-256 state hashing onto {ledgerHost}. Establish an unalterable verification trail that neutralizes certificate inflation and credentials fraud for future corporate employers."
+        },
+        "curriculum": {
+          "title": "Turnkey Curriculum Integration",
+          "description": "Receive structured, modular Article 4 Syllabus Framework Packages. Seamlessly weave AI liability, algorithmic risk management, and human oversight modules into existing computer science, law, or executive MBA curricula."
+        },
+        "telemetry": {
+          "title": "Advanced Registrar Telemetry",
+          "description": "Access a dedicated administrative workspace tracking real-time cohort completion rates, domain friction timelines, and systemic competency data optimized for academic data reviews and internal quality audits."
+        }
+      },
+      "intake": {
+        "title": "Institutional Research Support Intake Form",
+        "tierSelection": "Target Funding Stream Designation",
+        "tierOptions": {
+          "contributor": "Tier A Grant",
+          "sponsor": "Tier B Node Sponsorship"
+        },
+        "email": "Authorized Institutional Email Address",
+        "message": "Research Deployment Scale & Wire Invoice Specifications",
+        "messagePlaceholder": "Describe your research cohort scope, deployment scale, preferred Mercury USD wire settlement corridor, and institutional invoice requirements...",
+        "requestWireInvoice": "Request Authorized Institutional Invoice & Bank Wire Details",
+        "wireRoutingHint": "Mercury USD sovereign wire pathway selected — designate your funding stream and complete the intake form below. Our registrar will dispatch authorized institutional invoice and Mercury Bank USD clearing details within two business days.",
+        "wireInvoiceBanner": "ℹ️ Institutional Wire Routing Active: Your submission will flag our registrar panel to instantly compile and transmit a formal PDF grant invoice containing authorized corporate clearing details for our Mercury Bank USD account.",
+        "submit": "Submit Research Support Inquiry",
+        "submitting": "Submitting inquiry…",
+        "success": "Your institutional research support inquiry has been queued for registrar review. A compliance officer will respond within two business days.",
+        "mercuryWireSuccess": "Inquiry Logged. Our registrar will dispatch your Mercury invoice within two business days.",
+        "error": "Unable to dispatch your inquiry at this time. Please verify your connection and try again, or contact the registrar directly."
+      }
+    }
+  },
+  "academic": {
+    "centers": {
+      "funding": {
+        "altTrigger": "Alternative Settlement Pathways (Wire Transfer, Wise, Mercury)",
+        "wiseLabel": "Execute Transfer via Wise Secured Networks",
+        "wireLabel": "Request Official Institutional Invoice & Bank Wire Details",
+        "invoiceNotice": "Upon submission, an academic invoice containing authorized SWIFT/IBAN clearing indicators will be securely dispatched to your verified institutional email address."
+      }
+    }
+  },
+  "centers": {
+    "intake": {
+      "title": "Institutional Open-Access Contribution Intake Form",
+      "institution": "Institution / Organization Name",
+      "institutionPlaceholder": "Enter your authorized academic or research entity...",
+      "email": "Authorized Institutional Email",
+      "message": "Research Support & Grant Details",
+      "messagePlaceholder": "Describe your research cohort scope, Voluntary Research Support Grant or Infrastructure Node Sponsorship intent, and deployment timeline for TOEFL for AI Literacy protocol rollout...",
+      "submit": "Submit Research Support Inquiry",
+      "submitting": "Submitting inquiry…",
+      "success": "Your institutional research support inquiry has been queued for registrar review. A compliance officer will respond within two business days.",
+      "error": "Unable to dispatch your inquiry at this time. Please verify your connection and try again, or contact the registrar directly."
+    }
+  },
+  "contact": {
+    "page": {
+      "title": "Institutional Inquiries & Registrar Communications",
+      "subtitle": "Direct communication routing for academic center onboarding, corporate procurement validation, and independent compliance verification audits. All submissions are formally triaged by the Office of the Registrar.",
+      "categories": {
+        "institutionalLicensing": "Institutional Open-Access Contribution — Voluntary Research Support Grant ($1,500) & Infrastructure Node Sponsorship ($3,500)",
+        "corporateProcurement": "Corporate Procurement Governance & Enterprise Cohort Vetting",
+        "individualCertification": "Individual Certification Audit & Payment Gateway Assistance",
+        "doctoralResearch": "Doctoral Research Collaboration & Regulatory Alignment Inquiries"
+      },
+      "form": {
+        "name": "Your Name",
+        "email": "Email Address",
+        "category": "Subject Category",
+        "subject": "Subject",
+        "subjectPlaceholder": "Enter the subject of your institutional inquiry...",
+        "message": "Message",
+        "messagePlaceholder": "Provide full context for your certification, licensing, or verification request...",
+        "submit": "Send Message",
+        "submitting": "Dispatching message…",
+        "success": "Your institutional message has been dispatched to the registrar queue. You will receive confirmation at the email address provided.",
+        "error": "Unable to dispatch your message at this time. Please verify your connection and try again."
+      }
+    }
+  },
+  "help": {
+    "title": "Institutional Support & FAQ",
+    "subtitle": "Universal open-access Article 4 assessments plus voluntary Institutional Open-Access Contribution tracks — Voluntary Research Support Grant ($1,500 USD / year) and Infrastructure Node Sponsorship ($3,500 USD / year) for TOEFL for AI Literacy protocol rollout.",
+    "contact_button": "Initiate Registrar Support Ticket"
+  },
+  "legal": {
+    "shared": {
+      "eyebrow": "Corporate Compliance & Registry Disclosures",
+      "processingEntity": "Verified Processing Entity",
+      "academicAuthority": "Academic Certification Authority",
+      "registryHeading": "Official Registry Identifiers",
+      "ledgerProtocol": "Immutable Ledger Protocol",
+      "dataHandling": "Data Handling & Processing Scope",
+      "dataHandlingBody": "Candidate assessment metrics, examination tokens, and certification state hashes are processed exclusively under EU AI Act Article 4 Compliance Metrics. All commercial settlement and payment records are managed by the verified processing entity via Stripe checkout infrastructure.",
+      "dataProtection": "Data Protection & GDPR Compliance",
+      "dataProtectionBody": "safeAI.report maintains strict conformity with the General Data Protection Regulation (GDPR). Anonymous academic telemetry arrays—aggregated scenario performance indices, compliance score distributions, and token utilization metrics—are collected solely for institutional oversight reporting. These telemetry structures are architecturally decoupled from personally identifiable information (PII): no candidate names, email addresses, government identifiers, biometric data, or free-text responses containing personal references are retained in persistent storage. Data minimization, purpose limitation, and storage limitation principles are enforced at the application layer. Where transactional contact data is submitted through institutional intake forms, such records are processed exclusively for license fulfillment correspondence and are not merged into anonymous telemetry pipelines.",
+      "registryGovernance": "Registry Governance & Verification Sovereignty",
+      "registryGovernanceBody": "All certification events and B2B institutional license activations are cryptographically attested through verification sovereignty protocols before immutable publication to WaqfLedger.tech. Each credential issuance undergoes multi-stage validation: (1) examination integrity verification against the authorized 30-scenario Article 4 assessment matrix; (2) institutional authority confirmation under L'INSTITUT ARTICLE 4 (A4I); (3) AES-256 cryptographic block hashing of the certification state payload; and (4) sovereign ledger anchoring under the Global Capital Intelligence LLC registry identifiers (RNA: W343030686, SIRET: 92288647800010, ICE: 001625897000071). Immutable hashes issued to WaqfLedger.tech constitute the authoritative verification record and may not be altered, superseded, or revoked without a formally logged governance amendment event.",
+      "compliance": "Regulatory Compliance Framework",
+      "complianceBody": "Certifications are immutably logged to the Sovereign Algorithmic Governance Ledger at WaqfLedger.tech using AES-256 Cryptographic Block Hashing. Academic authority rests with L'INSTITUT ARTICLE 4 (A4I) under Professor Adel El Bouzagaoui."
+    },
+    "terms": {
+      "eyebrow": "Open-Access Legal Framework",
+      "title": "Terms of Service",
+      "subtitle": "Non-commercial open-access terms governing universal diagnostic access, voluntary research support grants, and platform participation under the safeAI.report ecosystem — structured entirely for public-good research, not commercial licensing.",
+      "section1Title": "1. Pursuit of Open-Access Public Good",
+      "section1Body": "L'INSTITUT ARTICLE 4 (A4I), operating through the safeAI.report platform, functions exclusively as an open-access public good instrument dedicated to supporting empirical research data compilation, doctoral oversight benchmarking, and international statutory research under EU AI Act Article 4 Compliance Metrics. The evaluation ecosystem is administered under the academic authority of Professor Adel El Bouzagaoui. Universal diagnostic access is extended at no charge to advance the standardized TOEFL for AI Literacy protocol — not as a commercial product offering or licensed software entitlement.",
+      "section2Title": "2. Non-Commercial Characterization",
+      "section2Body": "All certification and diagnostic evaluation tracks across the platform are complimentary and universally open to the public. Any financial participation by accredited universities or statutory bodies is structured exclusively as voluntary research support grants to subsidize sovereign node distribution, cloud bandwidth, and open-access data telemetry infrastructure — not commercial software licensing. Such contributions generate zero commercial warranties, merchant-of-record contracts, software-as-a-service licensing agreements, or service-level assurances (SLAs) of the kind associated with proprietary technology vendors. Grant participation does not confer resale rights, exclusive access tiers, or commercial entitlements of any kind.",
+      "section3Title": "3. Evaluation Runtime & Intellectual Property",
+      "section3Body": "The Cisco-grade 30-scenario evaluation matrix, scenario architecture, scoring methodologies, and certification badge frameworks constitute proprietary academic intellectual property administered under L'INSTITUT ARTICLE 4 (A4I) and the academic authority of Professor Adel El Bouzagaoui. Automated scraping, bulk harvesting, reverse engineering, mirror deployment, or unauthorized commercial resale of assessment content, scenario payloads, or scoring algorithms is strictly prohibited without express written authorization from the academic governing authority. Processing infrastructure is operated by Global Capital Intelligence LLC under registry identifiers disclosed in the legal anchors registry.",
+      "section4Title": "4. Provenance & Limitation of Liability",
+      "section4Body": "Compliance tracking, credential provenance indexing, and cryptographic state anchoring to WaqfLedger.tech operate on a best-effort basis for research and statutory benchmarking purposes. safeAI.report, Global Capital Intelligence LLC, and L'INSTITUT ARTICLE 4 (A4I) provide the evaluation runtime and verification infrastructure without warranty regarding regulatory adjudication, employment decisions, or institutional audit conclusions. Ultimate statutory accountability for AI deployment oversight, human-in-the-loop governance, and Article 4 compliance execution remains with the deploying entity — whether individual examinee, faculty cohort, or institutional registrar."
+    },
+    "privacy": {
+      "eyebrow": "Cryptographic Data Sovereignty Framework",
+      "title": "Privacy Policy & Registry Data Sovereignty",
+      "subtitle": "Advanced data minimization and cryptographic sovereignty standards governing record integrity, permanent tamper-proof provenance, and academic telemetry under the safeAI.report ecosystem.",
+      "section1Title": "1. Data Minimization Principle",
+      "section1Body": "The safeAI.report evaluation system is architected under a strict data minimization doctrine aligned with GDPR purpose-limitation principles. The platform deliberately avoids gathering invasive personal metrics, behavioral advertising profiles, biometric identifiers, or third-party data broker integrations. To initialize a certification validation state, the runtime requests only an authorized institutional or candidate email address and an optional display name — nothing further is required to execute the open-access diagnostic session. Response-level telemetry is processed in anonymized aggregate form before any persistence layer.",
+      "section2Title": "2. The WaqfLedger Hashing Protocol",
+      "section2Body": "Upon achieving a passing performance threshold (≥85%), the platform generates a 64-character SHA-256 cryptographic state hash encapsulating examination integrity markers, timestamp vectors, and registry identifiers. This hash is instantly transmitted as a non-blocking background void promise to the sovereign ledger API endpoint at waqfledger-api.vercel.app via TLS-encrypted POST to /api/v1/ledger/log-compliance, immutably anchoring the certification event to WaqfLedger.tech without interrupting the examinee experience.",
+      "section3Title": "3. Immutable Registry Data Sovereignty",
+      "section3Body": "Because all certification provenance records are permanently anchored to the WaqfLedger.tech infrastructure network, they cannot be deleted, modified, or reversed once published to the sovereign ledger index. This immutability establishes an unalterable verification trail suitable for corporate audit teams, regulatory examiners, and institutional verification desks. Registry data sovereignty is maintained under L'INSTITUT ARTICLE 4 (A4I) registry identifiers (RNA: W343030686, SIRET: 92288647800010, ICE: 001625897000071). Independent verifiers may cross-reference published SHA-256 state hashes against the WaqfLedger cryptographic index without intermediary attestation from safeAI.report.",
+      "section4Title": "4. Academic Telemetry Use",
+      "section4Body": "Anonymized scoring distribution datasets derived from aggregate examination performance are retained and optimized strictly for academic reviews, longitudinal data tracking, and doctoral compilation research under EU AI Act Article 4 Compliance Metrics. These telemetry structures support scenario difficulty calibration, competency trend analysis, and sovereign cloud compute optimization — never individual profiling, marketing segmentation, or commercial data resale. All academic telemetry processing is supervised under the academic authority of Professor Adel El Bouzagaoui.",
+      "directorSignatureLabel": "Data Sovereignty Director",
+      "directorName": "Professor Adel El Bouzagaoui"
+    }
+  },
+  "dashboard": {
+    "layout": {
+      "portalTitle": "Institutional Partner Portal",
+      "sidebarAria": "Partner dashboard navigation",
+      "licenseMetaPrefix": "License includes",
+      "licenseMetaTokensSuffix": "pre-paid Level 01 examination tokens",
+      "ledgerProtocol": "Immutable verification protocol"
+    },
+    "nav": {
+      "overview": "Overview",
+      "licenses": "Active Licenses",
+      "research": "Research Data",
+      "ledger": "Ledger Audit Logs"
+    },
+    "overview": {
+      "title": "Institutional Control Desk",
+      "subtitle": "Real-time oversight of prepaid examination tokens, active Article 4 certifications, and WaqfLedger.tech audit events for your Authorized Academic Center License.",
+      "tokens": {
+        "title": "Prepaid Examination Tokens",
+        "baseline": "License baseline",
+        "allotted": "Allotted",
+        "remaining": "Remaining",
+        "used": "Used",
+        "utilizationAria": "Examination token utilization"
+      },
+      "certifications": {
+        "title": "Active Certifications Count",
+        "prestige": "High-prestige status",
+        "activeLabel": "verified credentials under institutional oversight"
+      },
+      "ledgerFeed": {
+        "title": "WaqfLedger Audit Feed",
+        "hostPrefix": "Cryptographic state hashes sealed to",
+        "empty": "No ledger events recorded yet.",
+        "columns": {
+          "timestamp": "Timestamp (UTC)",
+          "credentialId": "Credential ID",
+          "stateHash": "SHA-256 State Hash"
+        }
+      }
+    }
+  },
+  "admin": {
+    "tier": {
+      "level01": "Level 01: Assurance Certification Badge ($99 USD)",
+      "level02": "Level 02: Executive Governance Badge ($199 USD)",
+      "level03": "Level 03: Institutional Partner Badge ($349 USD)",
+      "b2b": "Infrastructure Node Sponsorship ($3,500 USD / Year)"
+    },
+    "table": {
+      "organization": "Institution / Company",
+      "name": "Applicant Name",
+      "status": "Settlement Status",
+      "tier": "Certification Level"
+    },
+    "board": {
+      "gate": {
+        "terminalLabel": "Cryptographic challenge terminal — awaiting institutional authorization vector",
+        "title": "ENTER INSTITUTIONAL ADMINISTRATIVE TOKEN",
+        "authorityNote": "Access restricted to authorized registrar personnel under L'Institut Article 4 security governance protocols.",
+        "inputLabel": "Administrative access token",
+        "submit": "Authenticate",
+        "error": "Cryptographic token validation failed. Access denied under Article 4 security governance protocols."
+      },
+      "login": {
+        "title": "Secure Administrative Login",
+        "usernameLabel": "Administrator username",
+        "passwordLabel": "Secure password",
+        "error": "Hash-verified credential validation failed. Access denied under Article 4 security governance protocols.",
+        "cryptoError": "Cryptographic subsystem unavailable. Secure context required for SHA-256 verification.",
+        "verifying": "Verifying fingerprint…"
+      },
+      "header": {
+        "title": "Sovereign Administrative Command Center",
+        "subtitle": "Institutional telemetry, system routing parameters, and registrar audit registry under L'INSTITUT ARTICLE 4 (A4I) sovereign governance."
+      },
+      "panels": {
+        "telemetry": "Vital Data Telemetry Visualization",
+        "switchboard": "Global System Switchboard",
+        "audit": "Registrar Audit Tracking Registry"
+      },
+      "research": {
+        "title": "Advanced Research Telemetry Center",
+        "filters": {
+          "toolbar": "Research telemetry filters",
+          "activeCount": "{count} cohort records in scope",
+          "track": {
+            "label": "Evaluation Track",
+            "all": "All Tracks",
+            "level01": "Level 01 Assurance",
+            "level02": "Level 02 Governance",
+            "level03": "Level 03 Auditing"
+          },
+          "language": {
+            "label": "Language Stream",
+            "all": "All Languages"
+          },
+          "score": {
+            "label": "Score Status",
+            "all": "All Outcomes",
+            "pass": "Pass ≥ 85%",
+            "fail": "Fail < 85%"
+          },
+          "partner": {
+            "label": "Institutional Partner ID",
+            "placeholder": "Filter by partner identifier…"
+          }
+        },
+        "metrics": {
+          "cohorts": {
+            "title": "Total Global Evaluated Cohorts",
+            "subtitle": "Total telemetry rows captured"
+          },
+          "compliance": {
+            "title": "Mean Statutory Compliance Rating",
+            "subtitle": "Average evaluation score"
+          },
+          "linguistic": {
+            "title": "Linguistic Track Allocation",
+            "subtitle": "Distribution across EN, FR, ES, and AR"
+          },
+          "funding": {
+            "title": "Active Infrastructure Node Funding",
+            "subtitle": "Aggregated $1,500 and $3,500 contributions",
+            "breakdown": "{researchCount} × {researchAmount} research · {infraCount} × {infraAmount} infrastructure"
+          }
+        },
+        "table": {
+          "title": "Research Telemetry Data Grid",
+          "exportCsv": "Export Filtered Dataset to CSV",
+          "exportJson": "Export Complete Schema to JSON",
+          "empty": "No telemetry records match the active filter criteria.",
+          "ledgerSynced": "WaqfLedger synced",
+          "ledgerPending": "WaqfLedger pending",
+          "wireFilter": {
+            "label": "Settlement channel filter",
+            "all": "All Records",
+            "auto": "Stripe/Wise Auto-Clears",
+            "mercuryPending": "Mercury Wire Invoices Pending"
+          },
+          "badges": {
+            "wirePending": "⚠️ WIRE: INVOICE PENDING",
+            "compliant": "COMPLIANT"
+          },
+          "invoice": {
+            "modalTitle": "Mercury Wire Invoice — Print Preview",
+            "print": "Print PDF Invoice",
+            "close": "Close",
+            "logoPlaceholder": "Official Logo",
+            "documentTitle": "L'Institut Article 4 Institutional Invoice",
+            "invoiceId": "Invoice ID",
+            "billTo": "Bill To",
+            "clientEmail": "Client Email",
+            "specifications": "Invoice Specifications",
+            "ledgerBlock": "Core Ledger Block",
+            "tier": "Selected Tier",
+            "paymentTerms": "Payment Terms",
+            "settlementCoordinates": "Settlement Account Coordinates",
+            "beneficiary": "Beneficiary",
+            "bank": "Bank",
+            "routing": "Routing",
+            "account": "Account",
+            "swift": "SWIFT",
+            "intermediarySwift": "Intermediary SWIFT",
+            "openRow": "Open Mercury wire invoice print preview"
+          },
+          "columns": {
+            "timestamp": "Timestamp",
+            "maskedId": "Masked Identifiers",
+            "trackLanguage": "Track Language",
+            "score": "Scenario Performance Score",
+            "settlement": "Settlement Channel",
+            "stateHash": "SHA-256 State Hash",
+            "ledgerSync": "WaqfLedger Sync"
+          }
+        }
+      },
+      "telemetry": {
+        "passFail": {
+          "title": "Certification Pass/Fail Ratios",
+          "level01": "Level 01",
+          "level02": "Level 02",
+          "level03": "Level 03",
+          "pass": "Pass",
+          "fail": "Fail"
+        },
+        "sessions": {
+          "title": "Localized Session Volume Metrics",
+          "en": "English (EN)",
+          "fr": "French (FR)",
+          "es": "Spanish (ES)",
+          "ar": "Arabic (AR)"
+        },
+        "velocity": {
+          "title": "System Velocity Indexes",
+          "p50": "Median response",
+          "p95": "95th percentile",
+          "p99": "99th percentile",
+          "unit": "ms"
+        }
+      },
+      "switchboard": {
+        "maintenance": {
+          "label": "Emergency System Maintenance Lockout",
+          "description": "Forces public examination views to display an administrative pause message until lockout is revoked."
+        },
+        "stripe": {
+          "label": "Stripe Payment Link Gateway Mode",
+          "description": "SAFEAI_ADMIN_STRIPE_PRODUCTION: when active, institutional checkout CTAs resolve to live production Stripe Payment Links (infrastructure.stripeResearchContributorUrl / stripeNodeSponsorUrl). When inactive, checkout swaps to Stripe Test Mode sandbox links (stripeResearchContributorUrlSandbox / stripeNodeSponsorUrlSandbox) for offline validation."
+        },
+        "ledger": {
+          "label": "Provenance Ledger Stream Bypass",
+          "description": "Switches the public verification gateway between local database arrays and direct live WaqfLedger streams."
+        },
+        "stateOn": "Active",
+        "stateOff": "Inactive"
+      },
+      "audit": {
+        "columns": {
+          "timestamp": "Date / Timestamp",
+          "hash": "Searched SHA-256 Audit Hash",
+          "level": "Attributed Competency Level",
+          "status": "Target Validation Result Status"
+        },
+        "statusPassed": "Passed",
+        "statusFailed": "Failed",
+        "empty": "No verification hash submissions recorded in the current audit window."
+      }
+    }
+  }
+}

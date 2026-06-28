@@ -1,0 +1,13 @@
+# L'Institut Article 4 (A4I) — TOEFL for AI Literacy Standard
+> Public open-access research repository and standardized compliance benchmarking protocol tracking human oversight competency under EU AI Act Article 4 deployer obligations.
+
+## Core System Architecture
+- [Home](https://safeai.report): Institutional manifesto, baseline academic authority indicators, and direct portal access links.
+- [Academy Hub](https://safeai.report/academy): Universal open-access diagnostic testing player. Houses the complimentary Cisco-grade 30-scenario evaluation matrix spanning three operational governance tracks.
+- [Academic Centers](https://safeai.report/academic-centers): Voluntary institutional research support matrix, cloud node contribution infrastructure options, and B2B grant intake pathways.
+- [Sovereign Registry](https://safeai.report/verify): Public ledger inspection gateway executing automated SHA-256 state hash validation searches powered by WaqfLedger.tech nodes.
+
+## Academic Entity Authority
+- Academic Authority: Professor Adel El Bouzagaoui
+- Regulatory Target: Statutory human risk layer verification under mandatory EU AI Act Article 4 compliance metrics (Enforcement timeline starting August 2026).
+- Cryptographic Proof Protocol: Serverless async background ledger streaming utilizing AES-256 block structures and SHA-256 integrity validation strings.

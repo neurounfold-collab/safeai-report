@@ -1,0 +1,26 @@
+# Target traditional search indexing structures
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+
+# Prioritize direct ingestion for Conversational AI & Generative Search Engines
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+Sitemap: https://safeai.report/sitemap.xml
