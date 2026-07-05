@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "A4ALAMMatrixConfiguration",
+  "description": "Immutable, role-adaptive weight allocations under the Global AI Literacy Assessment Matrix framework.",
+  "version": "1.0.0",
+  "enforcement_cliff": "2026-08-02",
+  "compliance_pass_threshold_percent": 85.0,
+  "cohort_profiles": {
+    "ExL": {
+      "name": "Executive Layer",
+      "weights": { "p1_human_in_the_loop": 0.20, "p2_transparency": 0.40, "p3_incident_response": 0.10, "p4_compute_efficiency": 0.30 }
+    },
+    "CLL": {
+      "name": "Compliance & Legal Layer",
+      "weights": { "p1_human_in_the_loop": 0.25, "p2_transparency": 0.35, "p3_incident_response": 0.30, "p4_compute_efficiency": 0.10 }
+    },
+    "OEL": {
+      "name": "Operational & Engineering Layer",
+      "weights": { "p1_human_in_the_loop": 0.35, "p2_transparency": 0.15, "p3_incident_response": 0.20, "p4_compute_efficiency": 0.30 }
+    }
+  }
+}

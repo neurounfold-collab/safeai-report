@@ -915,6 +915,8 @@ export default function AcademicCentersView({ language: languageProp }) {
     if (isMercuryWireActive) {
       additionalFields.payment_method = 'MERCURY_WIRE';
       additionalFields.billing_status = 'INVOICE_PENDING';
+      additionalFields.registry_tier = 'CLOSED_APPLICANT';
+      additionalFields.lead_source = 'A4_ALAM_PORTAL';
     }
 
     try {

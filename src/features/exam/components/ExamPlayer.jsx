@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createTranslator, getActiveLanguage } from '../../../i18n/index.js';
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';
 import {
@@ -12,7 +13,9 @@ import {
   createWaqfLedgerPayload,
   INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT,
   REGISTRY_FIREWALL_THRESHOLD_PERCENT,
+  resolveCompositeScoreBand,
 } from '../utils/scoringEngine.js';
+import { calculateAdaptiveScore } from '../../../utils/scoringEngine.js';
 import { triggerLinkedInSocialUnlock } from '../../../utils/linkedInSocialUnlock.js';
 import { streamComplianceToLedger } from '../../../utils/waqfLedgerClient';
 import { getDomainContext, submitIntakeForm } from '../../../utils/emailRouter.js';
@@ -831,9 +834,45 @@ const REGISTRY_INTAKE_FLAG = 'EXECUTIVE_BRIEFING';
 const MASTER_TEST_AUDIT_CODE = 'A4I_MASTER_TEST_AUDIT';
 const MASTER_TEST_AUDITOR_NAME = 'Official Test Auditor';
 const MASTER_TEST_AUDIT_KEY = 'SAFEAI_MASTER_TEST_AUDIT';
+const EXAM_ENTRY_TIER_KEY = 'SAFEAI_EXAM_ENTRY_TIER';
+const VALID_EXAM_TIER_PARAMS = new Set(['level01', 'level02', 'level03']);
 
 /** @type {Map<number, typeof EXAM_SCENARIO_MATRIX[number]>} */
 const SCENARIO_BY_ID = new Map(EXAM_SCENARIO_MATRIX.map((scenario) => [scenario.id, scenario]));
+
+/**
+ * Reads a validated tier slug from the current URL query string.
+ * @param {URLSearchParams | null | undefined} [searchParams]
+ * @returns {'level01' | 'level02' | 'level03' | null}
+ */
+function readUrlTierParam(searchParams) {
+  const source =
+    searchParams
+    ?? (typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null);
+
+  if (!source) return null;
+
+  const tier = source.get('tier')?.trim().toLowerCase() ?? '';
+  return VALID_EXAM_TIER_PARAMS.has(tier) ? tier : null;
+}
+
+/**
+ * @param {typeof EXAM_SCENARIO_MATRIX | null | undefined} matrix
+ */
+function isExamMatrixComplete(matrix) {
+  return Array.isArray(matrix) && matrix.length === EXAM_SCENARIO_COUNT
+    && matrix.every((scenario) => scenario && typeof scenario.id === 'number');
+}
+
+function persistEntryTier(tierSlug) {
+  if (!tierSlug || typeof window === 'undefined') return;
+
+  try {
+    window.localStorage.setItem(EXAM_ENTRY_TIER_KEY, tierSlug);
+  } catch {
+    // Storage may be unavailable in hardened browser profiles.
+  }
+}
 
 /**
  * @param {unknown} data
@@ -931,10 +970,17 @@ function loadPersistedExamSession() {
       return null;
     }
 
+    const shuffledExamMatrix = (parsed.scenarioIds ?? [])
+      .map((scenarioId) => SCENARIO_BY_ID.get(scenarioId))
+      .filter(Boolean);
+
+    if (!isExamMatrixComplete(shuffledExamMatrix)) {
+      clearExamPersistSession();
+      return null;
+    }
+
     return {
-      shuffledExamMatrix: (parsed.scenarioIds ?? [])
-        .map((scenarioId) => SCENARIO_BY_ID.get(scenarioId))
-        .filter(Boolean),
+      shuffledExamMatrix,
       currentScenarioIndex: parsed.currentScenarioIndex,
       userChoices: parsed.userChoices ?? [],
       examStartedAt: parsed.examStartedAt ?? new Date().toISOString(),
@@ -969,12 +1015,24 @@ function persistExamSession(shuffledExamMatrix, currentScenarioIndex, userChoice
   }
 }
 
-function createInitialExamSessionState() {
+function createInitialExamSessionState(urlTier) {
   const persisted = loadPersistedExamSession();
-  if (persisted) return persisted;
+  if (persisted && isExamMatrixComplete(persisted.shuffledExamMatrix)) {
+    if (urlTier) persistEntryTier(urlTier);
+    return persisted;
+  }
+
+  if (persisted) clearExamPersistSession();
+
+  const shuffledExamMatrix = buildTierShuffledExamMatrix();
+  if (!isExamMatrixComplete(shuffledExamMatrix)) {
+    return null;
+  }
+
+  if (urlTier) persistEntryTier(urlTier);
 
   return {
-    shuffledExamMatrix: buildTierShuffledExamMatrix(),
+    shuffledExamMatrix,
     currentScenarioIndex: 0,
     userChoices: [],
     examStartedAt: new Date().toISOString(),
@@ -1191,17 +1249,45 @@ function transmitDoctoralResearchPacket(responses, examinationStartedAt, locale)
 /**
  * Cisco-grade 30-scenario EU AI Act Article 4 examination player.
  */
+function ExamPlayerRecoveryShell({ message }) {
+  return (
+    <div className="exam-player" aria-live="polite" aria-busy="true">
+      <style>{EXAM_PLAYER_STYLES}</style>
+      <div className="exam-player__shell exam-player__credential">
+        <h2 className="exam-player__fail-title">{message}</h2>
+        <p className="exam-player__fail-subtitle">Restoring examination session…</p>
+      </div>
+    </div>
+  );
+}
+
 export default function ExamPlayer({ language: languageProp, candidateName: candidateNameProp }) {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const { t } = useMemo(
     () => createTranslator(languageProp ?? getActiveLanguage()),
     [languageProp],
   );
 
+  const urlTier = useMemo(() => readUrlTierParam(searchParams), [searchParams]);
+  const rawTierParam = searchParams.get('tier');
+  const tierParamInvalid = Boolean(
+    rawTierParam?.trim() && !VALID_EXAM_TIER_PARAMS.has(rawTierParam.trim().toLowerCase()),
+  );
+
   const initialSessionRef = useRef(null);
   if (initialSessionRef.current === null) {
-    initialSessionRef.current = createInitialExamSessionState();
+    initialSessionRef.current = createInitialExamSessionState(urlTier);
   }
-  const initialSession = initialSessionRef.current;
+  const initialSession = initialSessionRef.current ?? {
+    shuffledExamMatrix: [],
+    currentScenarioIndex: 0,
+    userChoices: [],
+    examStartedAt: new Date().toISOString(),
+  };
+
+  const sessionInitFailed = initialSessionRef.current === null;
 
   const [shuffledExamMatrix, setShuffledExamMatrix] = useState(initialSession.shuffledExamMatrix);
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(initialSession.currentScenarioIndex);
@@ -1228,6 +1314,33 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   const credentialIdRef = useRef(null);
   const socialUnlockTriggeredRef = useRef(false);
   const certificationPipelineRef = useRef({ ...EMPTY_CERTIFICATION_PIPELINE });
+
+  useEffect(() => {
+    if (tierParamInvalid || sessionInitFailed) {
+      navigate('/academy', { replace: true });
+    }
+  }, [tierParamInvalid, sessionInitFailed, navigate]);
+
+  useEffect(() => {
+    if (tierParamInvalid || sessionInitFailed) return;
+
+    if (urlTier) persistEntryTier(urlTier);
+
+    if (isExamMatrixComplete(shuffledExamMatrix)) return;
+
+    clearExamPersistSession();
+    const recovered = createInitialExamSessionState(urlTier);
+    if (!recovered) {
+      navigate('/academy', { replace: true });
+      return;
+    }
+
+    initialSessionRef.current = recovered;
+    setShuffledExamMatrix(recovered.shuffledExamMatrix);
+    setCurrentScenarioIndex(recovered.currentScenarioIndex);
+    setUserChoices(recovered.userChoices);
+    examStartedAtRef.current = recovered.examStartedAt;
+  }, [tierParamInvalid, sessionInitFailed, urlTier, navigate, shuffledExamMatrix]);
 
   const currentScenario = shuffledExamMatrix[currentScenarioIndex];
   const isFinalScenario = currentScenarioIndex === EXAM_SCENARIO_COUNT - 1;
@@ -1274,7 +1387,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         hash,
         candidateName: readStoredLegalName(),
         tierId: certificationTier,
-        score: scoreResult?.weighted?.percentage,
+        score: scoreResult?.composite?.score ?? scoreResult?.weighted?.percentage,
         timestamp: examinationCompletedAt,
       }).catch(() => {
         // Best-effort ledger stream — must not block certification flow.
@@ -1408,11 +1521,28 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
     if (isFinalScenario) {
       clearExamPersistSession();
-      const result = calculateExamScore(
-        nextChoices,
-        cohortProfile ? { cohortProfileId: cohortProfile } : {},
-      );
-      setScoreResult(result);
+      const result = calculateExamScore(nextChoices);
+
+      const composite = cohortProfile
+        ? (() => {
+            const adaptive = calculateAdaptiveScore(nextChoices, cohortProfile);
+            return {
+              score: adaptive.score,
+              pillarPerformances: {
+                p1: adaptive.pillarPerformances.p1 * 100,
+                p2: adaptive.pillarPerformances.p2 * 100,
+                p3: adaptive.pillarPerformances.p3 * 100,
+                p4: adaptive.pillarPerformances.p4 * 100,
+              },
+              cohortWeights: adaptive.cohortWeights,
+              cohortProfileId: cohortProfile,
+              registryFirewallActive: adaptive.score < REGISTRY_FIREWALL_THRESHOLD_PERCENT,
+              scoreBand: resolveCompositeScoreBand(adaptive.score),
+            };
+          })()
+        : null;
+
+      setScoreResult({ ...result, composite });
 
       if (!masterTestOverride && result.composite?.registryFirewallActive) {
         setExamPhase('registryExposure');
@@ -1454,7 +1584,11 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   const handleRetry = useCallback(() => {
     clearExamPersistSession();
-    const freshSession = createInitialExamSessionState();
+    const freshSession = createInitialExamSessionState(urlTier);
+    if (!freshSession) {
+      navigate('/academy', { replace: true });
+      return;
+    }
     setShuffledExamMatrix(freshSession.shuffledExamMatrix);
     setCurrentScenarioIndex(freshSession.currentScenarioIndex);
     setUserChoices(freshSession.userChoices);
@@ -1472,7 +1606,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     setExamPhase('active');
     examStartedAtRef.current = freshSession.examStartedAt;
     screenEnteredAtRef.current = Date.now();
-  }, [masterTestOverride]);
+  }, [masterTestOverride, urlTier, navigate]);
 
   const handleLinkedInAchievementClaim = useCallback(async () => {
     try {
@@ -1541,6 +1675,10 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
       setRegistrySubmitting(false);
     }
   };
+
+  if (tierParamInvalid || sessionInitFailed) {
+    return <ExamPlayerRecoveryShell message={t('exam.player.navigationBlocked')} />;
+  }
 
   if (examPhase === 'registryExposure' && scoreResult) {
     return (

@@ -32,6 +32,8 @@ const MERCURY_WIRE_INTAKE_ROWS = [
     billing_status: 'INVOICE_PENDING',
     target_tier: 'TIER_A_GRANT',
     client_email: 'registrar@university.edu',
+    registry_tier: 'CLOSED_APPLICANT',
+    lead_source: 'A4_ALAM_PORTAL',
     invoice_specifications:
       'Voluntary Research Support Grant — 120 faculty cohort, Q3 2026 Article 4 deployment.',
   },
@@ -48,6 +50,8 @@ const MERCURY_WIRE_INTAKE_ROWS = [
     billing_status: 'PAID',
     target_tier: 'TIER_B_SPONSORSHIP',
     client_email: 'finance@institut-a4i.fr',
+    registry_tier: 'CLOSED_APPLICANT',
+    lead_source: 'A4_ALAM_PORTAL',
     invoice_specifications:
       'Infrastructure Node Sponsorship — sovereign SWIFT settlement, registrar analytics workspace.',
   },
@@ -64,6 +68,8 @@ const MERCURY_WIRE_INTAKE_ROWS = [
     billing_status: 'INVOICE_PENDING',
     target_tier: 'TIER_B_SPONSORSHIP',
     client_email: 'tesoreria@centro-academico.es',
+    registry_tier: 'CLOSED_APPLICANT',
+    lead_source: 'A4_ALAM_PORTAL',
     invoice_specifications:
       'Node Sponsorship wire — 50 pre-paid Level 01 tokens, WaqfLedger telemetry indexing.',
   },
@@ -324,6 +330,22 @@ const TELEMETRY_TABLE_STYLES = `
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.18);
 }
 
+.telemetry-table__badge--registry-applicant {
+  margin-inline-start: 0.35rem;
+  border: 1px solid rgba(201, 162, 39, 0.55);
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.22), rgba(15, 118, 110, 0.14));
+  color: #fef08a;
+  box-shadow: 0 0 10px rgba(201, 162, 39, 0.16);
+}
+
+.telemetry-table__email-cell {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
 .telemetry-table__empty {
   margin: 0;
   padding: 2rem 1rem;
@@ -504,6 +526,21 @@ const TELEMETRY_TABLE_STYLES = `
   color: #0f172a;
 }
 
+.mercury-invoice-print__registry-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.65rem;
+  margin-bottom: 0.65rem;
+  border: 2px solid #c9a227;
+  border-radius: 0.35rem;
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.14), rgba(15, 118, 110, 0.08));
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #92400e;
+}
+
 .mercury-invoice-print__coordinates {
   padding: 0.85rem;
   border: 1px solid #94a3b8;
@@ -602,6 +639,25 @@ function isPendingMercuryWireRow(row) {
   return isMercuryWireRow(row) && row?.billing_status === 'INVOICE_PENDING';
 }
 
+function isClosedRegistryApplicant(row) {
+  return row?.registry_tier === 'CLOSED_APPLICANT';
+}
+
+function resolveRegistryApplicantBadge(row, t) {
+  if (!isClosedRegistryApplicant(row)) {
+    return null;
+  }
+
+  return (
+    <span className="telemetry-table__badge telemetry-table__badge--registry-applicant">
+      {t(
+        'admin.board.research.table.badges.registryApplicant',
+        '🏛️ REGISTRY APPLICANT',
+      )}
+    </span>
+  );
+}
+
 function applyWireChannelFilter(rows, wireFilter) {
   if (wireFilter === WIRE_FILTER_AUTO) {
     return rows.filter((row) => !isMercuryWireRow(row));
@@ -650,6 +706,8 @@ function buildCsvFromRows(rows) {
     'billing_status',
     'target_tier',
     'client_email',
+    'registry_tier',
+    'lead_source',
   ];
 
   const lines = [headers.join(',')];
@@ -668,6 +726,8 @@ function buildCsvFromRows(rows) {
         row.billing_status ?? '',
         row.target_tier ?? '',
         row.client_email ?? '',
+        row.registry_tier ?? '',
+        row.lead_source ?? '',
       ]
         .map(escapeCsvValue)
         .join(','),
@@ -682,6 +742,7 @@ function MercuryInvoiceModal({ row, t, onClose }) {
 
   const tierMeta =
     TARGET_TIER_INVOICE[row.target_tier] ?? TARGET_TIER_INVOICE.TIER_A_GRANT;
+  const closedRegistryApplicant = isClosedRegistryApplicant(row);
 
   const handlePrint = () => {
     window.print();
@@ -740,11 +801,41 @@ function MercuryInvoiceModal({ row, t, onClose }) {
             <h3 className="mercury-invoice-print__section-title">
               {t('admin.board.research.table.invoice.billTo', 'Bill To')}
             </h3>
+            {closedRegistryApplicant ? (
+              <p className="mercury-invoice-print__registry-badge">
+                {t(
+                  'admin.board.research.table.invoice.registryApplicantStatus',
+                  '🏛️ REGISTRY APPLICANT — Closed Executive Registry',
+                )}
+              </p>
+            ) : null}
             <div className="mercury-invoice-print__grid">
               <span className="mercury-invoice-print__label">
                 {t('admin.board.research.table.invoice.clientEmail', 'Client Email')}
               </span>
               <span className="mercury-invoice-print__value">{row.client_email ?? '—'}</span>
+              {closedRegistryApplicant ? (
+                <>
+                  <span className="mercury-invoice-print__label">
+                    {t(
+                      'admin.board.research.table.invoice.registryTier',
+                      'Registry Tier',
+                    )}
+                  </span>
+                  <span className="mercury-invoice-print__value">
+                    {row.registry_tier}
+                  </span>
+                  <span className="mercury-invoice-print__label">
+                    {t(
+                      'admin.board.research.table.invoice.leadSource',
+                      'Lead Source',
+                    )}
+                  </span>
+                  <span className="mercury-invoice-print__value">
+                    {row.lead_source ?? '—'}
+                  </span>
+                </>
+              ) : null}
               <span className="mercury-invoice-print__label">
                 {t(
                   'admin.board.research.table.invoice.specifications',
@@ -974,6 +1065,7 @@ export default function TelemetryTable({ t, filteredRows, allRows }) {
                   const trackLabel = TRACK_LABELS[row.evaluationTrack] ?? row.evaluationTrack;
                   const pendingWire = isPendingMercuryWireRow(row);
                   const settlementBadge = resolveSettlementBadge(row, t);
+                  const registryBadge = resolveRegistryApplicantBadge(row, t);
 
                   return (
                     <tr
@@ -1002,7 +1094,10 @@ export default function TelemetryTable({ t, filteredRows, allRows }) {
                     >
                       <td className="telemetry-table__mono">{formatTableTimestamp(row.timestamp)}</td>
                       <td className="telemetry-table__mono">
-                        {row.client_email ?? row.maskedIdentifier}
+                        <span className="telemetry-table__email-cell">
+                          {row.client_email ?? row.maskedIdentifier}
+                          {registryBadge}
+                        </span>
                       </td>
                       <td className="telemetry-table__track-lang">
                         {trackLabel} · {row.language.toUpperCase()}

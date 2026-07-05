@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  /** Relative asset paths — required for static hosting (subfolders, CDN mirrors, Hostinger). */
-  base: './',
+  /** Absolute root — deep-linked routes (e.g. /academy/exam) must resolve /assets/* on hard refresh. */
+  base: '/',
   plugins: [react(), tailwindcss()],
   build: {
     target: 'es2020',
