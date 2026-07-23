@@ -15,6 +15,7 @@ const CorporateLegalView = lazy(() => import('./features/pages/CorporateLegalVie
 const TermsView = lazy(() => import('./features/pages/TermsView.jsx'));
 const PrivacyView = lazy(() => import('./features/pages/PrivacyView.jsx'));
 const AdminDashboardView = lazy(() => import('./features/pages/AdminDashboardView.jsx'));
+const ReadinessDashboard = lazy(() => import('./features/readiness/ReadinessDashboard.jsx'));
 
 function PublicShellRoute({ children }) {
   return <AppShell>{children}</AppShell>;
@@ -197,6 +198,14 @@ function AppRoutes() {
           element={
             <PublicShellRoute>
               <AdminDashboardView />
+            </PublicShellRoute>
+          }
+        />
+        <Route
+          path="/readiness"
+          element={
+            <PublicShellRoute>
+              <ReadinessDashboard />
             </PublicShellRoute>
           }
         />

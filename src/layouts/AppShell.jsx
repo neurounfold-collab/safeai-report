@@ -19,6 +19,7 @@ export function isIsolatedPortalRoute(pathname) {
 const NAV_ITEMS = [
   { path: '/', labelKey: 'nav.home', exact: true },
   { path: '/academy', labelKey: 'nav.academy' },
+  { path: '/readiness', labelKey: 'nav.readiness' },
   { path: '/industrial', labelKey: 'nav.industrial' },
   { path: '/verify', labelKey: 'nav.verify' },
 ];
@@ -274,6 +275,13 @@ body,
   font-size: 0.6875rem;
   line-height: 1.6;
   color: rgba(148, 163, 184, 0.75);
+}
+
+.app-shell-footer__powered-by {
+  margin: 0.65rem 0 0;
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  color: rgba(148, 163, 184, 0.85);
 }
 
 .app-shell-footer__registrar-link {
@@ -630,6 +638,7 @@ function InstitutionalFooter({ t }) {
           <p className="app-shell-footer__meta">{t('legalAnchors.registry.address')}</p>
           <p className="app-shell-footer__meta">{t('legalAnchors.registry.iceStatement')}</p>
           <p className="app-shell-footer__statement">{t('footer.compliance_statement')}</p>
+          <p className="app-shell-footer__powered-by">{t('footer.poweredBy')}</p>
           <Link to="/contact" className="app-shell-footer__registrar-link">
             {t('footer.registrarContact')}
           </Link>

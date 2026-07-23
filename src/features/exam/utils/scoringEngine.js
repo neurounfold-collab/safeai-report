@@ -38,7 +38,7 @@ export const COHORT_WEIGHT_PROFILES = {
   OEL: { w1: 0.4, w2: 0.1, w3: 0.4, w4: 0.1 }
 };
 
-/** Scenario id ranges for Alam Matrix pillars (FLA, RTRA, GOC, IVC). */
+/** Scenario id ranges for A4-ALAM pillars (P1–P4 / OIARF v2.0.0). */
 const PILLAR_SCENARIO_BLOCKS = {
   p1: { minId: 1, maxId: 10 },
   p2: { minId: 11, maxId: 20 },

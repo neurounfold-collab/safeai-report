@@ -29,7 +29,7 @@ const HOME_STYLES = `
 
 .home-view__inner {
   flex: 1 1 auto;
-  width: min(100%, 56rem);
+  width: min(100%, 60rem);
   margin: 0 auto;
   padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1rem, 3vw, 2rem);
   min-width: 0;
@@ -346,6 +346,80 @@ const HOME_STYLES = `
   color: rgba(148, 163, 184, 0.82);
 }
 
+.home-view__architecture {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+@media (min-width: 720px) {
+  .home-view__architecture {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+.home-view__architecture-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 1.15rem 1.2rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--home-border);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.home-view__architecture-card--application {
+  border-color: rgba(94, 234, 212, 0.28);
+  box-shadow: inset 0 1px 0 rgba(94, 234, 212, 0.1);
+  border-inline-start: 3px solid var(--home-accent-teal);
+}
+
+.home-view__architecture-card--integrity {
+  border-color: rgba(201, 162, 39, 0.3);
+  box-shadow: inset 0 1px 0 rgba(201, 162, 39, 0.12);
+  border-inline-start: 3px solid var(--home-accent);
+}
+
+.home-view__architecture-eyebrow {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--home-muted);
+}
+
+.home-view__architecture-card--application .home-view__architecture-eyebrow {
+  color: rgba(94, 234, 212, 0.92);
+}
+
+.home-view__architecture-card--integrity .home-view__architecture-eyebrow {
+  color: rgba(226, 198, 109, 0.95);
+}
+
+.home-view__architecture-title {
+  margin: 0;
+  font-size: clamp(0.9375rem, 1.8vw, 1.0625rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.45;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: var(--home-text);
+}
+
+.home-view__architecture-details {
+  margin: 0;
+  font-size: clamp(0.8125rem, 1.5vw, 0.875rem);
+  line-height: 1.65;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: var(--home-muted);
+}
+
 .home-view__framework {
   display: flex;
   flex-direction: column;
@@ -603,6 +677,31 @@ export default function HomeView({ language: languageProp }) {
               {t('landing.waqfLedgerBadge')}
             </p>
           </div>
+
+          <section
+            className="home-view__architecture"
+            aria-label={t('landing.hero.architecture.ariaLabel')}
+          >
+            <article className="home-view__architecture-card home-view__architecture-card--application">
+              <p className="home-view__architecture-eyebrow">01</p>
+              <h2 className="home-view__architecture-title break-words leading-[1.45]">
+                {t('landing.hero.architecture.applicationTitle')}
+              </h2>
+              <p className="home-view__architecture-details break-words leading-[1.65]">
+                {t('landing.hero.architecture.applicationDetails')}
+              </p>
+            </article>
+
+            <article className="home-view__architecture-card home-view__architecture-card--integrity">
+              <p className="home-view__architecture-eyebrow">02</p>
+              <h2 className="home-view__architecture-title break-words leading-[1.45]">
+                {t('landing.hero.architecture.integrityTitle')}
+              </h2>
+              <p className="home-view__architecture-details break-words leading-[1.65]">
+                {t('landing.hero.architecture.integrityDetails')}
+              </p>
+            </article>
+          </section>
 
           <section
             className="home-view__framework"

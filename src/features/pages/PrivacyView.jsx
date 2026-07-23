@@ -186,7 +186,7 @@ function usePrivacyTranslator(languageProp) {
 }
 
 /**
- * Advanced data minimization and cryptographic sovereignty privacy disclosures.
+ * Zero-data-retention and cryptographic integrity privacy disclosures.
  */
 export default function PrivacyView({ language: languageProp }) {
   const { t, language } = usePrivacyTranslator(languageProp);

@@ -37,13 +37,45 @@ function usePageTranslator(languageProp) {
   return createTranslator(language);
 }
 
+/** A4-ALAM evaluation pillars — aligned to OIARF v2.0.0 / scoring-engine matrix. */
+const A4_ALAM_PILLARS = Object.freeze([
+  {
+    id: 'P1',
+    title: 'Structural AI Competency & System Capabilities',
+    focus: 'Understanding AI system behaviors, limits, and capability boundaries',
+    scenarioScope:
+      'Governs Level 01 scenarios 1–10 with structural weights wᵢ ∈ [1.0, 1.4].',
+  },
+  {
+    id: 'P2',
+    title: 'Risk Recognition & Transparency Mandates',
+    focus: 'Identifying deployment risks and fulfilling disclosure obligations',
+    scenarioScope:
+      'Governs Level 02 scenarios 11–20 with structural weights wᵢ ∈ [1.6, 2.1]. Evaluated through the Case-Based Dilemma Vector (CBDV) methodology (see §5).',
+  },
+  {
+    id: 'P3',
+    title: 'Human Oversight & Operational Boundaries',
+    focus: 'Intervention authority, escalation, and safe operating envelopes',
+    scenarioScope:
+      'Governs Level 03 scenarios 21–29 with structural weights wᵢ ∈ [2.5, 2.9].',
+  },
+  {
+    id: 'P4',
+    title: 'Accountability & Ethical Governance',
+    focus: 'Role-linked responsibility, ethical decision frames, and duty of care',
+    scenarioScope:
+      'Terminal credential finalization, immutable logging, and authorized institutional partner batch reconciliation. Anchored by Scenario 30 (w₃₀ = 3.0) and the WaqfLedger Open-Access Consortium Engine SHA-256 state hash protocol.',
+  },
+]);
+
 const STRUCTURAL_MATRIX_ROWS = [
   {
     role: 'Front-Line Deployer / Operator',
     tier: 'Level 01',
     scenarioBlock: '1–10',
     weightRange: 'wᵢ ∈ [1.0, 1.4]',
-    pillar: 'Pillar 1 — FLA',
+    pillar: 'P1 — Structural AI Competency & System Capabilities',
     focus: EXAM_TIER_BOUNDARIES['Level 01'].focus,
   },
   {
@@ -51,7 +83,7 @@ const STRUCTURAL_MATRIX_ROWS = [
     tier: 'Level 02',
     scenarioBlock: '11–20',
     weightRange: 'wᵢ ∈ [1.6, 2.1]',
-    pillar: 'Pillar 2 — RTRA',
+    pillar: 'P2 — Risk Recognition & Transparency Mandates',
     focus: EXAM_TIER_BOUNDARIES['Level 02'].focus,
   },
   {
@@ -59,7 +91,7 @@ const STRUCTURAL_MATRIX_ROWS = [
     tier: 'Level 03',
     scenarioBlock: '21–30',
     weightRange: 'wᵢ ∈ [2.5, 3.0]',
-    pillar: 'Pillar 3 — GOC',
+    pillar: 'P3 — Human Oversight & Operational Boundaries',
     focus: EXAM_TIER_BOUNDARIES['Level 03'].focus,
   },
   {
@@ -67,12 +99,12 @@ const STRUCTURAL_MATRIX_ROWS = [
     tier: 'Level 03 + Ledger Seal',
     scenarioBlock: '21–30 (batch reconciliation)',
     weightRange: 'w₃₀ = 3.0 (terminal anchor)',
-    pillar: 'Pillar 4 — IVC',
-    focus: 'Immutable credential finalization, WaqfLedger.tech SHA-256 state anchoring',
+    pillar: 'P4 — Accountability & Ethical Governance',
+    focus: 'Immutable credential finalization, WaqfLedger Open-Access Consortium Engine SHA-256 state anchoring',
   },
 ];
 
-const RTRA_SCENARIO_TYPOLOGIES = [
+const P2_SCENARIO_TYPOLOGIES = [
   { code: 'T-PR', label: 'Procurement Risk', scenarios: '11' },
   { code: 'T-VD', label: 'Vendor Due Diligence', scenarios: '12' },
   { code: 'T-MD', label: 'Model Disclosure', scenarios: '13' },
@@ -87,7 +119,7 @@ const RTRA_SCENARIO_TYPOLOGIES = [
 
 /**
  * Authoritative research asset — Global AI Literacy Assessment Matrix (Alam Matrix).
- * Houses the complete technical architecture of the Cisco-grade 30-scenario instrument.
+ * Houses the complete technical architecture of the Cisco-grade 30-scenario A4-ALAM instrument (OIARF v2.0.0).
  */
 export default function AlamMatrixBrief({ language: languageProp }) {
   const { t, language } = usePageTranslator(languageProp);
@@ -115,10 +147,10 @@ export default function AlamMatrixBrief({ language: languageProp }) {
             Global AI Literacy Assessment Matrix
           </h1>
           <p className="m-0 text-sm font-semibold uppercase tracking-wide text-teal-300/90">
-            Alam Matrix Brief — Instrument Architecture v1.0.0
+            Alam Matrix Brief — A4-ALAM Instrument Architecture · OIARF v2.0.0
           </p>
           <p className="m-0 min-w-0 break-words text-sm leading-[1.75] text-slate-400">
-            {branding.standardName} · {infrastructure.targetFramework} ·{' '}
+            {branding.name} · A4-ALAM · {infrastructure.targetFramework} ·{' '}
             {EXAM_SCENARIO_COUNT} scenarios · {INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT}% institutional
             certification threshold · {infrastructure.ledgerHost}
           </p>
@@ -134,21 +166,22 @@ export default function AlamMatrixBrief({ language: languageProp }) {
               The Global AI Literacy Assessment Matrix — codified internally as the{' '}
               <strong className="font-semibold text-slate-100">Alam Matrix</strong> — is the
               authoritative psychometric and governance architecture underpinning the{' '}
-              {branding.name} certification platform. Administered under the academic authority of{' '}
+              {branding.name} A4-ALAM certification runtime. Administered under the academic authority of{' '}
               {branding.authority} and {legalAnchors.academicInstitution}, the instrument operationalizes
               deployer literacy verification mandated under {infrastructure.targetFramework} through a
-              Cisco-grade, {EXAM_SCENARIO_COUNT}-scenario Case-Based Dilemma Vector (CBDV) runtime.
+              Cisco-grade, {EXAM_SCENARIO_COUNT}-scenario Case-Based Dilemma Vector (CBDV) runtime aligned to
+              the Open Institutional AI Readiness Framework (OIARF) v2.0.0.
             </p>
             <p className="m-0 break-words">
               The matrix is structurally invariant across trilingual delivery surfaces (English, French,
               Spanish) and enforces a role-adaptive evaluation topology: front-line operators, executive
               procurement officers, compliance auditors, and authorized institutional partners each encounter
               scenario blocks calibrated to their statutory intervention boundaries. Weighted compliance
-              scoring aggregates per-scenario structural weights; certification is granted only when the
-              weighted percentage meets or exceeds the institutional threshold τ<sub>inst</sub> ={' '}
-              {INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT}%. Successful credentials are immutably
-              attested via {infrastructure.encryptionProtocol} on the{' '}
-              {infrastructure.protocol} at {infrastructure.ledgerHost}.
+              scoring aggregates per-scenario structural weights across the four A4-ALAM pillars; certification
+              is granted only when the weighted percentage meets or exceeds the institutional threshold τ
+              <sub>inst</sub> = {INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT}%. Successful credentials are
+              immutably attested via {infrastructure.encryptionProtocol} through the WaqfLedger Open-Access
+              Consortium Engine at {infrastructure.ledgerHost}.
             </p>
           </div>
         </section>
@@ -156,50 +189,22 @@ export default function AlamMatrixBrief({ language: languageProp }) {
         {/* Four Evaluation Pillars */}
         <section className="min-w-0 rounded-xl border border-slate-800/80 bg-slate-900/40 p-5 sm:p-6">
           <h2 className="m-0 mb-4 text-xs font-bold uppercase tracking-[0.1em] text-teal-400">
-            Four Evaluation Pillars
+            Four A4-ALAM Evaluation Pillars
           </h2>
           <ol className="m-0 flex list-none flex-col gap-4 p-0">
-            <li className="min-w-0 rounded-lg border border-slate-800 bg-slate-950/60 p-4">
-              <h3 className="m-0 mb-2 text-sm font-bold text-slate-100">
-                Pillar 1 — Fundamental Literacy Assessment (FLA)
-              </h3>
-              <p className="m-0 break-words text-sm leading-[1.75] text-slate-400">
-                Baseline deployer competency spanning transparency disclosure, human oversight intervention,
-                data privacy handling, output verification, and everyday risk recognition. Governs Level 01
-                scenarios 1–10 with structural weights wᵢ ∈ [1.0, 1.4].
-              </p>
-            </li>
-            <li className="min-w-0 rounded-lg border border-slate-800 bg-slate-950/60 p-4">
-              <h3 className="m-0 mb-2 text-sm font-bold text-slate-100">
-                Pillar 2 — Role-Tier Risk Architecture (RTRA)
-              </h3>
-              <p className="m-0 break-words text-sm leading-[1.75] text-slate-400">
-                Executive-grade procurement oversight, vendor due diligence, red-teaming exposure, and
-                institutional liability attribution. Governs Level 02 scenarios 11–20 with structural weights
-                wᵢ ∈ [1.6, 2.1]. Evaluated exclusively through the Case-Based Dilemma Vector (CBDV)
-                methodology (see §5).
-              </p>
-            </li>
-            <li className="min-w-0 rounded-lg border border-slate-800 bg-slate-950/60 p-4">
-              <h3 className="m-0 mb-2 text-sm font-bold text-slate-100">
-                Pillar 3 — Governance Oversight Compliance (GOC)
-              </h3>
-              <p className="m-0 break-words text-sm leading-[1.75] text-slate-400">
-                High-risk system deployment auditing, human-in-the-loop verification workflows, conformity
-                assessment, post-market monitoring, and cross-border transfer governance. Governs Level 03
-                scenarios 21–29 with structural weights wᵢ ∈ [2.5, 2.9].
-              </p>
-            </li>
-            <li className="min-w-0 rounded-lg border border-slate-800 bg-slate-950/60 p-4">
-              <h3 className="m-0 mb-2 text-sm font-bold text-slate-100">
-                Pillar 4 — Institutional Verification Credentialing (IVC)
-              </h3>
-              <p className="m-0 break-words text-sm leading-[1.75] text-slate-400">
-                Terminal credential finalization, immutable logging, sovereign governance ledger anchoring,
-                and authorized institutional partner batch reconciliation. Anchored by Scenario 30 (w₃₀ = 3.0)
-                and the WaqfLedger.tech SHA-256 state hash protocol.
-              </p>
-            </li>
+            {A4_ALAM_PILLARS.map((pillar) => (
+              <li
+                key={pillar.id}
+                className="min-w-0 rounded-lg border border-slate-800 bg-slate-950/60 p-4"
+              >
+                <h3 className="m-0 mb-2 text-sm font-bold text-slate-100">
+                  {pillar.id} — {pillar.title}
+                </h3>
+                <p className="m-0 break-words text-sm leading-[1.75] text-slate-400">
+                  {pillar.focus}. {pillar.scenarioScope}
+                </p>
+              </li>
+            ))}
           </ol>
         </section>
 
@@ -290,7 +295,7 @@ export default function AlamMatrixBrief({ language: languageProp }) {
           </p>
         </section>
 
-        {/* CBDV Methodology & RTRA Scenario Typologies */}
+        {/* CBDV Methodology & P2 Scenario Typologies */}
         <section className="min-w-0 rounded-xl border border-slate-800/80 bg-slate-900/40 p-5 sm:p-6">
           <h2 className="m-0 mb-4 text-xs font-bold uppercase tracking-[0.1em] text-teal-400">
             Case-Based Dilemma Vector (CBDV) Methodology
@@ -314,11 +319,11 @@ export default function AlamMatrixBrief({ language: languageProp }) {
           </div>
 
           <h3 className="m-0 mb-3 text-sm font-bold text-slate-100">
-            Pillar 2 (RTRA) — Scenario Typologies
+            P2 — Risk Recognition & Transparency Mandates · Scenario Typologies
           </h3>
           <p className="m-0 mb-4 break-words text-sm leading-[1.75] text-slate-400">
-            The following typology registry defines the ten RTRA scenario classes governing Level 02
-            executive and procurement governance evaluation.
+            The following typology registry defines the ten P2 scenario classes governing Level 02
+            executive and procurement governance evaluation under Risk Recognition & Transparency Mandates.
           </p>
           <div className="overflow-x-auto whitespace-nowrap lg:whitespace-normal">
             <table className="w-full min-w-[480px] border-collapse text-left text-xs leading-[1.6] text-slate-300">
@@ -330,7 +335,7 @@ export default function AlamMatrixBrief({ language: languageProp }) {
                 </tr>
               </thead>
               <tbody>
-                {RTRA_SCENARIO_TYPOLOGIES.map((typology) => (
+                {P2_SCENARIO_TYPOLOGIES.map((typology) => (
                   <tr key={typology.code} className="border-b border-slate-800/80 hover:bg-slate-950/40">
                     <td className="px-3 py-3 font-mono font-medium text-teal-300">{typology.code}</td>
                     <td className="px-3 py-3 text-slate-100">{typology.label}</td>
@@ -347,7 +352,8 @@ export default function AlamMatrixBrief({ language: languageProp }) {
             {legalAnchors.academicInstitution} · {branding.authority} · {legalAnchors.processingEntity}
           </p>
           <p className="m-0 mt-2 break-words">
-            {infrastructure.protocol} · {infrastructure.ledgerHost} · Instrument ID: EU-AI-ACT-A4-30-SCENARIO
+            WaqfLedger Open-Access Consortium Engine · {infrastructure.ledgerHost} · Instrument ID:
+            EU-AI-ACT-A4-ALAM-OIARF-2.0.0
           </p>
         </footer>
       </div>

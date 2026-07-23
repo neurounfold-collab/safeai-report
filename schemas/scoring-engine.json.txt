@@ -1,22 +1,64 @@
-{
+﻿{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "A4ALAMMatrixConfiguration",
-  "description": "Immutable, role-adaptive weight allocations under the Global AI Literacy Assessment Matrix framework.",
-  "version": "1.0.0",
+  "description": "Role-adaptive A4-ALAM scoring configuration: a quantitatively structured Multi-Criteria Decision Analysis (MCDA) model using role-specific weight allocations. Role-specific weights were initially derived through expert judgment and are intended to be empirically refined using continuous institutional validation datasets. Certification and B2B institutional license events are attested through a privacy-preserving, tamper-evident cryptographic integrity layer powered by the WaqfLedger Open-Access Consortium Engine.",
+  "version": "2.0.0-OIARF",
+  "framework": "Open Institutional AI Readiness Framework (OIARF)",
+  "scoringModel": "quantitatively structured Multi-Criteria Decision Analysis (MCDA) model using role-specific weight allocations.",
+  "validationStatement": "Role-specific weights were initially derived through expert judgment and are intended to be empirically refined using continuous institutional validation datasets.",
+  "cryptographicIntegrityLayer": "a privacy-preserving, tamper-evident cryptographic integrity layer powered by the WaqfLedger Open-Access Consortium Engine.",
   "enforcement_cliff": "2026-08-02",
   "compliance_pass_threshold_percent": 85.0,
+  "pillars": {
+    "p1_structural_ai_competency": {
+      "id": "P1",
+      "title": "Structural AI Competency & System Capabilities",
+      "competenceFocus": "Understanding AI system behaviors, limits, and capability boundaries"
+    },
+    "p2_risk_recognition_transparency": {
+      "id": "P2",
+      "title": "Risk Recognition & Transparency Mandates",
+      "competenceFocus": "Identifying deployment risks and fulfilling disclosure obligations"
+    },
+    "p3_human_oversight_boundaries": {
+      "id": "P3",
+      "title": "Human Oversight & Operational Boundaries",
+      "competenceFocus": "Intervention authority, escalation, and safe operating envelopes"
+    },
+    "p4_accountability_ethical_governance": {
+      "id": "P4",
+      "title": "Accountability & Ethical Governance",
+      "competenceFocus": "Role-linked responsibility, ethical decision frames, and duty of care"
+    }
+  },
+  "scopeNote": "Compute cost, tokenization overhead, and related infrastructure efficiency indicators belong under Dimension 8 (Operational Readiness)—not under P1–P4.",
   "cohort_profiles": {
     "ExL": {
       "name": "Executive Layer",
-      "weights": { "p1_human_in_the_loop": 0.20, "p2_transparency": 0.40, "p3_incident_response": 0.10, "p4_compute_efficiency": 0.30 }
+      "weights": {
+        "p1_structural_ai_competency": 0.20,
+        "p2_risk_recognition_transparency": 0.40,
+        "p3_human_oversight_boundaries": 0.10,
+        "p4_accountability_ethical_governance": 0.30
+      }
     },
     "CLL": {
       "name": "Compliance & Legal Layer",
-      "weights": { "p1_human_in_the_loop": 0.25, "p2_transparency": 0.35, "p3_incident_response": 0.30, "p4_compute_efficiency": 0.10 }
+      "weights": {
+        "p1_structural_ai_competency": 0.25,
+        "p2_risk_recognition_transparency": 0.35,
+        "p3_human_oversight_boundaries": 0.30,
+        "p4_accountability_ethical_governance": 0.10
+      }
     },
     "OEL": {
       "name": "Operational & Engineering Layer",
-      "weights": { "p1_human_in_the_loop": 0.35, "p2_transparency": 0.15, "p3_incident_response": 0.20, "p4_compute_efficiency": 0.30 }
+      "weights": {
+        "p1_structural_ai_competency": 0.35,
+        "p2_risk_recognition_transparency": 0.15,
+        "p3_human_oversight_boundaries": 0.20,
+        "p4_accountability_ethical_governance": 0.30
+      }
     }
   }
 }

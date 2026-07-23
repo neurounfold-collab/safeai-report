@@ -84,8 +84,9 @@
     "verify": "Registre souverain de provenance et passerelle de vérification",
     "contact": "Nous contacter",
     "help": "Aide et support",
-    "privacy": "Politique de confidentialité et souveraineté des données du registre",
-    "terms": "Conditions d'utilisation"
+    "privacy": "Politique de confidentialité et déclaration de lignée des données",
+    "terms": "Conditions d'utilisation",
+    "readiness": "Maturité institutionnelle OIARF — safeAI.report"
   },
   "nav": {
     "home": "Accueil",
@@ -94,7 +95,8 @@
     "verify": "Vérifier",
     "contact": "Contact",
     "help": "Aide",
-    "support": "Support"
+    "support": "Support",
+    "readiness": "Maturité"
   },
   "hero": {
     "headline": "Certification standard TOEFL de littératie IA",
@@ -113,8 +115,8 @@
       "description": "Hachage cryptographique de blocs AES-256 avec journalisation immuable sur WaqfLedger.tech."
     },
     "governance": {
-      "title": "Registre souverain de gouvernance",
-      "description": "Protocol de registre souverain de gouvernance algorithmique pour la préparation aux audits institutionnels."
+      "title": "Ancrage de télémétrie de conformité",
+      "description": "Ancrez votre télémétrie de conformité. Générez un reçu de vérification inviolable correspondant à votre score d'évaluation non arrondi. Votre ligne de base est verrouillée de façon cryptographique dans un registre open science d'utilité publique, garantissant une intégrité d'audit complète sans exposition des données."
     }
   },
   "footer": {
@@ -122,18 +124,26 @@
     "support": "Support",
     "contact": "Nous contacter",
     "registrarContact": "Contacter le Bureau du Registraire",
-    "compliance_statement": "Développé sous l'autorité académique du Professeur Adel El Bouzagaoui. Traitement par Global Capital Intelligence LLC."
+    "compliance_statement": "Développé sous l'autorité académique du Professeur Adel El Bouzagaoui. Traitement par Global Capital Intelligence LLC.",
+    "poweredBy": "Propulsé par le moteur du Consortium WaqfLedger Open-Access — Un registre de confiance permanent d'utilité publique dédié au maintien de l'intégrité cryptographique des dossiers mondiaux de conformité à l'IA."
   },
   "landing": {
     "hero": {
       "citationLead": "L'article 4 de la loi européenne sur l'IA impose aux déployeurs de garantir la littératie IA et la vérification de la supervision humaine du personnel opérant des systèmes IA à haut risque. safeAI.report opère la norme TOEFL AI Literacy — 30 scénarios diagnostiques, 3 filières de gouvernance, seuil de réussite 85 %, journalisation SHA-256 via WaqfLedger.tech — sous L'INSTITUT ARTICLE 4 (A4I). Application statutaire : août 2026.",
-      "headline": "Le report 2027 des systèmes à haut risque est un angle mort. L'application de l'article 4 commence en août 2026.",
-      "subheadline": "Le récent paquet Digital Omnibus de l'Union européenne a reporté les obligations des systèmes IA à haut risque, mais l'article 4 (littératie IA) demeure une exigence réglementaire immédiate. Votre couche de risque humain est-elle quantifiée ?",
+      "headline": "Auditez le risque IA institutionnel. Ancrez vos preuves de conformité.",
+      "subheadline": "Déployez le Open Institutional AI Readiness Framework (OIARF) pour réaliser des évaluations de maturité fondées sur des preuves à travers votre campus. Évaluez la littératie de la main-d'œuvre, la lignée des données et les contrôles de gouvernance via un pipeline à rétention zéro de données sécurisé par une vérification cryptographique inviolable.",
       "universalOpenAccess": "Niveau open access : 3 filières diagnostiques (Niveau 01–03), 30 scénarios par examen, 0 USD de frais d'évaluation publics.",
       "diagnosticDashboardCta": "Lancer le diagnostic institutionnel gratuit (matrice A4-ALAM) ➔",
-      "executiveBriefingCta": "Demander un briefing exécutif à huis clos (registre d'accès) ➔"
+      "executiveBriefingCta": "Demander un briefing exécutif à huis clos (registre d'accès) ➔",
+      "architecture": {
+        "ariaLabel": "Architecture unifiée à deux couches",
+        "applicationTitle": "La couche applicative (SafeAI.report)",
+        "applicationDetails": "Évalue la maturité organisationnelle selon 8 dimensions stratégiques. Cartographie les preuves selon les alignements de contrôles réglementaires mondiaux (EU AI Act et NIST AI RMF).",
+        "integrityTitle": "La couche d'intégrité (moteur WaqfLedger)",
+        "integrityDetails": "Ancrez votre télémétrie de conformité. Générez un reçu de vérification inviolable correspondant à votre score d'évaluation non arrondi. Votre ligne de base est verrouillée de façon cryptographique dans un registre open science d'utilité publique, garantissant une intégrité d'audit complète sans exposition des données."
+      }
     },
-    "waqfLedgerBadge": "Protocole de credential : hachage AES-256 · validation d'état SHA-256 · nœuds registre WaqfLedger.tech",
+    "waqfLedgerBadge": "Propulsé par le moteur du Consortium WaqfLedger Open-Access — Un registre de confiance permanent d'utilité publique dédié au maintien de l'intégrité cryptographique des dossiers mondiaux de conformité à l'IA.",
     "framework": {
       "title": "Domaines métriques de supervision humaine Article 4",
       "description": "Compétences mesurées : limites d'intervention opérateur, conformité de divulgation de transparence, diligence raisonnable en achats, workflows d'audit à haut risque."
@@ -801,7 +811,7 @@
         "title": "Matrice de soutien à la recherche institutionnelle et de contribution aux nœuds",
         "introduction": "La participation est structurée strictement comme une contribution volontaire pour soutenir la recherche open access mondiale, subventionner la bande passante cloud et compenser la charge continue de compilation de données doctorales — explicitement PAS comme une licence logicielle commerciale. Deux parcours gradués soutiennent le déploiement mondial du protocole : la subvention volontaire de soutien à la recherche (1 500 $ USD / an) compense les coûts de calcul du cadre de test fondamental, tandis que le parrainage de nœud d'infrastructure (3 500 $ USD / an) sponsorise les nœuds WaqfLedger, la télémétrie registraire et les cadres de syllabus Article 4.",
         "recommendedBadge": "Recommandé",
-        "waqfLedgerFootnote": "Si chaque niveau d'évaluation reste un bien public open access universel, les pistes de validation permanentes, l'audit d'état inviolable et l'indexation de vérification des certificats sont nativement alimentés et sécurisés via le réseau d'infrastructure mondial {ledgerHost}.",
+        "waqfLedgerFootnote": "Propulsé par le moteur du Consortium WaqfLedger Open-Access — Un registre de confiance permanent d'utilité publique dédié au maintien de l'intégrité cryptographique des dossiers mondiaux de conformité à l'IA. Hôte opérationnel du registre : {ledgerHost}.",
         "tiers": {
           "ledgerNote": "L'accès à l'évaluation est gratuit ; les pistes de validation permanentes et l'indexation de vérification sur {ledgerHost} sécurisent chaque attestation.",
           "contributor": {
@@ -846,8 +856,8 @@
       "pillars": {
         "title": "Trois piliers de la valeur de recherche institutionnelle",
         "security": {
-          "title": "Architecture de sécurité anti-fraude intégrale",
-          "description": "Scellez de façon permanente les métriques d'examen via hachage d'état SHA-256 sur {ledgerHost}. Établissez une piste de vérification inaltérable qui neutralise l'inflation des certificats et la fraude documentaire."
+          "title": "Ancrage de télémétrie de conformité",
+          "description": "Ancrez votre télémétrie de conformité. Générez un reçu de vérification inviolable correspondant à votre score d'évaluation non arrondi. Votre ligne de base est verrouillée de façon cryptographique dans un registre open science d'utilité publique, garantissant une intégrité d'audit complète sans exposition des données."
         },
         "curriculum": {
           "title": "Intégration curriculaire clé en main",
@@ -963,11 +973,11 @@
       "section4Body": "Le suivi de conformité, l'indexation de provenance des credentials et l'ancrage cryptographique d'état sur WaqfLedger.tech fonctionnent sur une base de meilleur effort à des fins de recherche et d'évaluation comparative statutaire. safeAI.report, Global Capital Intelligence LLC et L'INSTITUT ARTICLE 4 (A4I) fournissent le runtime d'évaluation et l'infrastructure de vérification sans garantie concernant l'adjudication réglementaire, les décisions d'emploi ou les conclusions d'audit institutionnel. La responsabilité statutaire ultime en matière de supervision du déploiement de l'IA, de gouvernance humaine dans la boucle et d'exécution de la conformité à l'article 4 demeure auprès de l'entité déployante — qu'il s'agisse d'un candidat individuel, d'une cohorte universitaire ou d'un registraire institutionnel."
     },
     "privacy": {
-      "eyebrow": "Cadre de souveraineté cryptographique des données",
-      "title": "Politique de confidentialité et souveraineté des données du registre",
-      "subtitle": "Normes avancées de minimisation des données et de souveraineté cryptographique régissant l'intégrité des enregistrements, la provenance permanente inviolable et la télémétrie académique au sein de l'écosystème safeAI.report.",
-      "section1Title": "1. Principe de minimisation des données",
-      "section1Body": "Le système d'évaluation safeAI.report est conçu selon une doctrine stricte de minimisation des données, alignée sur les principes de limitation des finalités du RGPD. La plateforme évite délibérément la collecte de métriques personnelles invasives, de profils publicitaires comportementaux, d'identifiants biométriques ou d'intégrations avec des courtiers de données tiers. Pour initialiser un état de validation de certification, le runtime ne demande qu'une adresse e-mail institutionnelle ou candidat autorisée et un nom d'affichage optionnel — rien de plus n'est requis pour exécuter la session diagnostique open access. La télémétrie au niveau des réponses est traitée sous forme agrégée anonymisée avant toute couche de persistance.",
+      "eyebrow": "Architecture préservant la vie privée et rétention zéro des données",
+      "title": "Politique de confidentialité et déclaration de lignée des données",
+      "subtitle": "Spécification audit-ready de rétention zéro des données régissant le traitement diagnostique en mémoire, le hachage SHA-256 des sous-scores de validation et l'intégrité cryptographique au sein de l'écosystème safeAI.report.",
+      "section1Title": "1. Architecture préservant la vie privée et rétention zéro des données",
+      "section1Body": "SafeAI.report fonctionne selon un modèle d'empreinte de données nulle. Vos réponses diagnostiques spécifiques sont traitées purement en mémoire sur des nœuds de livraison edge locaux et sont immédiatement détruites à la fin de la session. La plateforme ne capture, ne stocke ni ne transmet jamais de données institutionnelles propriétaires. Seul le vecteur numérique de sous-scores résultant est compilé en un hachage cryptographique SHA-256 localisé pour le suivi de validation.",
       "section2Title": "2. Protocole de hachage WaqfLedger",
       "section2Body": "Lorsqu'un seuil de performance réussie est atteint (≥85 %), la plateforme génère un hash d'état cryptographique SHA-256 de 64 caractères encapsulant les marqueurs d'intégrité d'examen, les vecteurs d'horodatage et les identifiants de registre. Ce hash est instantanément transmis sous forme de promesse void non bloquante en arrière-plan vers le point d'API du registre souverain waqfledger-api.vercel.app via POST chiffré TLS vers /api/v1/ledger/log-compliance, ancrant de manière immuable l'événement de certification sur WaqfLedger.tech sans interrompre l'expérience du candidat.",
       "section3Title": "3. Souveraineté immuable des données du registre",
@@ -994,7 +1004,7 @@
     },
     "overview": {
       "title": "Poste de contrôle institutionnel",
-      "subtitle": "Supervision en temps réel des jetons d'examen prépayés, des certifications actives Article 4 et des événements d'audit WaqfLedger.tech pour votre licence de centre académique autorisé.",
+      "subtitle": "Ancrez votre télémétrie de conformité. Générez un reçu de vérification inviolable correspondant à votre score d'évaluation non arrondi. Votre ligne de base est verrouillée de façon cryptographique dans un registre open science d'utilité publique, garantissant une intégrité d'audit complète sans exposition des données.",
       "tokens": {
         "title": "Jetons d'examen prépayés",
         "baseline": "Référence de licence",
@@ -1205,6 +1215,83 @@
         "statusPassed": "Réussi",
         "statusFailed": "Échoué",
         "empty": "Aucune soumission de hash de vérification enregistrée dans la fenêtre d'audit actuelle."
+      }
+    }
+  },
+  "readiness": {
+    "title": "Évaluation de maturité institutionnelle OIARF",
+    "subtitle": "Diagnostic MCDA à huit dimensions pour la maturité de supervision humaine au titre de l’article 4. Les réponses restent locales ; l’indice anonyme peut être scellé pour journalisation sur WaqfLedger.tech.",
+    "loading": "Chargement de l’évaluation de maturité…",
+    "progress": "Dimension {{current}} sur {{total}}",
+    "progressPlain": "{{current}} / {{total}}",
+    "sectorLabel": "Secteur institutionnel (facultatif)",
+    "sectorPlaceholder": "Sélectionner un secteur",
+    "sectorNone": "Non précisé",
+    "previous": "Précédent",
+    "next": "Dimension suivante",
+    "completeDimension": "Répondre à toutes les questions pour continuer",
+    "incompleteHint": "Sélectionnez un niveau de maturité pour chaque question avant de poursuivre.",
+    "finish": "Sceller l’indice de maturité",
+    "restart": "Recommencer l’évaluation",
+    "resultsTitle": "Indice de maturité institutionnelle",
+    "resultsSubtitle": "Composite MCDA pondéré sur huit dimensions OIARF. Les scores D_d sont normalisés sur [0, 1] ; l’indice global est Σ (W_d × D_d).",
+    "overallIndex": "Indice global de maturité",
+    "dimensionScores": "Scores par dimension",
+    "stateHash": "Sceau d’état SHA-256",
+    "sectorTag": "Étiquette de secteur",
+    "hashPending": "Calcul du hash d’état anonyme…",
+    "hashError": "Impossible de calculer le sceau SHA-256 dans cet environnement navigateur.",
+    "errorTitle": "Évaluation de maturité interrompue",
+    "errorBody": "Une erreur inattendue s’est produite lors de l’affichage du tableau de bord OIARF. Vos réponses locales peuvent encore être récupérables.",
+    "errorRetry": "Réessayer",
+    "ledgerCaption": "La télémétrie anonyme scellée est conçue pour une journalisation cryptographique via {{host}}.",
+    "likert": {
+      "1": "Non établi",
+      "2": "Initial / ad hoc",
+      "3": "Défini",
+      "4": "Maîtrisé",
+      "5": "Optimisé"
+    },
+    "sectors": {
+      "higherEducation": "Enseignement supérieur",
+      "healthcare": "Santé",
+      "publicSector": "Secteur public",
+      "financialServices": "Services financiers",
+      "industrial": "Industrie / infrastructures critiques",
+      "other": "Autre"
+    },
+    "dimensions": {
+      "leadership": {
+        "name": "Leadership",
+        "focus": "Sponsorship exécutif, charte stratégique et redevabilité visible du conseil pour la supervision de l’IA."
+      },
+      "governance": {
+        "name": "Gouvernance",
+        "focus": "Politiques, droits de décision, portes d’approbation et pouvoir de suspendre ou révoquer les déploiements."
+      },
+      "aiLiteracy": {
+        "name": "Littératie IA",
+        "focus": "Limites de capacité article 4, obligations de transparence et supervision humaine pratiquée (P1–P4)."
+      },
+      "technology": {
+        "name": "Technologie",
+        "focus": "Inventaire, gestion du changement, supervision et points d’intervention humain-dans-la-boucle."
+      },
+      "dataReadiness": {
+        "name": "Maturité des données",
+        "focus": "Provenance, bases légales, conservation et accès au moindre privilège pour les charges IA."
+      },
+      "riskCompliance": {
+        "name": "Risque & conformité",
+        "focus": "Classification statutaire des risques, pistes d’audit et réponse aux incidents spécifiques à l’IA."
+      },
+      "workforceCulture": {
+        "name": "Effectifs & culture",
+        "focus": "Escalade sûre, actualisation continue de la littératie et normes valorisant la vérification humaine."
+      },
+      "operationalReadiness": {
+        "name": "Maturité opérationnelle",
+        "focus": "Capacité, effectifs, efficience des ressources en opérations et SLA d’incidents IA."
       }
     }
   }

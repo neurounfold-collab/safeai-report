@@ -84,8 +84,9 @@
     "verify": "Sovereign Provenance Registry & Verification Gateway",
     "contact": "Contact Us",
     "help": "Help & Support",
-    "privacy": "Privacy Policy & Registry Data Sovereignty",
-    "terms": "Terms of Service"
+    "privacy": "Privacy Policy & Data Lineage Statement",
+    "terms": "Terms of Service",
+    "readiness": "OIARF Institutional Readiness — safeAI.report"
   },
   "nav": {
     "home": "Home",
@@ -94,7 +95,8 @@
     "verify": "Verify",
     "contact": "Contact",
     "help": "Help",
-    "support": "Support"
+    "support": "Support",
+    "readiness": "Readiness"
   },
   "hero": {
     "headline": "TOEFL AI Literacy Standard Certification",
@@ -113,8 +115,8 @@
       "description": "AES-256 Cryptographic Block Hashing with immutable logging on WaqfLedger.tech."
     },
     "governance": {
-      "title": "Sovereign Governance Ledger",
-      "description": "Sovereign Algorithmic Governance Ledger protocol for institutional audit readiness."
+      "title": "Compliance Telemetry Anchoring",
+      "description": "Anchor your compliance telemetry. Generate a tamper-evident verification receipt matching your unrounded assessment score. Your baseline is cryptographically locked to a public-benefit open-science registry, ensuring complete audit integrity without data exposure."
     }
   },
   "footer": {
@@ -122,18 +124,26 @@
     "support": "Support",
     "contact": "Contact Us",
     "registrarContact": "Contact Office of the Registrar",
-    "compliance_statement": "Developed under the academic authority of Professor Adel El Bouzagaoui. Processing by Global Capital Intelligence LLC."
+    "compliance_statement": "Developed under the academic authority of Professor Adel El Bouzagaoui. Processing by Global Capital Intelligence LLC.",
+    "poweredBy": "Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records."
   },
   "landing": {
     "hero": {
       "citationLead": "EU AI Act Article 4 mandates deployer AI literacy and human oversight verification for staff operating high-risk AI systems. safeAI.report operates the TOEFL AI Literacy Standard — 30 diagnostic scenarios, 3 governance tracks, 85% pass threshold, SHA-256 credential logging via WaqfLedger.tech — under L'INSTITUT ARTICLE 4 (A4I). Statutory enforcement: August 2026.",
-      "headline": "The 2027 High-Risk Deferral is a Blindspot. Article 4 Enforcement Begins August 2026.",
-      "subheadline": "The European Union's recent Digital Omnibus package delayed high-risk AI system obligations, but Article 4 (AI Literacy) remains an immediate regulatory requirement. Is your human risk layer quantified?",
+      "headline": "Audit Institutional AI Risk. Anchor Your Compliance Evidence.",
+      "subheadline": "Deploy the Open Institutional AI Readiness Framework (OIARF) to execute evidence-informed maturity assessments across your campus. Evaluate workforce literacy, data lineage, and governance controls through a zero-data-retention pipeline secured by tamper-evident cryptographic verification.",
       "universalOpenAccess": "Open-access tier: 3 diagnostic tracks (Level 01–03), 30 scenarios per examination, 0 USD public evaluation fee.",
       "diagnosticDashboardCta": "Launch Free Institutional Diagnostic (A4-ALAM Matrix) ➔",
-      "executiveBriefingCta": "Request Closed-Door Executive Briefing (Access Registry) ➔"
+      "executiveBriefingCta": "Request Closed-Door Executive Briefing (Access Registry) ➔",
+      "architecture": {
+        "ariaLabel": "Unified dual-layer architecture",
+        "applicationTitle": "The Application Layer (SafeAI.report)",
+        "applicationDetails": "Evaluates organizational maturity across 8 strategic dimensions. Maps evidence against global regulatory control alignments (EU AI Act & NIST AI RMF).",
+        "integrityTitle": "The Integrity Layer (WaqfLedger Engine)",
+        "integrityDetails": "Anchor your compliance telemetry. Generate a tamper-evident verification receipt matching your unrounded assessment score. Your baseline is cryptographically locked to a public-benefit open-science registry, ensuring complete audit integrity without data exposure."
+      }
     },
-    "waqfLedgerBadge": "Credential protocol: AES-256 block hashing · SHA-256 state validation · WaqfLedger.tech ledger nodes",
+    "waqfLedgerBadge": "Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records.",
     "framework": {
       "title": "Article 4 Human Oversight Metric Domains",
       "description": "Measured competencies: operator intervention boundaries, transparency disclosure compliance, procurement due diligence, high-risk audit workflows."
@@ -801,7 +811,7 @@
         "title": "Institutional Research Support & Node Contribution Matrix",
         "introduction": "Participation is structured strictly as a voluntary contribution to support global open-access research, subsidize cloud bandwidth, and offset ongoing doctoral compilation data overhead — explicitly NOT commercial software licensing. Two graduated support tracks assist protocol deployment worldwide: the Voluntary Research Support Grant ($1,500 USD / year) offsets foundational testing framework compute costs, while Infrastructure Node Sponsorship ($3,500 USD / year) sponsors WaqfLedger infrastructure nodes, registrar analytics telemetry, and Article 4 syllabus framework delivery.",
         "recommendedBadge": "Recommended",
-        "waqfLedgerFootnote": "While every assessment tier remains a universal open-access public good, permanent validation trails, tamper-proof state auditing, and certificate verification indexing are natively powered and secured via the {ledgerHost} global infrastructure network.",
+        "waqfLedgerFootnote": "Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records. Operational ledger host: {ledgerHost}.",
         "tiers": {
           "ledgerNote": "Evaluation access is free; permanent validation trails and certificate verification indexing on {ledgerHost} secure every attestation.",
           "contributor": {
@@ -846,8 +856,8 @@
       "pillars": {
         "title": "Three Pillars of Institutional Research Value",
         "security": {
-          "title": "Zero-Fraud Security Architecture",
-          "description": "Permanently seal examination metrics via SHA-256 state hashing onto {ledgerHost}. Establish an unalterable verification trail that neutralizes certificate inflation and credentials fraud for future corporate employers."
+          "title": "Compliance Telemetry Anchoring",
+          "description": "Anchor your compliance telemetry. Generate a tamper-evident verification receipt matching your unrounded assessment score. Your baseline is cryptographically locked to a public-benefit open-science registry, ensuring complete audit integrity without data exposure."
         },
         "curriculum": {
           "title": "Turnkey Curriculum Integration",
@@ -963,11 +973,11 @@
       "section4Body": "Compliance tracking, credential provenance indexing, and cryptographic state anchoring to WaqfLedger.tech operate on a best-effort basis for research and statutory benchmarking purposes. safeAI.report, Global Capital Intelligence LLC, and L'INSTITUT ARTICLE 4 (A4I) provide the evaluation runtime and verification infrastructure without warranty regarding regulatory adjudication, employment decisions, or institutional audit conclusions. Ultimate statutory accountability for AI deployment oversight, human-in-the-loop governance, and Article 4 compliance execution remains with the deploying entity — whether individual examinee, faculty cohort, or institutional registrar."
     },
     "privacy": {
-      "eyebrow": "Cryptographic Data Sovereignty Framework",
-      "title": "Privacy Policy & Registry Data Sovereignty",
-      "subtitle": "Advanced data minimization and cryptographic sovereignty standards governing record integrity, permanent tamper-proof provenance, and academic telemetry under the safeAI.report ecosystem.",
-      "section1Title": "1. Data Minimization Principle",
-      "section1Body": "The safeAI.report evaluation system is architected under a strict data minimization doctrine aligned with GDPR purpose-limitation principles. The platform deliberately avoids gathering invasive personal metrics, behavioral advertising profiles, biometric identifiers, or third-party data broker integrations. To initialize a certification validation state, the runtime requests only an authorized institutional or candidate email address and an optional display name — nothing further is required to execute the open-access diagnostic session. Response-level telemetry is processed in anonymized aggregate form before any persistence layer.",
+      "eyebrow": "Privacy-Preserving Architecture & Zero-Data Retention",
+      "title": "Privacy Policy & Data Lineage Statement",
+      "subtitle": "Audit-ready zero-data-retention specification governing in-memory diagnostic processing, SHA-256 sub-score validation hashing, and cryptographic integrity under the safeAI.report ecosystem.",
+      "section1Title": "1. Privacy-Preserving Architecture & Zero-Data Retention",
+      "section1Body": "SafeAI.report operates on a zero-data footprint model. Your specific diagnostic responses are processed purely in-memory on local edge delivery nodes and are immediately destroyed upon session completion. The platform never captures, stores, or transmits proprietary institutional data. Only the resulting numeric sub-score vector is compiled into a localized SHA-256 cryptographic hash for validation tracking.",
       "section2Title": "2. The WaqfLedger Hashing Protocol",
       "section2Body": "Upon achieving a passing performance threshold (≥85%), the platform generates a 64-character SHA-256 cryptographic state hash encapsulating examination integrity markers, timestamp vectors, and registry identifiers. This hash is instantly transmitted as a non-blocking background void promise to the sovereign ledger API endpoint at waqfledger-api.vercel.app via TLS-encrypted POST to /api/v1/ledger/log-compliance, immutably anchoring the certification event to WaqfLedger.tech without interrupting the examinee experience.",
       "section3Title": "3. Immutable Registry Data Sovereignty",
@@ -994,7 +1004,7 @@
     },
     "overview": {
       "title": "Institutional Control Desk",
-      "subtitle": "Real-time oversight of prepaid examination tokens, active Article 4 certifications, and WaqfLedger.tech audit events for your Authorized Academic Center License.",
+      "subtitle": "Anchor your compliance telemetry. Generate a tamper-evident verification receipt matching your unrounded assessment score. Your baseline is cryptographically locked to a public-benefit open-science registry, ensuring complete audit integrity without data exposure.",
       "tokens": {
         "title": "Prepaid Examination Tokens",
         "baseline": "License baseline",
@@ -1205,6 +1215,123 @@
         "statusPassed": "Passed",
         "statusFailed": "Failed",
         "empty": "No verification hash submissions recorded in the current audit window."
+      }
+    }
+  },
+  "readiness": {
+    "title": "OIARF Institutional Readiness Assessment",
+    "subtitle": "Eight-dimension Multi-Criteria Decision Analysis (MCDA) diagnostic for Article 4 human oversight readiness. Scores persist locally; anonymous composite results can be sealed for WaqfLedger.tech logging.",
+    "loading": "Loading readiness assessment…",
+    "progress": "Dimension {{current}} of {{total}}",
+    "progressPlain": "{{current}} / {{total}}",
+    "sectorLabel": "Institutional sector (optional)",
+    "sectorPlaceholder": "Select a sector",
+    "sectorNone": "Not specified",
+    "previous": "Previous",
+    "next": "Next dimension",
+    "completeDimension": "Answer all prompts to continue",
+    "incompleteHint": "Select a maturity rating for each prompt before advancing.",
+    "finish": "Seal readiness index",
+    "restart": "Restart assessment",
+    "resultsTitle": "Institutional readiness index",
+    "resultsSubtitle": "Weighted MCDA composite across eight OIARF dimensions. Dimension scores D_d are normalized to [0, 1]; the overall index is Σ (W_d × D_d).",
+    "overallIndex": "Overall readiness index",
+    "dimensionScores": "Dimension scores",
+    "stateHash": "SHA-256 state seal",
+    "sectorTag": "Sector tag",
+    "hashPending": "Computing anonymous state hash…",
+    "hashError": "Unable to compute SHA-256 seal in this browser environment.",
+    "errorTitle": "Readiness assessment interrupted",
+    "errorBody": "An unexpected error occurred while rendering the OIARF dashboard. Your local answers may still be recoverable from browser storage.",
+    "errorRetry": "Retry",
+    "ledgerCaption": "Anonymous sealed telemetry is designed for cryptographic logging via {{host}}.",
+    "likert": {
+      "1": "Not established",
+      "2": "Initial / ad hoc",
+      "3": "Defined",
+      "4": "Managed",
+      "5": "Optimizing"
+    },
+    "sectors": {
+      "higherEducation": "Higher education",
+      "healthcare": "Healthcare",
+      "publicSector": "Public sector",
+      "financialServices": "Financial services",
+      "industrial": "Industrial / critical infrastructure",
+      "other": "Other"
+    },
+    "dimensions": {
+      "leadership": {
+        "name": "Leadership",
+        "focus": "Executive sponsorship, strategy charter, and board-visible accountability for AI oversight.",
+        "prompts": {
+          "q1": "Executive sponsors have formally chartered an AI strategy with board-visible accountability owners.",
+          "q2": "Strategic AI investment decisions are reviewed against institutional risk appetite and Article 4 oversight duties.",
+          "q3": "Senior leadership receives periodic readiness briefings that include literacy gaps and escalation outcomes."
+        }
+      },
+      "governance": {
+        "name": "Governance",
+        "focus": "Policies, decision rights, approval gates, and authority to pause or revoke deployments.",
+        "prompts": {
+          "q1": "Documented AI policies define decision rights, approval gates, and prohibited use cases.",
+          "q2": "An institutional control structure (committee or equivalent) can pause or revoke AI deployments.",
+          "q3": "Policy exceptions require recorded justification and time-bounded reassessment."
+        }
+      },
+      "aiLiteracy": {
+        "name": "AI literacy",
+        "focus": "Article 4 capability boundaries, disclosure duties, and practiced human oversight (P1–P4).",
+        "prompts": {
+          "q1": "Staff operating AI systems can explain system capability boundaries and failure modes relevant to their role (P1).",
+          "q2": "Operators can identify deployment risks and fulfill transparency / disclosure obligations (P2).",
+          "q3": "Human oversight authority, escalation paths, and safe operating envelopes are practiced and assessed (P3-P4)."
+        }
+      },
+      "technology": {
+        "name": "Technology",
+        "focus": "Inventory, change management, monitoring, and human-in-the-loop intervention hooks.",
+        "prompts": {
+          "q1": "AI systems are inventoried with architecture, integration points, and maturity classifications.",
+          "q2": "Change management covers model updates, vendor swaps, and rollback procedures.",
+          "q3": "Monitoring covers availability, drift signals, and human-in-the-loop intervention hooks."
+        }
+      },
+      "dataReadiness": {
+        "name": "Data readiness",
+        "focus": "Provenance, lawful processing, retention, and least-privilege access for AI workloads.",
+        "prompts": {
+          "q1": "Training and inference data have documented provenance, quality controls, and lineage.",
+          "q2": "Lawful processing bases and retention limits are mapped for AI-related personal data flows.",
+          "q3": "Data access for AI workloads is least-privilege and auditable."
+        }
+      },
+      "riskCompliance": {
+        "name": "Risk & compliance",
+        "focus": "Statutory risk classification, audit trails, and AI-specific incident response.",
+        "prompts": {
+          "q1": "AI use cases are risk-classified against applicable statutory regimes (e.g., EU AI Act).",
+          "q2": "Audit trails capture human oversight actions and material model decisions.",
+          "q3": "Incident response playbooks include AI-specific containment and regulatory notification triggers."
+        }
+      },
+      "workforceCulture": {
+        "name": "Workforce & culture",
+        "focus": "Safe escalation, continuous literacy refresh, and norms that reward human verification.",
+        "prompts": {
+          "q1": "Staff can escalate AI concerns without retaliation and expect timely review.",
+          "q2": "Continuous learning pathways refresh Article 4 literacy for role-relevant cohorts.",
+          "q3": "Norms discourage blind trust in automated outputs and reward documented human verification."
+        }
+      },
+      "operationalReadiness": {
+        "name": "Operational readiness",
+        "focus": "Capacity, staffing, resource efficiency under operations, and AI incident SLAs.",
+        "prompts": {
+          "q1": "Runtime capacity, staffing, and support coverage match production AI workload demand.",
+          "q2": "Resource-allocation efficiency (including tokenization / compute overhead where material) is measured and budgeted under operations — not as a literacy criterion.",
+          "q3": "Service delivery SLAs define response times for AI incidents and human override requests."
+        }
       }
     }
   }

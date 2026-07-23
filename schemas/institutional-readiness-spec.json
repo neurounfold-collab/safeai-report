@@ -1,0 +1,110 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Open Institutional AI Readiness Framework (OIARF)",
+  "name": "OIARF",
+  "version": "2.0.0-OIARF",
+  "portal": "https://safeai.report",
+  "academicAuthority": "L'INSTITUT ARTICLE 4 (A4I)",
+  "regulatoryTrack": "EU AI Act Article 4 — human competence and oversight",
+  "languages": ["en", "fr", "es"],
+  "mission": "The Open Institutional AI Readiness Framework (OIARF) is an open-methodology, evidence-informed framework designed to assess organizational preparedness for responsible AI adoption. SafeAI.report serves as the open-access portal for the framework's digital diagnostics.",
+  "scoringEngine": {
+    "model": "quantitatively structured Multi-Criteria Decision Analysis (MCDA) model using role-specific weight allocations.",
+    "compositeFormula": "Sc = (Σ wp × Pp) × 100",
+    "validationStatement": "Role-specific weights were initially derived through expert judgment and are intended to be empirically refined using continuous institutional validation datasets.",
+    "cohortProfilesRef": "schemas/scoring-engine.json.txt",
+    "defaultPassThresholdPercent": 85.0
+  },
+  "cryptographicIntegrityLayer": "a privacy-preserving, tamper-evident cryptographic integrity layer powered by the WaqfLedger Open-Access Consortium Engine.",
+  "dimensions": [
+    {
+      "id": 1,
+      "key": "leadership",
+      "name": "Leadership",
+      "focus": "Executive sponsorship, strategic AI direction, and board-level accountability"
+    },
+    {
+      "id": 2,
+      "key": "governance",
+      "name": "Governance",
+      "focus": "Policies, decision rights, and institutional AI control structures"
+    },
+    {
+      "id": 3,
+      "key": "ai_literacy",
+      "name": "AI Literacy",
+      "focus": "Human competence under EU AI Act Article 4 (A4-ALAM pillars)",
+      "scope": "Evaluates human competence only; compute cost and tokenization overhead are excluded from this dimension.",
+      "a4AlamPillars": [
+        {
+          "id": "P1",
+          "key": "p1_structural_ai_competency",
+          "title": "Structural AI Competency & System Capabilities",
+          "competenceFocus": "Understanding AI system behaviors, limits, and capability boundaries"
+        },
+        {
+          "id": "P2",
+          "key": "p2_risk_recognition_transparency",
+          "title": "Risk Recognition & Transparency Mandates",
+          "competenceFocus": "Identifying deployment risks and fulfilling disclosure obligations"
+        },
+        {
+          "id": "P3",
+          "key": "p3_human_oversight_boundaries",
+          "title": "Human Oversight & Operational Boundaries",
+          "competenceFocus": "Intervention authority, escalation, and safe operating envelopes"
+        },
+        {
+          "id": "P4",
+          "key": "p4_accountability_ethical_governance",
+          "title": "Accountability & Ethical Governance",
+          "competenceFocus": "Role-linked responsibility, ethical decision frames, and duty of care"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "key": "technology",
+      "name": "Technology",
+      "focus": "Systems architecture, capability maturity, and integration readiness"
+    },
+    {
+      "id": 5,
+      "key": "data_readiness",
+      "name": "Data Readiness",
+      "focus": "Provenance, quality, lineage, and lawful processing capacity"
+    },
+    {
+      "id": 6,
+      "key": "risk_compliance",
+      "name": "Risk & Compliance",
+      "focus": "Statutory alignment, risk classification, and auditability"
+    },
+    {
+      "id": 7,
+      "key": "workforce_culture",
+      "name": "Workforce Culture",
+      "focus": "Organizational norms, escalation practice, and continuous learning"
+    },
+    {
+      "id": 8,
+      "key": "operational_readiness",
+      "name": "Operational Readiness",
+      "focus": "Runtime capacity, resource allocation, and delivery efficiency",
+      "metrics": [
+        {
+          "key": "arabic_tokenization_compute_cost_overhead",
+          "name": "Arabic character tokenization compute-cost overhead",
+          "type": "technical_resource_allocation_efficiency",
+          "classification": "NOT literacy",
+          "relativeToLatinScriptBaselines": {
+            "minPercent": 300,
+            "maxPercent": 600,
+            "display": "+300% to +600%"
+          },
+          "notes": "Modeled exclusively under Dimension 8 (Operational Readiness) as a technical resource-allocation efficiency metric. It is not a literacy competency criterion and must not appear under the AI Literacy / A4-ALAM pillar set."
+        }
+      ]
+    }
+  ]
+}
