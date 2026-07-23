@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this specification or diagnostic engine, please cite it as below."
+authors:
+  - family-names: "El Bouzagaoui"
+    given-names: "Adel"
+    affiliation: "L'Institut Article 4"
+title: "Open Institutional AI Readiness Framework (OIARF v2.0.0) & Multi-Criteria Decision Engine"
+version: "v2.0.1-OIARF"
+doi: "10.5281/zenodo.21516198"
+date-released: 2026-07-23
+url: "https://safeai.report"
+repository-code: "https://github.com/neurounfold-collab/safeai-report"
+keywords:
+  - "AI Governance"
+  - "EU AI Act Article 4"
+  - "Multi-Criteria Decision Analysis"
+  - "AI Readiness Index"
+  - "WaqfLedger"
+license: "MIT"
