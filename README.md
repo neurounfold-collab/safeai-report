@@ -1,5 +1,7 @@
 ﻿# The Open Institutional AI Readiness Framework (OIARF)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21516198.svg)](https://doi.org/10.5281/zenodo.21516198)
+
 **The Open Institutional AI Readiness Framework (OIARF)** is an open-methodology, evidence-informed framework designed to assess organizational preparedness for responsible AI adoption. **SafeAI.report** serves as the open-access portal for the framework's digital diagnostics.
 
 OIARF operationalizes deployer literacy verification under **EU AI Act Article 4** through a Cisco-grade, 30-scenario diagnostic instrument (A4-ALAM), institutional readiness scoring across eight organizational dimensions, and a privacy-preserving, tamper-evident cryptographic integrity layer powered by the **WaqfLedger Open-Access Consortium Engine**.
