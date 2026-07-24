@@ -1308,6 +1308,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   const [registrySubmitted, setRegistrySubmitted] = useState(false);
   const [registrySubmitting, setRegistrySubmitting] = useState(false);
   const [registrySubmitError, setRegistrySubmitError] = useState('');
+  const [ledgerStatus, setLedgerStatus] = useState(null);
 
   const screenEnteredAtRef = useRef(Date.now());
   const examStartedAtRef = useRef(initialSession.examStartedAt);
@@ -1379,55 +1380,9 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
       }
     };
 
-    const dispatchLedgerStream = (hash, examinationCompletedAt) => {
-      if (certificationPipelineRef.current.ledgerDispatched) return;
-      certificationPipelineRef.current.ledgerDispatched = true;
-
-      void streamComplianceToLedger({
-        hash,
-        candidateName: readStoredLegalName(),
-        tierId: certificationTier,
-        score: scoreResult?.composite?.score ?? scoreResult?.weighted?.percentage,
-        timestamp: examinationCompletedAt,
-      }).catch(() => {
-        // Best-effort ledger stream — must not block certification flow.
-      });
-    };
-
-    const attemptSocialUnlock = (hash) => {
-      if (
-        masterTestOverride ||
-        certificationPipelineRef.current.socialUnlockSucceeded ||
-        socialUnlockTriggeredRef.current
-      ) {
-        return;
-      }
-
-      void triggerLinkedInSocialUnlock({
-        stateHash: hash,
-        language: activeLocale,
-      })
-        .then((sharePayload) => {
-          if (cancelled) return;
-          certificationPipelineRef.current.socialUnlockSucceeded = true;
-          socialUnlockTriggeredRef.current = true;
-          setLinkedInToast(sharePayload.copySuccessMessage);
-          setCredentialUnlocked(true);
-          window.setTimeout(() => {
-            window.open(sharePayload.linkedInShareUrl, '_blank', 'noopener,noreferrer');
-          }, 350);
-          window.setTimeout(() => setLinkedInToast(null), 4200);
-        })
-        .catch(() => {
-          // Clipboard or hash unavailable — credential remains locked until manual retry.
-        });
-    };
-
     const resumePipeline = certificationPipelineRef.current;
     if (resumePipeline.credentialId === credentialId && resumePipeline.hash) {
       persistHashArtifacts(resumePipeline.hash, resumePipeline.examinationCompletedAt);
-      dispatchLedgerStream(resumePipeline.hash, resumePipeline.examinationCompletedAt);
-      attemptSocialUnlock(resumePipeline.hash);
       return () => {
         cancelled = true;
       };
@@ -1455,8 +1410,6 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         };
 
         persistHashArtifacts(hash, completedAt);
-        dispatchLedgerStream(hash, completedAt);
-        attemptSocialUnlock(hash);
       })
       .catch(() => {
         // Hash generation failure — badge renders with pending digest state.
@@ -1465,7 +1418,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     return () => {
       cancelled = true;
     };
-  }, [examPhase, scoreResult, certificationTier, masterTestOverride, activeLocale]);
+  }, [examPhase, scoreResult, certificationTier, masterTestOverride]);
 
   useEffect(() => {
     screenEnteredAtRef.current = Date.now();
@@ -1596,6 +1549,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     setScoreResult(null);
     setCredentialUnlocked(masterTestOverride);
     setStateHash(null);
+    setLedgerStatus(null);
     setRegistryEmail('');
     setRegistryMessage('');
     setRegistrySubmitted(false);
@@ -1622,10 +1576,35 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         window.open(payload.linkedInShareUrl, '_blank', 'noopener,noreferrer');
       }, 350);
       window.setTimeout(() => setLinkedInToast(null), 4200);
+
+      const hashForLedger =
+        stateHash
+        ?? certificationPipelineRef.current.hash
+        ?? payload.hash;
+      const completedAt =
+        certificationPipelineRef.current.examinationCompletedAt
+        ?? new Date().toISOString();
+
+      if (
+        hashForLedger
+        && !certificationPipelineRef.current.ledgerDispatched
+      ) {
+        certificationPipelineRef.current.ledgerDispatched = true;
+        const ledgerResult = await streamComplianceToLedger({
+          hash: hashForLedger,
+          candidateName: readStoredLegalName(),
+          tierId: certificationTier,
+          score: scoreResult?.composite?.score ?? scoreResult?.weighted?.percentage,
+          timestamp: completedAt,
+        });
+        setLedgerStatus(ledgerResult?.success ? 'anchored' : 'local');
+      } else if (!hashForLedger) {
+        setLedgerStatus('local');
+      }
     } catch {
       // Clipboard or hash unavailable — credential remains locked until retry.
     }
-  }, [stateHash, activeLocale]);
+  }, [stateHash, activeLocale, certificationTier, scoreResult]);
 
   const requiresAchievementClaim = !masterTestOverride;
   const effectiveCredentialUnlocked = masterTestOverride || credentialUnlocked;
@@ -1822,6 +1801,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
                   candidateName={candidateLegalName}
                   tierId={certificationTier}
                   stateHash={stateHash}
+                  ledgerStatus={ledgerStatus}
                   t={t}
                 />
               ) : (

@@ -636,11 +636,11 @@ export default function VerifyView({ language: languageProp }) {
       });
 
       const normalizedHash = trimmed.toLowerCase();
-      const record = resolveVerificationRecord(normalizedHash);
+      const record = await resolveVerificationRecord(normalizedHash);
 
       setIsScanning(false);
       setLastAuditedHash(normalizedHash);
-      setVerificationResult(record ?? { verified: false });
+      setVerificationResult(record ?? { verified: false, pending: true });
     },
     [resolveValidationKey],
   );
@@ -686,6 +686,11 @@ export default function VerifyView({ language: languageProp }) {
           verificationResult.candidateName,
         )
       : verificationResult?.candidateName;
+
+  const scoreDisplay =
+    verificationResult?.verified && verificationResult.score != null
+      ? `${verificationResult.score}%`
+      : '—';
 
   return (
     <div className="verify-view">
@@ -744,18 +749,9 @@ export default function VerifyView({ language: languageProp }) {
                 <dl className="verify-view__grid">
                   <div className="verify-view__field">
                     <dt className="verify-view__field-label">
-                      {t('verify.portal.fields.candidateName')}
+                      {t('verify.portal.fields.score')}
                     </dt>
-                    <dd className="verify-view__field-value">{candidateDisplayName}</dd>
-                  </div>
-
-                  <div className="verify-view__field">
-                    <dt className="verify-view__field-label">
-                      {t('verify.portal.fields.complianceLevel')}
-                    </dt>
-                    <dd className="verify-view__field-value">
-                      {verificationResult?.complianceLevel}
-                    </dd>
+                    <dd className="verify-view__field-value">{scoreDisplay}</dd>
                   </div>
 
                   <div className="verify-view__field">
@@ -767,18 +763,29 @@ export default function VerifyView({ language: languageProp }) {
                     </dd>
                   </div>
 
-                  <div className="verify-view__field">
-                    <dt className="verify-view__field-label">
-                      {t('verify.portal.fields.registryAuthority')}
-                    </dt>
-                    <dd className="verify-view__field-value">
-                      {t('verify.portal.registryAuthorityValue')}
-                    </dd>
-                  </div>
+                  {candidateDisplayName ? (
+                    <div className="verify-view__field">
+                      <dt className="verify-view__field-label">
+                        {t('verify.portal.fields.candidateName')}
+                      </dt>
+                      <dd className="verify-view__field-value">{candidateDisplayName}</dd>
+                    </div>
+                  ) : null}
+
+                  {verificationResult?.complianceLevel ? (
+                    <div className="verify-view__field">
+                      <dt className="verify-view__field-label">
+                        {t('verify.portal.fields.complianceLevel')}
+                      </dt>
+                      <dd className="verify-view__field-value">
+                        {verificationResult.complianceLevel}
+                      </dd>
+                    </div>
+                  ) : null}
 
                   <div className="verify-view__field verify-view__field--full">
                     <dt className="verify-view__field-label">
-                      {t('verify.portal.fields.stateHash')}
+                      {t('verify.portal.fields.waqfLedgerHash')}
                     </dt>
                     <dd className="verify-view__field-value verify-view__field-value--mono">
                       {verificationResult?.stateHash}
@@ -792,7 +799,7 @@ export default function VerifyView({ language: languageProp }) {
           {showResult && verificationResult && !verificationResult.verified && (
             <article className="verify-view__receipt" aria-live="polite">
               <p className="verify-view__status-bar verify-view__status-bar--failed">
-                {t('verify.portal.statusFailed')}
+                {t('verify.portal.statusPending')}
               </p>
             </article>
           )}

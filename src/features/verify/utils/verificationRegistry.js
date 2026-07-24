@@ -1,10 +1,11 @@
 /**
- * Sovereign verification registry — known ledger anchors and local persistence keys.
- * Ledger seed data mirrors institutional dashboard feed until live partner API is wired.
+ * Sovereign verification registry — live WaqfLedger attestation lookup.
+ * Public /verify never trusts localStorage or forged client strings.
  */
 
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';
 import { DEFAULT_PARTNER_METRICS } from '../../dashboard/components/PartnerOverview.jsx';
+import { queryLedgerAttestation } from '../../../utils/waqfLedgerClient.js';
 
 export const VERIFICATION_STORAGE_KEYS = {
   CREDENTIAL_HASH: 'SAFEAI_CREDENTIAL_STATE_HASH',
@@ -13,10 +14,6 @@ export const VERIFICATION_STORAGE_KEYS = {
   CREDENTIAL_TIMESTAMP: 'SAFEAI_CREDENTIAL_TIMESTAMP',
   MASTER_TEST_AUDIT: 'SAFEAI_MASTER_TEST_AUDIT',
 };
-
-const DEFAULT_SESSION_CANDIDATE_NAME = 'Official Test Auditor';
-const LOCAL_SESSION_REGISTRY_AUTHORITY =
-  'WaqfLedger.tech (Vercel Simulation Core Network)';
 
 /** @type {Map<string, { credentialId: string; timestamp: string; tier: string }>} */
 const LEDGER_REGISTRY = new Map();
@@ -58,133 +55,81 @@ export function resolveTierDescription(tierLevel) {
 }
 
 /**
- * Normalizes a stored tier token (slug or Level 0x label) to a canonical level key.
- * @param {string | null | undefined} rawTier
- * @returns {'Level 01' | 'Level 02' | 'Level 03'}
- */
-function normalizeStoredTierLevel(rawTier) {
-  if (typeof rawTier !== 'string') {
-    return 'Level 01';
-  }
-
-  const trimmed = rawTier.trim();
-  if (!trimmed) {
-    return 'Level 01';
-  }
-
-  const levelMatch = trimmed.match(/^Level 0([1-3])$/);
-  if (levelMatch) {
-    return `Level 0${levelMatch[1]}`;
-  }
-
-  const slug = trimmed.toLowerCase().match(/level0[1-3]/)?.[0];
-  return slug ? TIER_SLUG_TO_LEVEL[slug] : 'Level 01';
-}
-
-/**
- * @param {unknown} rawValue
- * @returns {string}
- */
-function resolveCandidateDisplayName(rawValue) {
-  if (typeof rawValue !== 'string') {
-    return DEFAULT_SESSION_CANDIDATE_NAME;
-  }
-
-  const trimmed = rawValue.trim();
-  return trimmed || DEFAULT_SESSION_CANDIDATE_NAME;
-}
-
-/**
- * @param {unknown} rawValue
- * @returns {string}
- */
-function sanitizeStoredTimestamp(rawValue) {
-  if (typeof rawValue === 'string' && rawValue.trim()) {
-    const epochMs = Date.parse(rawValue.trim());
-    if (Number.isFinite(epochMs)) {
-      return new Date(epochMs).toISOString();
-    }
-  }
-
-  return new Date().toISOString();
-}
-
-/**
- * Resolves a hash against the active session credential anchored in localStorage.
+ * Admin/dashboard seed resolver only — never used by the public /verify portal.
  * @param {string} normalizedHash — lowercase 64-char SHA-256 hex digest
  * @returns {object | null}
  */
-export function resolveVerificationHash(normalizedHash) {
-  if (typeof window === 'undefined') {
+export function resolveSeededVerificationRecord(normalizedHash) {
+  if (typeof normalizedHash !== 'string' || !normalizedHash) {
     return null;
   }
 
-  try {
-    const rawStoredHash = window.localStorage.getItem(VERIFICATION_STORAGE_KEYS.CREDENTIAL_HASH);
-    const storedHash =
-      typeof rawStoredHash === 'string' ? rawStoredHash.trim().toLowerCase() : '';
-
-    if (!storedHash || storedHash !== normalizedHash) {
-      return null;
-    }
-
-    const candidateName = resolveCandidateDisplayName(
-      window.localStorage.getItem(VERIFICATION_STORAGE_KEYS.CANDIDATE_NAME),
-    );
-
-    const tierLevel = normalizeStoredTierLevel(
-      window.localStorage.getItem(VERIFICATION_STORAGE_KEYS.CERTIFICATION_TIER),
-    );
-
-    const tierLabel = resolveTierDescription(tierLevel);
-
-    const timestamp = sanitizeStoredTimestamp(
-      window.localStorage.getItem(VERIFICATION_STORAGE_KEYS.CREDENTIAL_TIMESTAMP),
-    );
-
-    const masterTestFlag = window.localStorage.getItem(VERIFICATION_STORAGE_KEYS.MASTER_TEST_AUDIT);
-    const isMasterTestAudit = typeof masterTestFlag === 'string' && masterTestFlag.trim() === 'true';
-
-    const tracking = {
-      isValid: true,
-      verified: true,
-      candidateName,
-      candidateNameIsCredentialId: false,
-      tierLabel,
-      complianceLevel: tierLabel,
-      timestamp,
-      authority: LOCAL_SESSION_REGISTRY_AUTHORITY,
-      registryAuthority: LOCAL_SESSION_REGISTRY_AUTHORITY,
-      stateHash: normalizedHash,
-    };
-
-    if (isMasterTestAudit) {
-      tracking.masterTestAuditSession = true;
-    }
-
-    return tracking;
-  } catch {
+  const ledgerEntry = LEDGER_REGISTRY.get(normalizedHash.toLowerCase());
+  if (!ledgerEntry) {
     return null;
   }
+
+  return {
+    verified: true,
+    candidateName: ledgerEntry.credentialId,
+    candidateNameIsCredentialId: true,
+    complianceLevel: resolveTierDescription(ledgerEntry.tier),
+    timestamp: ledgerEntry.timestamp,
+    stateHash: normalizedHash.toLowerCase(),
+    registryAuthority: SAFEAI_MASTER_CONFIG.infrastructure.ledgerHost,
+  };
 }
 
 /**
+ * Live WaqfLedger attestation lookup for the public cryptographic verification portal.
+ * Returns verified metadata only when the remote ledger confirms a hash match.
+ *
  * @param {string} normalizedHash — lowercase 64-char SHA-256 hex digest
- * @returns {object | null}
+ * @returns {Promise<object>}
  */
-export function resolveVerificationRecord(normalizedHash) {
-  const ledgerEntry = LEDGER_REGISTRY.get(normalizedHash);
-  if (ledgerEntry) {
+export async function resolveVerificationRecord(normalizedHash) {
+  const hash =
+    typeof normalizedHash === 'string' ? normalizedHash.trim().toLowerCase() : '';
+
+  if (!/^[a-f0-9]{64}$/.test(hash)) {
     return {
-      verified: true,
-      candidateName: ledgerEntry.credentialId,
-      candidateNameIsCredentialId: true,
-      complianceLevel: resolveTierDescription(ledgerEntry.tier),
-      timestamp: ledgerEntry.timestamp,
-      stateHash: normalizedHash,
-      registryAuthority: SAFEAI_MASTER_CONFIG.infrastructure.ledgerHost,
+      verified: false,
+      pending: true,
+      stateHash: hash || null,
     };
   }
 
-  return resolveVerificationHash(normalizedHash);
+  const attestation = await queryLedgerAttestation(hash);
+
+  if (!attestation?.verified) {
+    return {
+      verified: false,
+      pending: true,
+      stateHash: attestation?.stateHash ?? hash,
+    };
+  }
+
+  const complianceRaw = attestation.complianceLevel;
+  let complianceLevel = complianceRaw;
+  if (typeof complianceRaw === 'string') {
+    const levelMatch = complianceRaw.match(/level\s*0?([1-3])/i);
+    if (levelMatch) {
+      complianceLevel = resolveTierDescription(`Level 0${levelMatch[1]}`);
+    } else if (/^Level 0[1-3]$/.test(complianceRaw.trim())) {
+      complianceLevel = resolveTierDescription(complianceRaw.trim());
+    }
+  }
+
+  return {
+    verified: true,
+    score: attestation.score ?? null,
+    candidateName: attestation.candidateName ?? null,
+    candidateNameIsCredentialId: false,
+    complianceLevel: complianceLevel ?? null,
+    timestamp: attestation.timestamp ?? null,
+    stateHash: attestation.stateHash ?? hash,
+    registryAuthority:
+      attestation.registryAuthority
+      ?? SAFEAI_MASTER_CONFIG.infrastructure.ledgerHost,
+  };
 }

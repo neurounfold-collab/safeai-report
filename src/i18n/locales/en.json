@@ -243,6 +243,7 @@
       "scanningLabel": "Executing sovereign ledger integrity scan...",
       "statusValid": "🟢 STATUS: VALIDATED & PROVENANCE SEALED",
       "statusFailed": "🔴 STATUS: REGISTRY CHECK FAILED. UNVERIFIED OR ALTERED HASH STRING",
+      "statusPending": "Record Not Anchored or Pending Ledger Sync",
       "receiptTitle": "Secure Ledger Receipt",
       "registryAuthorityValue": "WaqfLedger.tech",
       "institutionalHolder": "Registered Institutional Credential ({credentialId})",
@@ -253,9 +254,11 @@
       "fields": {
         "candidateName": "Certified Candidate",
         "complianceLevel": "Compliance Level",
-        "timestamp": "Registry Timestamp",
+        "score": "Score",
+        "timestamp": "Date",
         "registryAuthority": "Registry Authority",
-        "stateHash": "Cryptographic State Hash"
+        "stateHash": "Cryptographic State Hash",
+        "waqfLedgerHash": "WaqfLedger Hash"
       },
       "vault": {
         "title": "Mathematical Verification Vault — Corporate Audit Container",
@@ -281,7 +284,7 @@
       "badgeName": "Official Badge",
       "ledgerLogged": "Immutable record eligible for WaqfLedger.tech",
       "credentialLockTitle": "Verify Your Compliance Credential",
-      "linkedinAchievementClaim": "Claim Certificate via LinkedIn Achievement Broadcast",
+      "linkedinAchievementClaim": "Share to LinkedIn / Copy Credentials",
       "failedTitle": "Certification Threshold Not Met",
       "failedSubtitle": "A minimum weighted compliance score is required for institutional certification",
       "retryExam": "Review Scenarios & Retry",
@@ -773,6 +776,8 @@
       "registryNetwork": "REGISTRY NETWORK: WaqfLedger.tech",
       "auditHashLabel": "AUDIT HASH:",
       "status": "STATUS: SECURELY RECORDED & PROVENANCE SEALED",
+      "statusAnchored": "Anchored to WaqfLedger",
+      "statusLocal": "Local SHA-256 Verified",
       "signatureName": "Adel El Bouzagaoui",
       "signatureTitle": "Director of Regulatory Research, L'Institut Article 4",
       "certifiedCandidate": "Certified Candidate",
@@ -811,7 +816,7 @@
         "title": "Institutional Research Support & Node Contribution Matrix",
         "introduction": "Participation is structured strictly as a voluntary contribution to support global open-access research, subsidize cloud bandwidth, and offset ongoing doctoral compilation data overhead — explicitly NOT commercial software licensing. Two graduated support tracks assist protocol deployment worldwide: the Voluntary Research Support Grant ($1,500 USD / year) offsets foundational testing framework compute costs, while Infrastructure Node Sponsorship ($3,500 USD / year) sponsors WaqfLedger infrastructure nodes, registrar analytics telemetry, and Article 4 syllabus framework delivery.",
         "recommendedBadge": "Recommended",
-        "waqfLedgerFootnote": "Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records. Operational ledger host: {ledgerHost}.",
+        "waqfLedgerFootnote": "Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records.",
         "tiers": {
           "ledgerNote": "Evaluation access is free; permanent validation trails and certificate verification indexing on {ledgerHost} secure every attestation.",
           "contributor": {

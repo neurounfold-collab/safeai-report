@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createTranslator, getActiveLanguage } from '../../../i18n/index.js';
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';
+import { resolveStripeGatewayUrl } from '../../../utils/stripeGateway.js';
+
 const STORAGE_KEY = 'safeai.language';
 const LANGUAGE_CHANGE_EVENT = 'safeai:language-change';
 
@@ -12,7 +14,10 @@ const EXAM_TIER_PATHS = {
   level02: '/academy/exam?tier=level02',
   level03: '/academy/exam?tier=level03',
 };
-const INSTITUTIONAL_FEATURE_KEYS = ['tokens', 'dashboard', 'logging', 'syllabus'];
+
+const RESEARCH_TIER_ORDER = ['tierA', 'tierB'];
+const PILLAR_KEYS = ['security', 'curriculum', 'telemetry'];
+const INTAKE_PATH = '/academic-centers#intake-form';
 
 const PRICING_MATRIX_STYLES = `
 .pricing-matrix {
@@ -99,18 +104,15 @@ const PRICING_MATRIX_STYLES = `
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--pm-accent);
+  color: #fde68a;
   white-space: nowrap;
-  max-width: calc(100% - 1.5rem);
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .pricing-matrix__level {
   margin: 0;
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--pm-accent-teal);
 }
@@ -118,28 +120,27 @@ const PRICING_MATRIX_STYLES = `
 .pricing-matrix__name {
   margin: 0;
   font-size: clamp(1rem, 2vw, 1.125rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   line-height: 1.35;
 }
 
 .pricing-matrix__price-row {
   display: flex;
   align-items: baseline;
-  gap: 0.35rem;
-  margin-top: auto;
+  gap: 0.4rem;
 }
 
 .pricing-matrix__price {
-  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.03em;
-  color: var(--pm-text);
+  color: var(--pm-accent);
 }
 
 .pricing-matrix__currency {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -148,108 +149,40 @@ const PRICING_MATRIX_STYLES = `
 
 .pricing-matrix__description {
   margin: 0;
+  flex: 1 1 auto;
   font-size: 0.8125rem;
   line-height: 1.6;
   color: var(--pm-muted);
-}
-
-.pricing-matrix__cta-group {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.55rem;
-  margin-top: 0.35rem;
 }
 
 .pricing-matrix__cta--free {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 0.8rem 1rem;
+  margin-top: auto;
+  padding: 0.75rem 1rem;
   border-radius: 0.625rem;
-  border: 1px solid rgba(45, 212, 191, 0.55);
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-  color: #042f2e;
-  font-size: 0.8125rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  background: rgba(94, 234, 212, 0.1);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   text-align: center;
   text-decoration: none;
-  cursor: pointer;
-  transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+  color: #99f6e4;
+  transition: background 180ms ease, border-color 180ms ease;
 }
 
 .pricing-matrix__cta--free:hover {
-  border-color: rgba(94, 234, 212, 0.75);
-  background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
-  transform: translateY(-1px);
-}
-
-.pricing-matrix__cta-fallback {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0.35rem 0.5rem;
-  border: none;
-  background: transparent;
-  color: var(--pm-muted);
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1.45;
-  text-align: center;
-  text-decoration: underline;
-  text-decoration-color: rgba(148, 163, 184, 0.35);
-  text-underline-offset: 0.15em;
-  transition: color 200ms ease, text-decoration-color 200ms ease;
-}
-
-.pricing-matrix__cta-fallback:hover {
-  color: rgba(226, 232, 240, 0.88);
-  text-decoration-color: rgba(148, 163, 184, 0.6);
-}
-
-.pricing-matrix__cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0.35rem;
-  padding: 0.75rem 1rem;
-  border-radius: 0.625rem;
-  border: 1px solid rgba(201, 162, 39, 0.35);
-  background: linear-gradient(135deg, rgba(201, 162, 39, 0.22) 0%, rgba(180, 83, 9, 0.18) 100%);
-  color: var(--pm-text);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  text-align: center;
-  text-decoration: none;
-  transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
-}
-
-.pricing-matrix__cta:hover {
-  border-color: rgba(201, 162, 39, 0.55);
-  background: linear-gradient(135deg, rgba(201, 162, 39, 0.32) 0%, rgba(180, 83, 9, 0.26) 100%);
-  transform: translateY(-1px);
-}
-
-.pricing-matrix__column--featured .pricing-matrix__cta {
-  border-color: rgba(201, 162, 39, 0.55);
-  background: linear-gradient(135deg, #c9a227 0%, #b45309 100%);
-  color: #0b0f19;
-}
-
-.pricing-matrix__column--featured .pricing-matrix__cta:hover {
-  background: linear-gradient(135deg, #d4ad2e 0%, #c4620a 100%);
+  border-color: rgba(94, 234, 212, 0.55);
+  background: rgba(94, 234, 212, 0.18);
 }
 
 .pricing-matrix__institutional {
-  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
+  gap: 1.25rem;
   padding: clamp(1.35rem, 2.5vw, 1.75rem);
   border-radius: 1rem;
   border: 1px solid rgba(94, 234, 212, 0.22);
@@ -259,14 +192,6 @@ const PRICING_MATRIX_STYLES = `
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.pricing-matrix__institutional-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
 }
 
 .pricing-matrix__institutional-label {
@@ -285,27 +210,6 @@ const PRICING_MATRIX_STYLES = `
   letter-spacing: -0.02em;
 }
 
-.pricing-matrix__institutional-price-block {
-  text-align: right;
-}
-
-.pricing-matrix__institutional-price {
-  display: block;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
-  color: var(--pm-accent);
-}
-
-.pricing-matrix__institutional-currency {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--pm-muted);
-}
-
 .pricing-matrix__institutional-description {
   margin: 0;
   max-width: 48rem;
@@ -314,31 +218,140 @@ const PRICING_MATRIX_STYLES = `
   color: var(--pm-muted);
 }
 
-.pricing-matrix__feature-list {
+.pricing-matrix__research-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.65rem 1.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  gap: clamp(0.85rem, 2vw, 1.15rem);
 }
 
-.pricing-matrix__feature-item {
+.pricing-matrix__research-card {
   display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: rgba(226, 232, 240, 0.92);
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem 1.15rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--pm-border);
+  background: rgba(11, 15, 25, 0.45);
 }
 
-.pricing-matrix__feature-item::before {
-  content: '✓';
-  flex-shrink: 0;
-  margin-top: 0.05rem;
-  font-size: 0.75rem;
+.pricing-matrix__research-card--featured {
+  border-color: rgba(201, 162, 39, 0.4);
+  background:
+    linear-gradient(165deg, rgba(201, 162, 39, 0.1) 0%, rgba(11, 15, 25, 0.55) 50%),
+    rgba(11, 15, 25, 0.45);
+}
+
+.pricing-matrix__research-tier {
+  margin: 0;
+  font-size: 0.5625rem;
   font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pm-accent);
+}
+
+.pricing-matrix__research-name {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.pricing-matrix__research-rate {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--pm-accent);
+}
+
+.pricing-matrix__research-desc {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--pm-muted);
+}
+
+.pricing-matrix__research-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pricing-matrix__research-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: rgba(201, 162, 39, 0.14);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: center;
+  text-decoration: none;
+  color: #fde68a;
+  cursor: pointer;
+}
+
+.pricing-matrix__research-cta--secondary {
+  border-color: rgba(148, 163, 184, 0.28);
+  background: rgba(148, 163, 184, 0.08);
+  color: #e2e8f0;
+}
+
+.pricing-matrix__pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.pricing-matrix__pillars-title {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
   color: var(--pm-accent-teal);
+}
+
+.pricing-matrix__pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.pricing-matrix__pillar {
+  padding: 0.85rem 0.95rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(11, 15, 25, 0.4);
+}
+
+.pricing-matrix__pillar-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #f8fafc;
+}
+
+.pricing-matrix__pillar-desc {
+  margin: 0;
+  font-size: 0.6875rem;
+  line-height: 1.55;
+  color: var(--pm-muted);
+}
+
+.pricing-matrix__consortium-footer {
+  margin: 0;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  font-size: 0.6875rem;
+  line-height: 1.65;
+  color: rgba(148, 163, 184, 0.85);
 }
 
 @media (max-width: 960px) {
@@ -350,16 +363,9 @@ const PRICING_MATRIX_STYLES = `
     order: -1;
   }
 
-  .pricing-matrix__feature-list {
+  .pricing-matrix__research-grid,
+  .pricing-matrix__pillars-grid {
     grid-template-columns: 1fr;
-  }
-
-  .pricing-matrix__institutional-header {
-    flex-direction: column;
-  }
-
-  .pricing-matrix__institutional-price-block {
-    text-align: left;
   }
 }
 `;
@@ -400,13 +406,40 @@ function formatPrice(amount, currency, locale) {
   }).format(amount);
 }
 
+function openSecureGatewayTab(url) {
+  if (!url || typeof window === 'undefined') return;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
 /**
- * Strategic pricing matrix — public certification tiers and institutional B2B license banner.
+ * Strategic pricing matrix — public certification tiers and Institutional Research Support Matrix.
  */
 export default function PricingMatrix({ language: languageProp }) {
   const { t, language } = usePricingTranslator(languageProp);
   const publicTiers = SAFEAI_MASTER_CONFIG?.evaluationTiers?.publicTiers ?? [];
-  const institutionalB2B = SAFEAI_MASTER_CONFIG?.evaluationTiers?.institutionalB2B ?? {};
+  const researchSupport =
+    SAFEAI_MASTER_CONFIG?.evaluationTiers?.institutionalResearchSupport ?? {};
+  const fundingGateways = SAFEAI_MASTER_CONFIG?.fundingGateways ?? {};
+  const consortiumFooter =
+    researchSupport.consortiumFooter
+    ?? t('landing.waqfLedgerBadge');
+
+  const [stripeGatewayRevision, setStripeGatewayRevision] = useState(0);
+
+  useEffect(() => {
+    const refreshStripeGateways = () => setStripeGatewayRevision((value) => value + 1);
+    window.addEventListener('storage', refreshStripeGateways);
+    window.addEventListener('safeai:stripe-gateway-change', refreshStripeGateways);
+    return () => {
+      window.removeEventListener('storage', refreshStripeGateways);
+      window.removeEventListener('safeai:stripe-gateway-change', refreshStripeGateways);
+    };
+  }, []);
+
+  const wiseUrlForKey = (tierKey) =>
+    tierKey === 'sponsor'
+      ? fundingGateways.wiseTierBUrl ?? ''
+      : fundingGateways.wiseTierAUrl ?? '';
 
   return (
     <section className="pricing-matrix" aria-labelledby="pricing-matrix-title">
@@ -464,37 +497,109 @@ export default function PricingMatrix({ language: languageProp }) {
         })}
       </div>
 
-      <aside className="pricing-matrix__institutional" aria-labelledby="pricing-matrix-institutional-name">
-        <div className="pricing-matrix__institutional-header">
-          <div>
-            <p className="pricing-matrix__institutional-label">
-              {t('landing.pricing.institutionalLabel')}
-            </p>
-            <h3 id="pricing-matrix-institutional-name" className="pricing-matrix__institutional-name">
-              {t('monetizationTiers.institutionalB2B.name')}
-            </h3>
-          </div>
-          <div className="pricing-matrix__institutional-price-block">
-            <span className="pricing-matrix__institutional-price">
-              {formatPrice(institutionalB2B?.price ?? 0, institutionalB2B?.currency ?? 'USD', language)}
-            </span>
-            <span className="pricing-matrix__institutional-currency">
-              {institutionalB2B?.currency ?? 'USD'}
-            </span>
-          </div>
+      <aside
+        className="pricing-matrix__institutional"
+        aria-labelledby="pricing-matrix-institutional-name"
+      >
+        <div>
+          <p className="pricing-matrix__institutional-label">
+            {t('landing.pricing.institutionalLabel')}
+          </p>
+          <h3 id="pricing-matrix-institutional-name" className="pricing-matrix__institutional-name">
+            {t('academicCenters.page.contributionMatrix.title')}
+          </h3>
         </div>
 
         <p className="pricing-matrix__institutional-description">
-          {t('monetizationTiers.institutionalB2B.description')}
+          {t('academicCenters.page.contributionMatrix.introduction')}
         </p>
 
-        <ul className="pricing-matrix__feature-list">
-          {INSTITUTIONAL_FEATURE_KEYS.map((featureKey) => (
-            <li key={featureKey} className="pricing-matrix__feature-item">
-              {t(`monetizationTiers.institutionalB2B.features.${featureKey}`)}
-            </li>
-          ))}
-        </ul>
+        <div className="pricing-matrix__research-grid" role="list">
+          {RESEARCH_TIER_ORDER.map((registryKey) => {
+            const tierConfig = researchSupport[registryKey];
+            if (!tierConfig) return null;
+
+            void stripeGatewayRevision;
+            const matrixKey = tierConfig.key;
+            const isFeatured = registryKey === 'tierB';
+            const stripeUrl = resolveStripeGatewayUrl(tierConfig.stripeGateway);
+            const wiseUrl = wiseUrlForKey(matrixKey);
+            const rateLabel = formatPrice(
+              tierConfig.price,
+              tierConfig.currency ?? 'USD',
+              language,
+            );
+
+            return (
+              <article
+                key={registryKey}
+                className={
+                  isFeatured
+                    ? 'pricing-matrix__research-card pricing-matrix__research-card--featured'
+                    : 'pricing-matrix__research-card'
+                }
+                role="listitem"
+              >
+                <p className="pricing-matrix__research-tier">
+                  {t(`academicCenters.page.contributionMatrix.tiers.${matrixKey}.tierLabel`)}
+                </p>
+                <h4 className="pricing-matrix__research-name">
+                  {t(`academicCenters.page.contributionMatrix.tiers.${matrixKey}.supportLabel`)}
+                </h4>
+                <p className="pricing-matrix__research-rate">
+                  {rateLabel} / {tierConfig.period ?? 'Year'}
+                </p>
+                <p className="pricing-matrix__research-desc">
+                  {t(`academicCenters.page.contributionMatrix.tiers.${matrixKey}.description`)}
+                </p>
+
+                <div className="pricing-matrix__research-actions">
+                  <a
+                    href={stripeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pricing-matrix__research-cta"
+                  >
+                    {t(`academicCenters.page.contributionMatrix.tiers.${matrixKey}.checkoutCta`)}
+                  </a>
+                  <button
+                    type="button"
+                    className="pricing-matrix__research-cta pricing-matrix__research-cta--secondary"
+                    onClick={() => openSecureGatewayTab(wiseUrl)}
+                  >
+                    {t('academicCenters.page.alternativePayments.option1.wiseCta')}
+                  </button>
+                  <Link
+                    to={INTAKE_PATH}
+                    className="pricing-matrix__research-cta pricing-matrix__research-cta--secondary"
+                  >
+                    {t('academicCenters.page.alternativePayments.option2.action')}
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <section className="pricing-matrix__pillars" aria-labelledby="pricing-matrix-pillars-title">
+          <h4 id="pricing-matrix-pillars-title" className="pricing-matrix__pillars-title">
+            {t('academicCenters.page.pillars.title')}
+          </h4>
+          <div className="pricing-matrix__pillars-grid" role="list">
+            {PILLAR_KEYS.map((key) => (
+              <article key={key} className="pricing-matrix__pillar" role="listitem">
+                <h5 className="pricing-matrix__pillar-title">
+                  {t(`academicCenters.page.pillars.${key}.title`)}
+                </h5>
+                <p className="pricing-matrix__pillar-desc">
+                  {t(`academicCenters.page.pillars.${key}.description`)}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <p className="pricing-matrix__consortium-footer">{consortiumFooter}</p>
       </aside>
     </section>
   );

@@ -243,6 +243,7 @@
       "scanningLabel": "Ejecutando escaneo de integridad del registro soberano...",
       "statusValid": "🟢 ESTADO: VALIDADO Y PROCEDENCIA SELLADA",
       "statusFailed": "🔴 ESTADO: FALLO DE VERIFICACIÓN DEL REGISTRO. HASH NO VERIFICADO O ALTERADO",
+      "statusPending": "Registro no anclado o sincronización del ledger pendiente",
       "receiptTitle": "Recibo seguro del registro",
       "registryAuthorityValue": "WaqfLedger.tech",
       "institutionalHolder": "Credencial institucional registrada ({credentialId})",
@@ -253,9 +254,11 @@
       "fields": {
         "candidateName": "Candidato certificado",
         "complianceLevel": "Nivel de cumplimiento",
-        "timestamp": "Marca de tiempo del registro",
+        "score": "Puntuación",
+        "timestamp": "Fecha",
         "registryAuthority": "Autoridad del registro",
-        "stateHash": "Hash de estado criptográfico"
+        "stateHash": "Hash de estado criptográfico",
+        "waqfLedgerHash": "Hash WaqfLedger"
       },
       "vault": {
         "title": "Bóveda de verificación matemática — Contenedor de auditoría corporativa",
@@ -281,7 +284,7 @@
       "badgeName": "Insignia oficial",
       "ledgerLogged": "Registro inmutable elegible para WaqfLedger.tech",
       "credentialLockTitle": "Verifique su credencial de cumplimiento",
-      "linkedinAchievementClaim": "Reclamar certificado vía difusión de logro en LinkedIn",
+      "linkedinAchievementClaim": "Compartir en LinkedIn / Copiar credenciales",
       "failedTitle": "Umbral de certificación no alcanzado",
       "failedSubtitle": "Se requiere una puntuación de cumplimiento ponderada mínima para la certificación institucional",
       "retryExam": "Revisar escenarios e intentar de nuevo",
@@ -773,6 +776,8 @@
       "registryNetwork": "RED DE REGISTRO: WaqfLedger.tech",
       "auditHashLabel": "HASH DE AUDITORÍA:",
       "status": "ESTADO: REGISTRADO DE FORMA SEGURA Y SELLADO POR PROCEDENCIA",
+      "statusAnchored": "Anclado en WaqfLedger",
+      "statusLocal": "SHA-256 local verificado",
       "signatureName": "Adel El Bouzagaoui",
       "signatureTitle": "Director de Investigación Regulatoria, L'Institut Article 4",
       "certifiedCandidate": "Candidato Certificado",
@@ -811,7 +816,7 @@
         "title": "Matriz de apoyo a la investigación institucional y contribución a nodos",
         "introduction": "La participación se estructura estrictamente como una contribución voluntaria para apoyar la investigación open access global, subvencionar el ancho de banda cloud y compensar la carga continua de compilación de datos doctorales — explícitamente NO como licencia de software comercial. Dos vías graduadas apoyan el despliegue global del protocolo: la subvención voluntaria de apoyo a la investigación ($1,500 USD / año) compensa costos de cómputo del marco de pruebas fundamental, mientras el patrocinio de nodo de infraestructura ($3,500 USD / año) patrocina nodos WaqfLedger, telemetría del registrador y marcos de syllabus del Artículo 4.",
         "recommendedBadge": "Recomendado",
-        "waqfLedgerFootnote": "Impulsado por el motor del Consorcio WaqfLedger de Acceso Abierto — Un registro de confianza permanente de beneficio público dedicado a mantener la integridad criptográfica de los registros globales de cumplimiento de IA. Host operativo del registro: {ledgerHost}.",
+        "waqfLedgerFootnote": "Impulsado por el motor del Consorcio WaqfLedger de Acceso Abierto — Un registro de confianza permanente de beneficio público dedicado a mantener la integridad criptográfica de los registros globales de cumplimiento de IA.",
         "tiers": {
           "ledgerNote": "El acceso a la evaluación es gratuito; los rastros de validación permanentes y la indexación de verificación en {ledgerHost} aseguran cada atestación.",
           "contributor": {

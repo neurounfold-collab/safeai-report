@@ -5,7 +5,7 @@ import {
   STRIPE_PRODUCTION_STORAGE_KEY,
 } from '../../../utils/stripeGateway.js';
 import { DEFAULT_PARTNER_METRICS } from '../../dashboard/components/PartnerOverview.jsx';
-import { resolveVerificationRecord } from '../../verify/utils/verificationRegistry.js';
+import { resolveSeededVerificationRecord } from '../../verify/utils/verificationRegistry.js';
 import { useAdminTranslator } from '../hooks/useAdminTranslator.js';
 import {
   FUNDING_INFRASTRUCTURE_USD,
@@ -571,7 +571,7 @@ function buildAuditRegistryRows() {
     );
     const tierSlug = certification?.tierKey?.match(/level0[1-3]/)?.[0];
     const tier = tierSlug ? tierSlugToLevel[tierSlug] : 'Level 01';
-    const record = resolveVerificationRecord(entry?.stateHash?.toLowerCase?.() ?? '');
+    const record = resolveSeededVerificationRecord(entry?.stateHash?.toLowerCase?.() ?? '');
 
     return {
       timestamp: entry?.timestamp,

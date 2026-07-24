@@ -13,6 +13,7 @@ function envString(key, fallback) {
 /** Production-safe endpoint defaults — never rely solely on host .env injection. */
 const DEPLOYMENT_DEFAULTS = {
   waqfLedgerApiEndpoint: 'https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance',
+  waqfLedgerVerifyEndpoint: 'https://waqfledger-api.vercel.app/api/v1/ledger/verify',
   emailRouterEndpoint: '/api/contact.php',
   stripeTierAUrl: 'https://donate.stripe.com/eVq9ATfOzfLkaTj3kQ3Nm03',
   stripeTierBUrl: 'https://donate.stripe.com/eVq6oH45R7eO7H76x23Nm04',
@@ -47,6 +48,10 @@ export const SAFEAI_MASTER_CONFIG = {
     waqfLedgerApiEndpoint: envString(
       'VITE_WAQFLEDGER_API_ENDPOINT',
       DEPLOYMENT_DEFAULTS.waqfLedgerApiEndpoint,
+    ),
+    waqfLedgerVerifyEndpoint: envString(
+      'VITE_WAQFLEDGER_VERIFY_ENDPOINT',
+      DEPLOYMENT_DEFAULTS.waqfLedgerVerifyEndpoint,
     ),
     protocol: "Sovereign Algorithmic Governance Ledger",
     encryptionProtocol: "SHA-256 tamper-evident state hashing",
@@ -123,7 +128,7 @@ export const SAFEAI_MASTER_CONFIG = {
     ],
     institutionalB2B: {
       id: "institutional_b2b_center",
-      name: "Authorized Academic Center License",
+      name: "Infrastructure Node Sponsorship",
       price: 3500,
       currency: "USD",
       allottedTokens: 50,
@@ -133,6 +138,38 @@ export const SAFEAI_MASTER_CONFIG = {
         "Immutable Verification Logging natively on WaqfLedger.tech",
         "Authorized Article 4 Training Syllabus Framework Packages",
       ],
+    },
+    /**
+     * Authoritative Institutional Research Support Matrix — voluntary contribution tracks.
+     * Tier A: Voluntary Research Support Grant ($1,500 USD / Year)
+     * Tier B: Infrastructure Node Sponsorship ($3,500 USD / Year)
+     */
+    institutionalResearchSupport: {
+      tierA: {
+        key: 'contributor',
+        tierLabel: 'Tier A',
+        name: 'Voluntary Research Support Grant',
+        price: 1500,
+        currency: 'USD',
+        period: 'Year',
+        stripeGateway: 'researchContributor',
+      },
+      tierB: {
+        key: 'sponsor',
+        tierLabel: 'Tier B',
+        name: 'Infrastructure Node Sponsorship',
+        price: 3500,
+        currency: 'USD',
+        period: 'Year',
+        stripeGateway: 'nodeSponsor',
+      },
+      pillars: [
+        'complianceTelemetryAnchoring',
+        'turnkeyCurriculumIntegration',
+        'advancedRegistrarTelemetry',
+      ],
+      consortiumFooter:
+        'Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records.',
     },
   },
 };

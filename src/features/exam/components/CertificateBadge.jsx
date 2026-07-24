@@ -112,12 +112,20 @@ function buildHashWatermark(hash, rows = 14, cols = 6) {
  * @param {string} props.candidateName — Candidate full legal name.
  * @param {string} props.tierId — Certification tier (e.g. "Level 01").
  * @param {string | null} props.stateHash — 64-character SHA-256 verification state hash.
+ * @param {'anchored' | 'local' | null | undefined} props.ledgerStatus — Ledger anchor state after social unlock.
  * @param {(key: string) => string} props.t — i18n translator.
  */
-export default function CertificateBadge({ candidateName, tierId, stateHash, t }) {
+export default function CertificateBadge({ candidateName, tierId, stateHash, ledgerStatus, t }) {
   const competencyKey = TIER_COMPETENCY_KEYS[tierId] ?? TIER_COMPETENCY_KEYS['Level 01'];
   const displayHash = stateHash ?? '0'.repeat(64);
   const watermarkText = useMemo(() => buildHashWatermark(displayHash), [displayHash]);
+
+  const statusLabel =
+    ledgerStatus === 'anchored'
+      ? t('academy.badge.statusAnchored')
+      : ledgerStatus === 'local'
+        ? t('academy.badge.statusLocal')
+        : t('academy.badge.status');
 
   return (
     <article
@@ -174,7 +182,7 @@ export default function CertificateBadge({ candidateName, tierId, stateHash, t }
               {t('academy.badge.auditHashLabel')}{' '}
               <span className="text-emerald-400/90">{displayHash}</span>
             </p>
-            <p className="mt-1 text-emerald-400/80">{t('academy.badge.status')}</p>
+            <p className="mt-1 text-emerald-400/80">{statusLabel}</p>
           </div>
 
           <div className="flex flex-col items-center justify-end text-center sm:items-end sm:text-right">
