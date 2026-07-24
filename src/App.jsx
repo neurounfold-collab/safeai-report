@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { SAFEAI_MASTER_CONFIG } from './config/constants.js';
 import AppShell from './layouts/AppShell.jsx';
 import DashboardLayout from './layouts/DashboardLayout.jsx';
@@ -129,9 +130,11 @@ function AppRoutes() {
         <Route
           path="/dashboard"
           element={
-            <EnterpriseShellRoute>
-              <PartnerOverview />
-            </EnterpriseShellRoute>
+            <ProtectedRoute redirectTo="/admin">
+              <EnterpriseShellRoute>
+                <PartnerOverview />
+              </EnterpriseShellRoute>
+            </ProtectedRoute>
           }
         />
         <Route
@@ -201,9 +204,11 @@ function AppRoutes() {
         <Route
           path="/admin"
           element={
-            <PublicShellRoute>
-              <AdminDashboardView />
-            </PublicShellRoute>
+            <ProtectedRoute redirectTo="/admin">
+              <PublicShellRoute>
+                <AdminDashboardView />
+              </PublicShellRoute>
+            </ProtectedRoute>
           }
         />
         <Route

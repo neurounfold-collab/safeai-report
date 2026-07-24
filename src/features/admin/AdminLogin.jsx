@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthTranslator } from '../auth/hooks/useAuthTranslator.js';
 
 export const ADMIN_SESSION_KEY = 'safeai_admin_active_session';
@@ -22,25 +22,12 @@ const HEX_TICK_MS = 50;
  *
  * 1. USERNAME — Set VITE_ADMIN_USERNAME to the operator identifier.
  *
- * 2. PASSWORD — Choose a new passphrase, then compute its SHA-256 hex digest
- *    (lowercase, 64 characters). In a secure browser console:
- *
- *      async function sha256(text) {
- *        const buf = await crypto.subtle.digest(
- *          'SHA-256',
- *          new TextEncoder().encode(text),
- *        );
- *        return [...new Uint8Array(buf)]
- *          .map((b) => b.toString(16).padStart(2, '0'))
- *          .join('');
- *      }
- *      sha256('YourNewPassphrase').then(console.log);
- *
- *    Paste the resulting digest into VITE_ADMIN_PASSWORD_HASH.
+ * 2. PASSWORD — Set VITE_ADMIN_PASSWORD to a strong passphrase. Copy from
+ *    .env.example into a local .env / .env.local (gitignored) and rotate
+ *    regularly. Prefer a serverless auth endpoint in production so secrets
+ *    never ship in the client bundle.
  *
  * 3. DEPLOY — Inject env vars via the host/CI secret store, then rebuild.
- *    Prefer a serverless auth endpoint when available so digests never ship
- *    in the client bundle.
  *
  * 4. INVALIDATE — Clear active sessions:
  *    sessionStorage.removeItem('safeai_admin_active_session')
@@ -275,30 +262,40 @@ export async function hashPasswordFingerprint(plainText) {
  * Resolve admin credentials exclusively from secure environment variables.
  * No public JSON descriptor, plaintext fallback, or SAFEAI_MASTER_CONFIG secret.
  *
- * @returns {{ username: string, passwordHash: string }}
+ * @returns {{ username: string, password: string }}
  */
 function resolveAdminSecurityConfig() {
   const username = import.meta.env.VITE_ADMIN_USERNAME;
-  const passwordHash = import.meta.env.VITE_ADMIN_PASSWORD_HASH;
+  const password = import.meta.env.VITE_ADMIN_PASSWORD;
 
   if (
     typeof username !== 'string' ||
-    typeof passwordHash !== 'string' ||
+    typeof password !== 'string' ||
     !username.trim() ||
-    !passwordHash.trim()
+    !password
   ) {
-    throw new Error('ADMIN_CONFIG_UNAVAILABLE');
-  }
-
-  const normalizedHash = passwordHash.trim().toLowerCase();
-  if (!/^[a-f0-9]{64}$/.test(normalizedHash)) {
     throw new Error('ADMIN_CONFIG_UNAVAILABLE');
   }
 
   return {
     username: username.trim(),
-    passwordHash: normalizedHash,
+    password,
   };
+}
+
+/**
+ * Issue a session-bound auth token: random nonce HMAC-bound to issuedAt via
+ * SHA-256 so the stored session record is cryptographically session-scoped.
+ *
+ * @param {number} issuedAt
+ * @returns {Promise<string>}
+ */
+async function mintSessionToken(issuedAt) {
+  const nonceBytes = new Uint8Array(32);
+  globalThis.crypto.getRandomValues(nonceBytes);
+  const nonce = bufferToHex(nonceBytes.buffer);
+  const material = `safeai-admin-session|${nonce}|${issuedAt}`;
+  return hashPasswordFingerprint(material);
 }
 
 function readSessionRecord() {
@@ -332,12 +329,6 @@ function writeSessionRecord(record) {
   }
 }
 
-function generateSessionToken() {
-  const bytes = new Uint8Array(32);
-  globalThis.crypto.getRandomValues(bytes);
-  return bufferToHex(bytes.buffer);
-}
-
 export function isAdminSessionValid() {
   const record = readSessionRecord();
   if (!record) return false;
@@ -351,10 +342,15 @@ export function isAdminSessionValid() {
   return true;
 }
 
-export function createAdminSession() {
+/**
+ * Create a cryptographically session-bound auth token in sessionStorage.
+ * @returns {Promise<{ token: string, issuedAt: number, lastActivityAt: number }>}
+ */
+export async function createAdminSession() {
   const now = Date.now();
+  const token = await mintSessionToken(now);
   const record = {
-    token: generateSessionToken(),
+    token,
     issuedAt: now,
     lastActivityAt: now,
   };
@@ -438,8 +434,8 @@ function CryptographicTerminal({ label }) {
 }
 
 /**
- * Hash-verified administrative login gate with sessionStorage persistence.
- * Credentials resolve from VITE_ADMIN_* environment variables only.
+ * Environment-driven administrative login gate with sessionStorage persistence.
+ * Credentials resolve from VITE_ADMIN_USERNAME / VITE_ADMIN_PASSWORD only.
  *
  * @param {object} props
  * @param {() => void} [props.onAuthenticated] — callback after successful verification
@@ -447,6 +443,7 @@ function CryptographicTerminal({ label }) {
 export default function AdminLogin({ onAuthenticated }) {
   const { t } = useAuthTranslator();
   const navigate = useNavigate();
+  const location = useLocation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
@@ -464,7 +461,7 @@ export default function AdminLogin({ onAuthenticated }) {
         setAuthError(
           t(
             'admin.board.login.error',
-            'Hash-verified credential validation failed. Access denied under Article 4 security governance protocols.',
+            'Credential validation failed. Access denied under Article 4 security governance protocols.',
           ),
         );
         return;
@@ -486,23 +483,28 @@ export default function AdminLogin({ onAuthenticated }) {
           return;
         }
 
-        const passwordHash = await hashPasswordFingerprint(trimmedPassword);
         const usernameMatch = timingSafeEqual(trimmedUsername, securityConfig.username);
-        const passwordMatch = timingSafeEqual(passwordHash, securityConfig.passwordHash);
+        const passwordMatch = timingSafeEqual(trimmedPassword, securityConfig.password);
 
         if (usernameMatch && passwordMatch) {
-          createAdminSession();
+          await createAdminSession();
           setUsername('');
           setPassword('');
           onAuthenticated?.();
-          navigate(ADMIN_DASHBOARD_PATH, { replace: true });
+
+          const fromPath = location.state?.from?.pathname;
+          const destination =
+            typeof fromPath === 'string' && fromPath.startsWith('/') && fromPath !== '/admin'
+              ? fromPath
+              : ADMIN_DASHBOARD_PATH;
+          navigate(destination, { replace: true });
           return;
         }
 
         setAuthError(
           t(
             'admin.board.login.error',
-            'Hash-verified credential validation failed. Access denied under Article 4 security governance protocols.',
+            'Credential validation failed. Access denied under Article 4 security governance protocols.',
           ),
         );
         setPassword('');
@@ -510,14 +512,14 @@ export default function AdminLogin({ onAuthenticated }) {
         setAuthError(
           t(
             'admin.board.login.cryptoError',
-            'Cryptographic subsystem unavailable. Secure context required for SHA-256 verification.',
+            'Cryptographic subsystem unavailable. Secure context required for session token issuance.',
           ),
         );
       } finally {
         setIsVerifying(false);
       }
     },
-    [username, password, navigate, onAuthenticated, t],
+    [username, password, navigate, location.state, onAuthenticated, t],
   );
 
   return (
@@ -593,7 +595,7 @@ export default function AdminLogin({ onAuthenticated }) {
 
           <button type="submit" className="admin-login__submit" disabled={isVerifying}>
             {isVerifying
-              ? t('admin.board.login.verifying', 'Verifying fingerprint…')
+              ? t('admin.board.login.verifying', 'Verifying credentials…')
               : t('admin.board.gate.submit', 'Authenticate')}
           </button>
         </form>
