@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createTranslator, getActiveLanguage } from '../../i18n/index.js';
 import { getDomainContext, submitIntakeForm } from '../../utils/emailRouter.js';
 

@@ -1,13 +1,30 @@
-# L'Institut Article 4 (A4I) — TOEFL for AI Literacy Standard
-> Public open-access research repository and standardized compliance benchmarking protocol tracking human oversight competency under EU AI Act Article 4 deployer obligations.
+# Open Institutional AI Readiness Framework (OIARF v2.0.0)
+> SafeAI.report is the open-access portal hosting the Open Institutional AI Readiness Framework (OIARF v2.0.0) and the A4-ALAM Literacy Matrix.
 
-## Core System Architecture
-- [Home](https://safeai.report): Institutional manifesto, baseline academic authority indicators, and direct portal access links.
-- [Academy Hub](https://safeai.report/academy): Universal open-access diagnostic testing player. Houses the complimentary Cisco-grade 30-scenario evaluation matrix spanning three operational governance tracks.
-- [Academic Centers](https://safeai.report/academic-centers): Voluntary institutional research support matrix, cloud node contribution infrastructure options, and B2B grant intake pathways.
-- [Sovereign Registry](https://safeai.report/verify): Public ledger inspection gateway executing automated SHA-256 state hash validation searches powered by WaqfLedger.tech nodes.
+## System Metadata
+- Framework: Open Institutional AI Readiness Framework (OIARF)
+- Version: 2.0.0-OIARF
+- Academic DOI: 10.5281/zenodo.21516198
+- Author: Adel El Bouzagaoui
+- Methodology: Multi-Criteria Decision Analysis (MCDA)
+- Portal: https://safeai.report
+- Assessment Engine: https://safeai.report/readiness
+- Specification Repository: https://github.com/neurounfold-collab/safeai-report
 
-## Academic Entity Authority
-- Academic Authority: Professor Adel El Bouzagaoui
-- Regulatory Target: Statutory human risk layer verification under mandatory EU AI Act Article 4 compliance metrics (Enforcement timeline starting August 2026).
-- Cryptographic Proof Protocol: Serverless async background ledger streaming utilizing AES-256 block structures and SHA-256 integrity validation strings.
+## The 8 OIARF Dimensions
+1. Leadership & Strategy (Weight: 0.15)
+2. Governance (Weight: 0.15)
+3. AI Literacy & A4-ALAM Competencies (Weight: 0.20)
+4. Technology Infrastructure (Weight: 0.10)
+5. Data Readiness (Weight: 0.10)
+6. Risk & Compliance Alignment (Weight: 0.15)
+7. Workforce & Culture (Weight: 0.05)
+8. Operational Readiness & Compute Efficiency (Weight: 0.10)
+
+## Mathematical Composite
+Isr = Sum(W_d * D_d) for d = 1 to 8.
+
+## Integrity Layer
+- Engine: WaqfLedger Open-Access Consortium Engine
+- Verification: SHA-256 tamper-evident hash receipts
+- Data Policy: Zero-data retention (processed in-memory at the edge).

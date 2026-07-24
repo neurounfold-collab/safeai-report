@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 /** Maps certification tier IDs to academy.badge.tier.* translation keys. */
 const TIER_COMPETENCY_KEYS = {

@@ -1,4 +1,4 @@
-import React, { Component, Suspense, useCallback, useEffect, useState } from 'react';
+import { Component, Suspense, useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SAFEAI_MASTER_CONFIG } from '../../config/constants.js';
 import { createTranslator, getActiveLanguage, isRtlLanguage } from '../../i18n/index.js';
@@ -439,8 +439,16 @@ const READINESS_STYLES = `
 
 .readiness-fallback,
 .readiness-error {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   max-width: 36rem;
-  margin: 3rem auto;
+  min-height: calc(100vh - 4.25rem);
+  min-height: calc(100dvh - 4.25rem);
+  margin: 0 auto;
   padding: 1.5rem;
   text-align: center;
   color: var(--rd-muted);

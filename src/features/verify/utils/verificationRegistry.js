@@ -14,8 +14,6 @@ export const VERIFICATION_STORAGE_KEYS = {
   MASTER_TEST_AUDIT: 'SAFEAI_MASTER_TEST_AUDIT',
 };
 
-export const MASTER_TEST_AUDIT_CODE = 'A4I_MASTER_TEST_AUDIT';
-
 const DEFAULT_SESSION_CANDIDATE_NAME = 'Official Test Auditor';
 const LOCAL_SESSION_REGISTRY_AUTHORITY =
   'WaqfLedger.tech (Vercel Simulation Core Network)';

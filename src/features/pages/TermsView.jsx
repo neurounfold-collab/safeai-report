@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createTranslator, getActiveLanguage, isRtlLanguage } from '../../i18n/index.js';
 import { SAFEAI_MASTER_CONFIG } from '../../config/constants.js';
 

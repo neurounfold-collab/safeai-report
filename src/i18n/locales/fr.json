@@ -21,7 +21,7 @@
   "infrastructure": {
     "ledgerHost": "WaqfLedger.tech",
     "protocol": "Registre souverain de gouvernance algorithmique",
-    "encryptionProtocol": "Hachage cryptographique de blocs AES-256",
+    "encryptionProtocol": "Hachage d'état inviolable SHA-256",
     "targetFramework": "Métriques de conformité — Loi européenne sur l'IA, article 4"
   },
   "growthMarketing": {
@@ -112,7 +112,7 @@
     },
     "verification": {
       "title": "Vérification immuable",
-      "description": "Hachage cryptographique de blocs AES-256 avec journalisation immuable sur WaqfLedger.tech."
+      "description": "Hachage d'état inviolable SHA-256 avec journalisation immuable sur WaqfLedger.tech."
     },
     "governance": {
       "title": "Ancrage de télémétrie de conformité",
@@ -350,7 +350,7 @@
       "metaDescription": "Hub de préparation diagnostique Article 4 : 3 filières, 9 modules, examens de 30 scénarios, seuil 85 %, journalisation SHA-256 WaqfLedger.tech sous L'INSTITUT ARTICLE 4 (A4I).",
       "citationLead": "Hub de préparation à la littératie déployeur Article 4 de la loi européenne sur l'IA : 3 filières (Niveau 01 opérationnel, Niveau 02 exécutif, Niveau 03 auditeur), 9 modules curriculum, examen standardisé de 30 scénarios par filière, seuil de conformité 85 %, provenance SHA-256 WaqfLedger.tech. Autorité : L'INSTITUT ARTICLE 4 (A4I). Application : août 2026.",
       "headline": "Hub de préparation diagnostique Article 4",
-      "subtitle": "9 modules · 3 filières de gouvernance · 30 scénarios par examen · Évaluation open access (0 USD) · Protocole credential AES-256 / SHA-256",
+      "subtitle": "9 modules · 3 filières de gouvernance · 30 scénarios par examen · Évaluation open access (0 USD) · Protocole credential SHA-256 inviolable",
       "trackPickerLabel": "Sélection du niveau de préparation",
       "curriculumLabel": "Index des modules curriculum",
       "faqSectionTitle": "Index de référence du protocole Article 4",
@@ -666,7 +666,7 @@
             "title": "Provenance de lignée de données et orchestration hash registre",
             "intro": "Les auditeurs experts valident que les credentials de certification et les artefacts d'audit sont journalisés de manière immuable avec intégrité cryptographique sur WaqfLedger.tech.",
             "paragraph1": "La provenance de lignée de données trace comment les données d'entraînement, versions de modèle et décisions opérateur s'enchaînent pour la reconstruction d'enquête réglementaire.",
-            "paragraph2": "L'orchestration hash registre garantit que les certifications réussies produisent des hashes de blocs AES-256 vérifiables sur le registre souverain de gouvernance algorithmique.",
+            "paragraph2": "L'orchestration hash registre garantit que les certifications réussies produisent des hashes d'état inviolables SHA-256 vérifiables sur le registre souverain de gouvernance algorithmique.",
             "flow": {
               "title": "Flux de validation de provenance cryptographique",
               "step1": {
@@ -678,7 +678,7 @@
               "step2": {
                 "label": "Hasher",
                 "body": "Générer le digest d'intégrité pour le bundle d'artefacts d'audit.",
-                "item1": "Appliquer le protocole de hachage de blocs AES-256",
+                "item1": "Appliquer le protocole de hachage d'état inviolable SHA-256",
                 "item2": "Inclure le score d'examen et les métadonnées de niveau"
               },
               "step3": {
@@ -713,11 +713,11 @@
             },
             "q3": {
               "prompt": "Un hash de certification sur WaqfLedger.tech échoue la vérification tierce. Quelle est votre première étape d'investigation ?",
-              "context": "Considérez l'intégrité de la lignée de données et les procédures de reconstruction du digest AES-256.",
+              "context": "Considérez l'intégrité de la lignée de données et les procédures de reconstruction du digest SHA-256.",
               "options": {
                 "a": "Émettre une nouvelle certification sans vérification du registre",
                 "b": "Contacter le candidat pour repasser l'examen immédiatement",
-                "c": "Reconstruire la lignée de données et vérifier l'intégrité du digest AES-256 contre les artefacts sources",
+                "c": "Reconstruire la lignée de données et vérifier l'intégrité du digest SHA-256 contre les artefacts sources",
                 "d": "Retirer le credential de l'affichage public sans investigation"
               }
             }
@@ -760,7 +760,7 @@
     "faq": {
       "q1": {
         "question": "Comment les diplômes sont enregistrés sur WaqfLedger.tech ?",
-        "answer": "Les certifications réussies sont enregistrées de manière immuable via le hachage cryptographique de blocs AES-256 sur le registre souverain de gouvernance algorithmique à WaqfLedger.tech."
+        "answer": "Les certifications réussies sont enregistrées de manière immuable via le hachage d'état inviolable SHA-256 sur le registre souverain de gouvernance algorithmique à WaqfLedger.tech."
       },
       "q2": {
         "question": "Qu'est-ce que la certification standard TOEFL de littératie IA ?",
@@ -955,9 +955,9 @@
       "dataProtection": "Protection des données et conformité RGPD",
       "dataProtectionBody": "safeAI.report maintient une stricte conformité au Règlement général sur la protection des données (RGPD). Les tableaux de télémétrie académique anonymes — indices agrégés de performance par scénario, distributions de scores de conformité et métriques d'utilisation des jetons — sont collectés uniquement pour les rapports de supervision institutionnelle. Ces structures de télémétrie sont architecturalement découplées des informations personnelles identifiables (PII) : aucun nom de candidat, adresse e-mail, identifiant gouvernemental, donnée biométrique ou réponse en texte libre contenant des références personnelles n'est conservé en stockage persistant. Les principes de minimisation des données, de limitation des finalités et de limitation de la conservation sont appliqués au niveau applicatif. Lorsque des données de contact transactionnelles sont soumises via les formulaires d'admission institutionnels, ces enregistrements sont traités exclusivement pour la correspondance relative aux licences et ne sont pas fusionnés dans les pipelines de télémétrie anonymes.",
       "registryGovernance": "Gouvernance du registre et souveraineté de vérification",
-      "registryGovernanceBody": "Tous les événements de certification et activations de licences institutionnelles B2B sont attestés cryptographiquement par des protocoles de souveraineté de vérification avant publication immuable sur WaqfLedger.tech. Chaque délivrance de certification subit une validation en plusieurs étapes : (1) vérification de l'intégrité de l'examen selon la matrice d'évaluation autorisée de 30 scénarios Article 4 ; (2) confirmation de l'autorité institutionnelle sous L'INSTITUT ARTICLE 4 (A4I) ; (3) hachage cryptographique AES-256 de la charge utile d'état de certification ; et (4) ancrage souverain sur le registre sous les identifiants Global Capital Intelligence LLC (RNA : W343030686, SIRET : 92288647800010, ICE : 001625897000071). Les hashes immuables publiés sur WaqfLedger.tech constituent l'enregistrement de vérification faisant autorité et ne peuvent être modifiés, remplacés ou révoqués sans un événement de modification de gouvernance formellement consigné.",
+      "registryGovernanceBody": "Tous les événements de certification et activations de licences institutionnelles B2B sont attestés cryptographiquement par des protocoles de souveraineté de vérification avant publication immuable sur WaqfLedger.tech. Chaque délivrance de certification subit une validation en plusieurs étapes : (1) vérification de l'intégrité de l'examen selon la matrice d'évaluation autorisée de 30 scénarios Article 4 ; (2) confirmation de l'autorité institutionnelle sous L'INSTITUT ARTICLE 4 (A4I) ; (3) hachage d'état inviolable SHA-256 de la charge utile d'état de certification ; et (4) ancrage souverain sur le registre sous les identifiants Global Capital Intelligence LLC (RNA : W343030686, SIRET : 92288647800010, ICE : 001625897000071). Les hashes immuables publiés sur WaqfLedger.tech constituent l'enregistrement de vérification faisant autorité et ne peuvent être modifiés, remplacés ou révoqués sans un événement de modification de gouvernance formellement consigné.",
       "compliance": "Cadre de conformité réglementaire",
-      "complianceBody": "Les certifications sont enregistrées de manière immuable sur le registre souverain de gouvernance algorithmique à WaqfLedger.tech via le hachage cryptographique de blocs AES-256. L'autorité académique repose sur L'INSTITUT ARTICLE 4 (A4I) sous le Professeur Adel El Bouzagaoui."
+      "complianceBody": "Les certifications sont enregistrées de manière immuable sur le registre souverain de gouvernance algorithmique à WaqfLedger.tech via le hachage d'état inviolable SHA-256. L'autorité académique repose sur L'INSTITUT ARTICLE 4 (A4I) sous le Professeur Adel El Bouzagaoui."
     },
     "terms": {
       "eyebrow": "Cadre juridique open access",
@@ -1145,7 +1145,9 @@
             "ledgerBlock": "Bloc registre principal",
             "tier": "Niveau sélectionné",
             "paymentTerms": "Conditions de paiement",
-            "settlementCoordinates": "Coordonnées du compte de règlement",
+            "settlementCoordinates": "Demande sécurisée de facture de virement",
+            "secureDispatchNotice": "Les coordonnées bancaires (routing, compte, SWIFT) ne sont jamais exposées dans le bundle client. Demandez une facture de virement institutionnelle autorisée via le canal de contact sécurisé.",
+            "requestWireInvoice": "Demander une facture de virement",
             "beneficiary": "Bénéficiaire",
             "bank": "Banque",
             "routing": "Routing",

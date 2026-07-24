@@ -1,6 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';
 import { PASS_THRESHOLD, buildDoctoralDatasetPayload } from '../utils/researchTelemetrySeed.js';
+
+const WIRE_INVOICE_REQUEST_PATH =
+  SAFEAI_MASTER_CONFIG?.fundingGateways?.wireInvoiceRequestPath ??
+  '/contact?subject=wire_invoice';
 
 const WIRE_FILTER_ALL = 'all';
 const WIRE_FILTER_AUTO = 'auto';
@@ -600,8 +604,6 @@ const TRACK_LABELS = {
   institutional_funding: 'FND',
 };
 
-const mercuryNodeDetails = SAFEAI_MASTER_CONFIG?.fundingGateways?.mercuryNodeDetails ?? {};
-
 function escapeCsvValue(value) {
   const stringValue = String(value ?? '');
   if (/[",\n\r]/.test(stringValue)) {
@@ -871,39 +873,23 @@ function MercuryInvoiceModal({ row, t, onClose }) {
             <h3 className="mercury-invoice-print__section-title">
               {t(
                 'admin.board.research.table.invoice.settlementCoordinates',
-                'Settlement Account Coordinates',
+                'Secure Wire Invoice Request',
               )}
             </h3>
             <div className="mercury-invoice-print__coordinates">
               <p>
-                <strong>{t('admin.board.research.table.invoice.beneficiary', 'Beneficiary')}:</strong>{' '}
-                {mercuryNodeDetails.beneficiary}
+                {t(
+                  'admin.board.research.table.invoice.secureDispatchNotice',
+                  'Bank routing, account, and SWIFT coordinates are never rendered in the client bundle. Request an authorized institutional wire invoice through the secure contact channel.',
+                )}
               </p>
               <p>
-                <strong>{t('admin.board.research.table.invoice.bank', 'Bank')}:</strong>{' '}
-                {mercuryNodeDetails.bank}
-              </p>
-              <p>
-                <strong>{t('admin.board.research.table.invoice.routing', 'Routing')}:</strong>{' '}
-                {mercuryNodeDetails.routing}
-              </p>
-              <p>
-                <strong>{t('admin.board.research.table.invoice.account', 'Account')}:</strong>{' '}
-                {mercuryNodeDetails.account}
-              </p>
-              <p>
-                <strong>{t('admin.board.research.table.invoice.swift', 'SWIFT')}:</strong>{' '}
-                {mercuryNodeDetails.swift}
-              </p>
-              <p>
-                <strong>
+                <a href={WIRE_INVOICE_REQUEST_PATH}>
                   {t(
-                    'admin.board.research.table.invoice.intermediarySwift',
-                    'Intermediary SWIFT',
+                    'admin.board.research.table.invoice.requestWireInvoice',
+                    'Request wire invoice',
                   )}
-                  :
-                </strong>{' '}
-                {mercuryNodeDetails.intermediarySwift}
+                </a>
               </p>
             </div>
           </section>

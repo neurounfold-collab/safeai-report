@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { createTranslator, getActiveLanguage } from '../../i18n/index.js';
 import { isValidSha256HexHash } from '../verify/utils/waqfLedgerSimulator.js';

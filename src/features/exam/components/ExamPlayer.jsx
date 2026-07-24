@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createTranslator, getActiveLanguage } from '../../../i18n/index.js';
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';

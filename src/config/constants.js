@@ -49,7 +49,7 @@ export const SAFEAI_MASTER_CONFIG = {
       DEPLOYMENT_DEFAULTS.waqfLedgerApiEndpoint,
     ),
     protocol: "Sovereign Algorithmic Governance Ledger",
-    encryptionProtocol: "AES-256 Cryptographic Block Hashing",
+    encryptionProtocol: "SHA-256 tamper-evident state hashing",
     targetFramework: "EU AI Act Article 4 Compliance Metrics",
     emailRouterEndpoint: envString(
       'VITE_EMAIL_ROUTER_ENDPOINT',
@@ -84,24 +84,10 @@ export const SAFEAI_MASTER_CONFIG = {
     wiseTierAUrl: DEPLOYMENT_DEFAULTS.wiseTierAUrl,
     wiseTierBUrl: DEPLOYMENT_DEFAULTS.wiseTierBUrl,
     /**
-     * @secureMailRouterRead
-     * Mercury US wire node — parsed by emailRouter.js and /api/contact.php for sovereign SWIFT settlement.
+     * Wire settlement coordinates are never shipped in the client bundle.
+     * Institutional invoice / SWIFT details are fulfilled out-of-band via secure contact intake.
      */
-    mercuryNodeDetails: {
-      beneficiary: "Global Capital Intelligence LLC",
-      beneficiaryAddress: "1209 MOUNTAIN ROAD PL NE- STE R, ALBUQUERQUE, NM 87110 USA",
-      bank: "Column N.A.",
-      bankAddress: "1 Letterman Drive, Building A, Suite A4-700, San Francisco, CA 94129 USA",
-      routing: "121145433",
-      routingFallback: "121145307",
-      account: "318548466171138",
-      swift: "CLNOUS66MER",
-      intermediarySwift: "CHASUS33XXX",
-    },
-  },
-  governance: {
-    administrativeGateCipher: "QTRESV9TT1ZFUklHTl9SRUdJU1RSQVJfQURNSU4=",
-    administrativePassphrase: "A4I_SOVEREIGN_REGISTRAR_ADMIN",
+    wireInvoiceRequestPath: '/contact?subject=wire_invoice',
   },
   growthMarketing: {
     allowFreeTierWithSocialUnlock: true,

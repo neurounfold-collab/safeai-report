@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { SAFEAI_MASTER_CONFIG } from './config/constants.js';
 import AppShell from './layouts/AppShell.jsx';
@@ -28,7 +28,7 @@ function EnterpriseShellRoute({ children }) {
 const BRAND_TITLE = SAFEAI_MASTER_CONFIG?.branding?.name ?? 'safeAI.report';
 const BRAND_META_DESCRIPTION = `${BRAND_TITLE} — Official Article 4 AI Literacy Certification`;
 
-/** Non-blocking skeleton while route chunks hydrate on slow networks. */
+/** Non-blocking skeleton while route chunks hydrate — reserves main viewport height to avoid CLS/white flash. */
 function RouteLoadingFallback() {
   return (
     <div
@@ -42,12 +42,17 @@ function RouteLoadingFallback() {
       <p className="route-loading__label">Loading…</p>
       <style>{`
         .route-loading {
+          box-sizing: border-box;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          min-height: 40vh;
+          width: 100%;
+          min-height: calc(100vh - 4.25rem);
+          min-height: calc(100dvh - 4.25rem);
+          padding: 2rem 1rem;
           gap: 1rem;
+          background-color: #0b0f19;
           color: #94a3b8;
           font-family: system-ui, sans-serif;
         }

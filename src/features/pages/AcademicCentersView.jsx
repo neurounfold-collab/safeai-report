@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createTranslator, getActiveLanguage, isRtlLanguage } from '../../i18n/index.js';
 import { SAFEAI_MASTER_CONFIG } from '../../config/constants.js';
 import { getDomainContext, submitIntakeForm } from '../../utils/emailRouter.js';

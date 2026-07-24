@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthTranslator } from '../auth/hooks/useAuthTranslator.js';
 
@@ -16,10 +16,11 @@ const HEX_TICK_MS = 50;
  * CREDENTIAL ROTATION GUIDE (Administrator Reference)
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * Credentials are loaded at login from ./admin-config.json (public root).
- * Edit that file in Hostinger hPanel — no frontend rebuild required.
+ * Credentials are NEVER shipped as a public JSON file. Configure build-time
+ * environment variables (or a serverless auth handler that returns opaque
+ * session tokens). Do not commit secrets to the repository.
  *
- * 1. USERNAME — Set "username" to the new operator identifier.
+ * 1. USERNAME — Set VITE_ADMIN_USERNAME to the operator identifier.
  *
  * 2. PASSWORD — Choose a new passphrase, then compute its SHA-256 hex digest
  *    (lowercase, 64 characters). In a secure browser console:
@@ -35,17 +36,17 @@ const HEX_TICK_MS = 50;
  *      }
  *      sha256('YourNewPassphrase').then(console.log);
  *
- *    Paste the resulting digest into "passwordHash" in admin-config.json.
+ *    Paste the resulting digest into VITE_ADMIN_PASSWORD_HASH.
  *
- * 3. DEPLOY — Upload or edit public/admin-config.json on the host only.
+ * 3. DEPLOY — Inject env vars via the host/CI secret store, then rebuild.
+ *    Prefer a serverless auth endpoint when available so digests never ship
+ *    in the client bundle.
  *
  * 4. INVALIDATE — Clear active sessions:
  *    sessionStorage.removeItem('safeai_admin_active_session')
  *    or wait for the 60-minute inactivity window to expire.
  * ═══════════════════════════════════════════════════════════════════════════
  */
-
-const ADMIN_CONFIG_PATH = './admin-config.json';
 
 const ADMIN_LOGIN_STYLES = `
 .admin-login {
@@ -271,28 +272,15 @@ export async function hashPasswordFingerprint(plainText) {
 }
 
 /**
- * @returns {Promise<{ username: string, passwordHash: string, allowPlainTextFallback: boolean }>}
+ * Resolve admin credentials exclusively from secure environment variables.
+ * No public JSON descriptor, plaintext fallback, or SAFEAI_MASTER_CONFIG secret.
+ *
+ * @returns {{ username: string, passwordHash: string }}
  */
-async function fetchAdminSecurityConfig() {
-  let response;
-  try {
-    response = await fetch(ADMIN_CONFIG_PATH, { cache: 'no-store' });
-  } catch {
-    throw new Error('ADMIN_CONFIG_UNAVAILABLE');
-  }
+function resolveAdminSecurityConfig() {
+  const username = import.meta.env.VITE_ADMIN_USERNAME;
+  const passwordHash = import.meta.env.VITE_ADMIN_PASSWORD_HASH;
 
-  if (!response.ok) {
-    throw new Error('ADMIN_CONFIG_UNAVAILABLE');
-  }
-
-  let payload;
-  try {
-    payload = await response.json();
-  } catch {
-    throw new Error('ADMIN_CONFIG_UNAVAILABLE');
-  }
-
-  const { username, passwordHash, allowPlainTextFallback } = payload ?? {};
   if (
     typeof username !== 'string' ||
     typeof passwordHash !== 'string' ||
@@ -302,14 +290,14 @@ async function fetchAdminSecurityConfig() {
     throw new Error('ADMIN_CONFIG_UNAVAILABLE');
   }
 
-  const usePlainTextFallback = allowPlainTextFallback === true;
+  const normalizedHash = passwordHash.trim().toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(normalizedHash)) {
+    throw new Error('ADMIN_CONFIG_UNAVAILABLE');
+  }
 
   return {
     username: username.trim(),
-    passwordHash: usePlainTextFallback
-      ? passwordHash.trim()
-      : passwordHash.trim().toLowerCase(),
-    allowPlainTextFallback: usePlainTextFallback,
+    passwordHash: normalizedHash,
   };
 }
 
@@ -451,6 +439,7 @@ function CryptographicTerminal({ label }) {
 
 /**
  * Hash-verified administrative login gate with sessionStorage persistence.
+ * Credentials resolve from VITE_ADMIN_* environment variables only.
  *
  * @param {object} props
  * @param {() => void} [props.onAuthenticated] — callback after successful verification
@@ -486,7 +475,7 @@ export default function AdminLogin({ onAuthenticated }) {
       try {
         let securityConfig;
         try {
-          securityConfig = await fetchAdminSecurityConfig();
+          securityConfig = resolveAdminSecurityConfig();
         } catch {
           setAuthError(
             t(
@@ -497,15 +486,9 @@ export default function AdminLogin({ onAuthenticated }) {
           return;
         }
 
-        const usernameMatch = trimmedUsername === securityConfig.username;
-        let passwordMatch;
-
-        if (securityConfig.allowPlainTextFallback) {
-          passwordMatch = timingSafeEqual(trimmedPassword, securityConfig.passwordHash);
-        } else {
-          const passwordHash = await hashPasswordFingerprint(trimmedPassword);
-          passwordMatch = timingSafeEqual(passwordHash, securityConfig.passwordHash);
-        }
+        const passwordHash = await hashPasswordFingerprint(trimmedPassword);
+        const usernameMatch = timingSafeEqual(trimmedUsername, securityConfig.username);
+        const passwordMatch = timingSafeEqual(passwordHash, securityConfig.passwordHash);
 
         if (usernameMatch && passwordMatch) {
           createAdminSession();

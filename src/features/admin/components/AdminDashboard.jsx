@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { isRtlLanguage } from '../../../i18n/index.js';
 import {
   isStripeProductionMode,
@@ -10,7 +10,6 @@ import { useAdminTranslator } from '../hooks/useAdminTranslator.js';
 import {
   FUNDING_INFRASTRUCTURE_USD,
   FUNDING_RESEARCH_USD,
-  PASS_THRESHOLD,
   buildResearchTelemetryRows,
   computeResearchMetrics,
   filterResearchTelemetryRows,

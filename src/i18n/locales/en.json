@@ -21,7 +21,7 @@
   "infrastructure": {
     "ledgerHost": "WaqfLedger.tech",
     "protocol": "Sovereign Algorithmic Governance Ledger",
-    "encryptionProtocol": "AES-256 Cryptographic Block Hashing",
+    "encryptionProtocol": "SHA-256 tamper-evident state hashing",
     "targetFramework": "EU AI Act Article 4 Compliance Metrics"
   },
   "growthMarketing": {
@@ -112,7 +112,7 @@
     },
     "verification": {
       "title": "Immutable Verification",
-      "description": "AES-256 Cryptographic Block Hashing with immutable logging on WaqfLedger.tech."
+      "description": "SHA-256 tamper-evident state hashing with immutable logging on WaqfLedger.tech."
     },
     "governance": {
       "title": "Compliance Telemetry Anchoring",
@@ -350,7 +350,7 @@
       "metaDescription": "Article 4 diagnostic preparation hub: 3 tracks, 9 modules, 30-scenario examinations, 85% pass threshold, WaqfLedger.tech SHA-256 credential logging under L'INSTITUT ARTICLE 4 (A4I).",
       "citationLead": "EU AI Act Article 4 deployer literacy preparation hub: 3 tracks (Level 01 operational, Level 02 executive, Level 03 auditor), 9 curriculum modules, 30-scenario standardized examination per tier, 85% compliance pass threshold, WaqfLedger.tech SHA-256 provenance logging. Authority: L'INSTITUT ARTICLE 4 (A4I). Enforcement: August 2026.",
       "headline": "Article 4 Diagnostic Preparation Hub",
-      "subtitle": "9 modules · 3 governance tracks · 30 scenarios per examination · Open-access evaluation (0 USD) · AES-256 / SHA-256 credential protocol",
+      "subtitle": "9 modules · 3 governance tracks · 30 scenarios per examination · Open-access evaluation (0 USD) · SHA-256 tamper-evident credential protocol",
       "trackPickerLabel": "Preparation Tier Selection",
       "curriculumLabel": "Curriculum Module Index",
       "faqSectionTitle": "Article 4 Protocol Reference Index",
@@ -666,7 +666,7 @@
             "title": "Data Lineage Provenance & Ledger Hash Orchestration",
             "intro": "Expert auditors validate that certification credentials and audit artifacts are immutably logged with cryptographic integrity on WaqfLedger.tech.",
             "paragraph1": "Data lineage provenance tracks how training data, model versions, and operator decisions chain together for regulatory inquiry reconstruction.",
-            "paragraph2": "Ledger hash orchestration ensures that successful certifications produce verifiable AES-256 block hashes on the Sovereign Algorithmic Governance Ledger.",
+            "paragraph2": "Ledger hash orchestration ensures that successful certifications produce verifiable SHA-256 tamper-evident state hashes on the Sovereign Algorithmic Governance Ledger.",
             "flow": {
               "title": "Cryptographic Provenance Validation Stream",
               "step1": {
@@ -678,7 +678,7 @@
               "step2": {
                 "label": "Hash",
                 "body": "Generate integrity digest for audit artifact bundle.",
-                "item1": "Apply AES-256 block hashing protocol",
+                "item1": "Apply SHA-256 tamper-evident state hashing protocol",
                 "item2": "Include examination score and tier metadata"
               },
               "step3": {
@@ -713,11 +713,11 @@
             },
             "q3": {
               "prompt": "A certification hash on WaqfLedger.tech fails third-party verification. What is your first investigative step?",
-              "context": "Consider data lineage integrity and AES-256 digest reconstruction procedures.",
+              "context": "Consider data lineage integrity and SHA-256 digest reconstruction procedures.",
               "options": {
                 "a": "Issue a new certification without ledger verification",
                 "b": "Contact the candidate to re-take the examination immediately",
-                "c": "Reconstruct the data lineage and verify AES-256 digest integrity against source artifacts",
+                "c": "Reconstruct the data lineage and verify SHA-256 digest integrity against source artifacts",
                 "d": "Remove the credential from public display without investigation"
               }
             }
@@ -760,7 +760,7 @@
     "faq": {
       "q1": {
         "question": "How are credentials logged to WaqfLedger.tech?",
-        "answer": "Successful certifications are immutably recorded via AES-256 Cryptographic Block Hashing on the Sovereign Algorithmic Governance Ledger at WaqfLedger.tech."
+        "answer": "Successful certifications are immutably recorded via SHA-256 tamper-evident state hashing on the Sovereign Algorithmic Governance Ledger at WaqfLedger.tech."
       },
       "q2": {
         "question": "What is the TOEFL AI Literacy Standard Certification?",
@@ -955,9 +955,9 @@
       "dataProtection": "Data Protection & GDPR Compliance",
       "dataProtectionBody": "safeAI.report maintains strict conformity with the General Data Protection Regulation (GDPR). Anonymous academic telemetry arrays—aggregated scenario performance indices, compliance score distributions, and token utilization metrics—are collected solely for institutional oversight reporting. These telemetry structures are architecturally decoupled from personally identifiable information (PII): no candidate names, email addresses, government identifiers, biometric data, or free-text responses containing personal references are retained in persistent storage. Data minimization, purpose limitation, and storage limitation principles are enforced at the application layer. Where transactional contact data is submitted through institutional intake forms, such records are processed exclusively for license fulfillment correspondence and are not merged into anonymous telemetry pipelines.",
       "registryGovernance": "Registry Governance & Verification Sovereignty",
-      "registryGovernanceBody": "All certification events and B2B institutional license activations are cryptographically attested through verification sovereignty protocols before immutable publication to WaqfLedger.tech. Each credential issuance undergoes multi-stage validation: (1) examination integrity verification against the authorized 30-scenario Article 4 assessment matrix; (2) institutional authority confirmation under L'INSTITUT ARTICLE 4 (A4I); (3) AES-256 cryptographic block hashing of the certification state payload; and (4) sovereign ledger anchoring under the Global Capital Intelligence LLC registry identifiers (RNA: W343030686, SIRET: 92288647800010, ICE: 001625897000071). Immutable hashes issued to WaqfLedger.tech constitute the authoritative verification record and may not be altered, superseded, or revoked without a formally logged governance amendment event.",
+      "registryGovernanceBody": "All certification events and B2B institutional license activations are cryptographically attested through verification sovereignty protocols before immutable publication to WaqfLedger.tech. Each credential issuance undergoes multi-stage validation: (1) examination integrity verification against the authorized 30-scenario Article 4 assessment matrix; (2) institutional authority confirmation under L'INSTITUT ARTICLE 4 (A4I); (3) SHA-256 tamper-evident state hashing of the certification state payload; and (4) sovereign ledger anchoring under the Global Capital Intelligence LLC registry identifiers (RNA: W343030686, SIRET: 92288647800010, ICE: 001625897000071). Immutable hashes issued to WaqfLedger.tech constitute the authoritative verification record and may not be altered, superseded, or revoked without a formally logged governance amendment event.",
       "compliance": "Regulatory Compliance Framework",
-      "complianceBody": "Certifications are immutably logged to the Sovereign Algorithmic Governance Ledger at WaqfLedger.tech using AES-256 Cryptographic Block Hashing. Academic authority rests with L'INSTITUT ARTICLE 4 (A4I) under Professor Adel El Bouzagaoui."
+      "complianceBody": "Certifications are immutably logged to the Sovereign Algorithmic Governance Ledger at WaqfLedger.tech using SHA-256 tamper-evident state hashing. Academic authority rests with L'INSTITUT ARTICLE 4 (A4I) under Professor Adel El Bouzagaoui."
     },
     "terms": {
       "eyebrow": "Open-Access Legal Framework",
@@ -1145,7 +1145,9 @@
             "ledgerBlock": "Core Ledger Block",
             "tier": "Selected Tier",
             "paymentTerms": "Payment Terms",
-            "settlementCoordinates": "Settlement Account Coordinates",
+            "settlementCoordinates": "Secure Wire Invoice Request",
+            "secureDispatchNotice": "Bank routing, account, and SWIFT coordinates are never rendered in the client bundle. Request an authorized institutional wire invoice through the secure contact channel.",
+            "requestWireInvoice": "Request wire invoice",
             "beneficiary": "Beneficiary",
             "bank": "Bank",
             "routing": "Routing",

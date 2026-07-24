@@ -18,10 +18,6 @@ import {
 /** Minimum weighted compliance percentage required for institutional certification. */
 export const INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT = 85;
 
-/** Decimal multiplier derived from the institutional threshold (e.g. 0.85). */
-export const INSTITUTIONAL_CERTIFICATION_THRESHOLD_RATIO =
-  INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT / 100;
-
 /** Minimum composite literacy score (Sc) before registry firewall remediation. */
 export const REGISTRY_FIREWALL_THRESHOLD_PERCENT = 66;
 

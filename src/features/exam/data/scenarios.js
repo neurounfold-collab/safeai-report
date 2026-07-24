@@ -347,7 +347,7 @@ export const EXAM_SCENARIO_MATRIX = [
     tier: "Level 03",
     category: "WaqfLedger Verification",
     scenarioText:
-      "An institutional partner completes Level 03 certification for fifty faculty members and must immutably register each credential on the Sovereign Algorithmic Governance Ledger at WaqfLedger.tech. A batch export contains candidate identifiers, examination timestamps, tier level, and AES-256 hash digests. Which registration protocol satisfies cryptographic verification requirements?",
+      "An institutional partner completes Level 03 certification for fifty faculty members and must immutably register each credential on the Sovereign Algorithmic Governance Ledger at WaqfLedger.tech. A batch export contains candidate identifiers, examination timestamps, tier level, and SHA-256 tamper-evident state hashes. Which registration protocol satisfies cryptographic verification requirements?",
     options: [
       "Email CSV attachments to institutional IT for local spreadsheet storage.",
       "Transmit structured certification events to WaqfLedger.tech via the approved hashing pipeline, verify on-ledger confirmation receipts, and reconcile each issued badge against its immutable ledger record before public verification URLs are activated.",
@@ -455,7 +455,7 @@ export const EXAM_SCENARIO_MATRIX = [
       "Upon conferral of the Level 03 Institutional Partner Badge, the partner must enable public verification at https://safeai.report/verification linking candidate credentials to WaqfLedger.tech records. A batch of three credentials fails hash reconciliation due to clock-skew during examination submission. Which certification finalization protocol is authoritative?",
     options: [
       "Issue badges immediately and correct ledger entries opportunistically when convenient.",
-      "Withhold public verification activation until hash reconciliation succeeds, re-seal examination artifacts with AES-256 block hashing under the Sovereign Algorithmic Governance Ledger protocol, and document remediation in the institutional partner audit record before credential release.",
+      "Withhold public verification activation until hash reconciliation succeeds, re-seal examination artifacts with SHA-256 tamper-evident state hashing under the Sovereign Algorithmic Governance Ledger protocol, and document remediation in the institutional partner audit record before credential release.",
       "Publish badges with a disclaimer that ledger verification may be temporarily unavailable.",
       "Manually edit ledger hashes to match issued badges without re-examination or re-sealing."
     ],
