@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';
 import { PASS_THRESHOLD, buildDoctoralDatasetPayload } from '../utils/researchTelemetrySeed.js';
+import CopyableStateHash from './CopyableStateHash.jsx';
 
 const WIRE_INVOICE_REQUEST_PATH =
   SAFEAI_MASTER_CONFIG?.fundingGateways?.wireInvoiceRequestPath ??
@@ -203,8 +204,10 @@ const TELEMETRY_TABLE_STYLES = `
 }
 
 .telemetry-table__scroll {
-  max-height: min(28rem, 55vh);
-  overflow: auto;
+  position: relative;
+  max-height: 440px;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .telemetry-table__grid {
@@ -213,17 +216,24 @@ const TELEMETRY_TABLE_STYLES = `
   font-size: 0.6875rem;
 }
 
+.telemetry-table__grid thead {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #0B0F17;
+}
+
 .telemetry-table__grid th {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 20;
   padding: 0.55rem 0.65rem;
   text-align: start;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #94a3b8;
-  background: rgba(0, 0, 0, 0.62);
+  background: #0B0F17;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
   white-space: nowrap;
 }
@@ -258,13 +268,7 @@ const TELEMETRY_TABLE_STYLES = `
 }
 
 .telemetry-table__hash {
-  font-family: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
-  font-size: 0.625rem;
-  letter-spacing: 0.02em;
-  color: #5eead4;
-  word-break: break-all;
-  overflow-wrap: anywhere;
-  max-width: 14rem;
+  white-space: nowrap;
   line-height: 1.45;
 }
 
@@ -1027,22 +1031,22 @@ export default function TelemetryTable({ t, filteredRows, allRows }) {
             )}
           </p>
         ) : (
-          <div className="telemetry-table__scroll">
+          <div className="telemetry-table__scroll max-h-[440px] overflow-y-auto overflow-x-auto relative">
             <table className="telemetry-table__grid">
-              <thead>
+              <thead className="sticky top-0 z-20 bg-[#0B0F17]">
                 <tr>
-                  <th scope="col">{t('admin.board.research.table.columns.timestamp')}</th>
-                  <th scope="col">{t('admin.board.research.table.columns.maskedId')}</th>
-                  <th scope="col">{t('admin.board.research.table.columns.trackLanguage')}</th>
-                  <th scope="col">{t('admin.board.research.table.columns.score')}</th>
-                  <th scope="col">
+                  <th scope="col" className="bg-[#0B0F17]">{t('admin.board.research.table.columns.timestamp')}</th>
+                  <th scope="col" className="bg-[#0B0F17]">{t('admin.board.research.table.columns.maskedId')}</th>
+                  <th scope="col" className="bg-[#0B0F17]">{t('admin.board.research.table.columns.trackLanguage')}</th>
+                  <th scope="col" className="bg-[#0B0F17]">{t('admin.board.research.table.columns.score')}</th>
+                  <th scope="col" className="bg-[#0B0F17]">
                     {t(
                       'admin.board.research.table.columns.settlement',
                       'Settlement Channel',
                     )}
                   </th>
-                  <th scope="col">{t('admin.board.research.table.columns.stateHash')}</th>
-                  <th scope="col">{t('admin.board.research.table.columns.ledgerSync')}</th>
+                  <th scope="col" className="bg-[#0B0F17]">{t('admin.board.research.table.columns.stateHash')}</th>
+                  <th scope="col" className="bg-[#0B0F17]">{t('admin.board.research.table.columns.ledgerSync')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -1099,7 +1103,7 @@ export default function TelemetryTable({ t, filteredRows, allRows }) {
                       </td>
                       <td>{settlementBadge ?? '—'}</td>
                       <td>
-                        <span className="telemetry-table__hash">{row.stateHash}</span>
+                        <CopyableStateHash hash={row.stateHash} className="telemetry-table__hash" />
                       </td>
                       <td>
                         <span

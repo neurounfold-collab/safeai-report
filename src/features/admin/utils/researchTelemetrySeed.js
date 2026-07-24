@@ -152,10 +152,38 @@ export function computeResearchMetrics(rows) {
     }
   });
 
-  const linguisticDistribution = Object.entries(languageCounts).map(([locale, count]) => ({
+  // Largest-remainder method at 0.1% resolution so displayed shares sum to 100.0%.
+  const linguisticEntries = Object.entries(languageCounts).map(([locale, count]) => {
+    const exact = totalCohorts > 0 ? (count / totalCohorts) * 100 : 0;
+    const tenths = Math.floor(exact * 10);
+    return {
+      locale,
+      count,
+      exact,
+      tenths,
+      remainder: exact * 10 - tenths,
+    };
+  });
+
+  let leftoverTenths =
+    totalCohorts > 0
+      ? 1000 - linguisticEntries.reduce((sum, entry) => sum + entry.tenths, 0)
+      : 0;
+
+  [...linguisticEntries]
+    .sort((a, b) => b.remainder - a.remainder || b.count - a.count)
+    .forEach((entry) => {
+      if (leftoverTenths <= 0) {
+        return;
+      }
+      entry.tenths += 1;
+      leftoverTenths -= 1;
+    });
+
+  const linguisticDistribution = linguisticEntries.map(({ locale, count, tenths }) => ({
     locale,
-    percentage: totalCohorts > 0 ? Math.round((count / totalCohorts) * 100) : 0,
     count,
+    percentage: tenths / 10,
   }));
 
   let researchContributions = 0;

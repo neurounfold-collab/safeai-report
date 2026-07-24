@@ -15,6 +15,7 @@ import {
   filterResearchTelemetryRows,
 } from '../utils/researchTelemetrySeed.js';
 import TelemetryTable from './TelemetryTable.jsx';
+import CopyableStateHash from './CopyableStateHash.jsx';
 
 const ADMIN_SWITCH_KEYS = {
   MAINTENANCE_LOCKOUT: 'SAFEAI_ADMIN_MAINTENANCE_LOCKOUT',
@@ -458,11 +459,7 @@ const ADMIN_DASHBOARD_STYLES = `
 }
 
 .admin-audit__hash {
-  font-family: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
-  font-size: 0.6875rem;
-  letter-spacing: 0.02em;
-  color: var(--ad-teal);
-  word-break: break-all;
+  white-space: nowrap;
 }
 
 .admin-audit__status {
@@ -494,19 +491,31 @@ const ADMIN_DASHBOARD_STYLES = `
 }
 `;
 
-function readSwitchState(key) {
+function readSwitchState(key, defaultValue = false) {
   if (typeof window === 'undefined' || typeof key !== 'string' || !key.trim()) {
-    return false;
+    return defaultValue;
   }
 
   try {
     const keysToInspect = [key, ...(ADMIN_SWITCH_LEGACY_KEYS[key] ?? [])];
-    return keysToInspect.some((storageKey) => {
+    for (const storageKey of keysToInspect) {
       const raw = window.localStorage.getItem(storageKey);
-      return typeof raw === 'string' && raw.trim() === 'true';
-    });
+      if (raw === null || raw === undefined) {
+        continue;
+      }
+
+      const normalized = typeof raw === 'string' ? raw.trim() : String(raw);
+      if (normalized === 'true') {
+        return true;
+      }
+      if (normalized === 'false') {
+        return false;
+      }
+    }
+
+    return defaultValue;
   } catch {
-    return false;
+    return defaultValue;
   }
 }
 
@@ -517,6 +526,10 @@ function writeSwitchState(key, value) {
 
   try {
     window.localStorage.setItem(key, value ? 'true' : 'false');
+
+    for (const legacyKey of ADMIN_SWITCH_LEGACY_KEYS[key] ?? []) {
+      window.localStorage.removeItem(legacyKey);
+    }
   } catch {
     /* storage unavailable */
   }
@@ -528,11 +541,7 @@ function writeStripeProductionMode(production) {
   }
 
   try {
-    if (production) {
-      window.localStorage.removeItem(STRIPE_PRODUCTION_STORAGE_KEY);
-    } else {
-      window.localStorage.setItem(STRIPE_PRODUCTION_STORAGE_KEY, 'false');
-    }
+    window.localStorage.setItem(STRIPE_PRODUCTION_STORAGE_KEY, production ? 'true' : 'false');
 
     for (const legacyKey of ADMIN_SWITCH_LEGACY_KEYS[ADMIN_SWITCH_KEYS.STRIPE_PRODUCTION] ?? []) {
       window.localStorage.removeItem(legacyKey);
@@ -726,7 +735,7 @@ function ResearchTelemetryCenter({ t, rows }) {
                     }}
                   />
                 </div>
-                <span className="admin-metric-card__locale-pct">{entry.percentage}%</span>
+                <span className="admin-metric-card__locale-pct">{entry.percentage.toFixed(1)}%</span>
               </div>
             ))}
           </div>
@@ -790,11 +799,11 @@ export default function AdminDashboard({ language: languageProp }) {
   const auditRows = useMemo(() => buildAuditRegistryRows(), []);
 
   const [maintenanceLockout, setMaintenanceLockout] = useState(() =>
-    readSwitchState(ADMIN_SWITCH_KEYS.MAINTENANCE_LOCKOUT),
+    readSwitchState(ADMIN_SWITCH_KEYS.MAINTENANCE_LOCKOUT, false),
   );
   const [stripeProduction, setStripeProduction] = useState(() => isStripeProductionMode());
   const [ledgerLiveStream, setLedgerLiveStream] = useState(() =>
-    readSwitchState(ADMIN_SWITCH_KEYS.LEDGER_LIVE_STREAM),
+    readSwitchState(ADMIN_SWITCH_KEYS.LEDGER_LIVE_STREAM, false),
   );
 
   const handleMaintenanceChange = useCallback((value) => {
@@ -896,7 +905,7 @@ export default function AdminDashboard({ language: languageProp }) {
                       <tr key={`${row?.timestamp}-${row?.stateHash}`}>
                         <td>{formatAuditTimestamp(row?.timestamp)}</td>
                         <td>
-                          <span className="admin-audit__hash">{row?.stateHash}</span>
+                          <CopyableStateHash hash={row?.stateHash} className="admin-audit__hash" />
                         </td>
                         <td>{row?.tier}</td>
                         <td>
