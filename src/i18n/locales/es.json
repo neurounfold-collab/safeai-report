@@ -1033,6 +1033,42 @@
           "stateHash": "Hash de estado SHA-256"
         }
       }
+    },
+    "licenses": {
+      "title": "Licencias activas y asignación de tokens",
+      "subtitle": "Supervise los saldos de tokens B2B institucionales, los calendarios de renovación y los parámetros de la subvención Infrastructure Node Sponsorship según el registro autoritativo.",
+      "tokenAllocation": "Saldos activos de tokens B2B",
+      "renewalSchedule": "Calendario de renovación",
+      "annualCycle": "Ciclo anual",
+      "nextRenewal": "Próxima renovación",
+      "billingAmount": "Importe de la subvención",
+      "licenseStatus": "Estado de la licencia",
+      "activeStatus": "Activa",
+      "grantTier": "Nivel de subvención institucional",
+      "grantTierCaption": "El patrocinio de nodo de infraestructura Nivel B a {price} incluye {tokens} tokens de examen Nivel 01 prepagados con analítica dedicada y registro inmutable en WaqfLedger.tech."
+    },
+    "research": {
+      "title": "Investigación institucional y analítica de cohorte",
+      "subtitle": "Métricas de alfabetización A4-ALAM anonimizadas y puntuaciones de fricción por dominio para cohortes de investigación institucional. Exporte la telemetría bruta para compilación doctoral y evaluación normativa.",
+      "metricsTitle": "Alfabetización A4-ALAM y fricción por dominio",
+      "anonymizedBadge": "Telemetría anonimizada",
+      "exportCsv": "Exportar CSV",
+      "exportJson": "Exportar JSON",
+      "columns": {
+        "domain": "Dominio de competencia",
+        "literacy": "Puntuación de alfabetización",
+        "friction": "Puntuación de fricción",
+        "cohort": "Tamaño de cohorte"
+      }
+    },
+    "ledger": {
+      "title": "Feed de auditoría inmutable WaqfLedger",
+      "subtitle": "Inspección soberana del ledger a página completa — filtre la procedencia de certificaciones por ID de credencial o hash de estado SHA-256.",
+      "feedTitle": "Registro de auditoría inmutable",
+      "searchLabel": "Filtrar eventos del ledger",
+      "searchPlaceholder": "Buscar por ID de credencial o hash SHA-256…",
+      "resultsCount": "{count} eventos de ledger en alcance",
+      "filterEmpty": "Ningún evento del ledger coincide con el filtro actual."
     }
   },
   "admin": {
@@ -1061,9 +1097,9 @@
         "title": "Inicio de Sesión Administrativo Seguro",
         "usernameLabel": "Nombre de usuario administrador",
         "passwordLabel": "Contraseña segura",
-        "error": "Falló la validación de credenciales verificadas por hash. Acceso denegado bajo los protocolos de gobernanza de seguridad del Artículo 4.",
-        "cryptoError": "Subsistema criptográfico no disponible. Se requiere contexto seguro para la verificación SHA-256.",
-        "verifying": "Verificando huella…"
+        "error": "Credenciales de administrador no válidas.",
+        "cryptoError": "Subsistema criptográfico no disponible. Se requiere contexto seguro para la emisión del token de sesión.",
+        "verifying": "Verificando credenciales…"
       },
       "header": {
         "title": "Centro de Mando Administrativo Soberano",

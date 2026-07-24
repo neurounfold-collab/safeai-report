@@ -1,27 +1,17 @@
 import { useCallback, useState } from 'react';
-import AdminLogin, {
-  clearAdminSession,
-  isAdminSessionValid,
-  useAdminSessionGuard,
-} from '../admin/AdminLogin.jsx';
+import AdminLogin from '../admin/AdminLogin.jsx';
+import { checkAdminSession } from '../admin/utils/adminConfig.js';
 import AdminDashboard from '../admin/components/AdminDashboard.jsx';
 
 /**
  * Sovereign Administrative Command Center — gated institutional control surface.
  */
 export default function AdminDashboardView({ language: languageProp }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => isAdminSessionValid());
+  const [isAuthenticated, setIsAuthenticated] = useState(() => checkAdminSession());
 
   const handleAuthenticated = useCallback(() => {
     setIsAuthenticated(true);
   }, []);
-
-  const handleSessionExpired = useCallback(() => {
-    clearAdminSession();
-    setIsAuthenticated(false);
-  }, []);
-
-  useAdminSessionGuard(isAuthenticated, handleSessionExpired);
 
   if (!isAuthenticated) {
     return <AdminLogin onAuthenticated={handleAuthenticated} />;

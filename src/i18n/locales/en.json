@@ -1033,6 +1033,42 @@
           "stateHash": "SHA-256 State Hash"
         }
       }
+    },
+    "licenses": {
+      "title": "Active Licenses & Token Allocation",
+      "subtitle": "Monitor B2B institutional token balances, renewal schedules, and Infrastructure Node Sponsorship grant parameters sourced from the authoritative registry.",
+      "tokenAllocation": "Active B2B Token Balances",
+      "renewalSchedule": "Renewal Schedule",
+      "annualCycle": "Annual cycle",
+      "nextRenewal": "Next renewal",
+      "billingAmount": "Grant amount",
+      "licenseStatus": "License status",
+      "activeStatus": "Active",
+      "grantTier": "Institutional Grant Tier",
+      "grantTierCaption": "Tier B Infrastructure Node Sponsorship at {price} includes {tokens} pre-paid Level 01 examination tokens with dedicated analytics and WaqfLedger.tech immutable logging."
+    },
+    "research": {
+      "title": "Institutional Research & Cohort Analytics",
+      "subtitle": "Anonymized A4-ALAM literacy metrics and domain friction scores for institutional research cohorts. Export raw telemetry for doctoral compilation and statutory benchmarking.",
+      "metricsTitle": "A4-ALAM Literacy & Domain Friction",
+      "anonymizedBadge": "Anonymized telemetry",
+      "exportCsv": "Export CSV",
+      "exportJson": "Export JSON",
+      "columns": {
+        "domain": "Competency Domain",
+        "literacy": "Literacy Score",
+        "friction": "Friction Score",
+        "cohort": "Cohort Size"
+      }
+    },
+    "ledger": {
+      "title": "WaqfLedger Immutable Audit Feed",
+      "subtitle": "Full-page sovereign ledger inspection — filter certification provenance by Credential ID or SHA-256 state hash.",
+      "feedTitle": "Immutable Audit Registry",
+      "searchLabel": "Filter ledger events",
+      "searchPlaceholder": "Search by Credential ID or SHA-256 state hash…",
+      "resultsCount": "{count} ledger events in scope",
+      "filterEmpty": "No ledger events match the current filter."
     }
   },
   "admin": {
@@ -1061,9 +1097,9 @@
         "title": "Secure Administrative Login",
         "usernameLabel": "Administrator username",
         "passwordLabel": "Secure password",
-        "error": "Hash-verified credential validation failed. Access denied under Article 4 security governance protocols.",
-        "cryptoError": "Cryptographic subsystem unavailable. Secure context required for SHA-256 verification.",
-        "verifying": "Verifying fingerprint…"
+        "error": "Invalid administrator credentials.",
+        "cryptoError": "Cryptographic subsystem unavailable. Secure context required for session token issuance.",
+        "verifying": "Verifying credentials…"
       },
       "header": {
         "title": "Sovereign Administrative Command Center",

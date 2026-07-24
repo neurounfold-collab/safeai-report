@@ -1,12 +1,9 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import {
-  isAdminSessionValid,
-  touchAdminSession,
-} from '../features/admin/AdminLogin.jsx';
+import { checkAdminSession } from '../features/admin/utils/adminConfig.js';
 
 /**
  * Route guard for sensitive surfaces (/admin, /dashboard).
- * Requires a valid sessionStorage-bound auth token; otherwise redirects
+ * Requires an active admin session flag in sessionStorage; otherwise redirects
  * to the configured login surface with the attempted location in state.from.
  *
  * @param {object} props
@@ -15,7 +12,7 @@ import {
  */
 export default function ProtectedRoute({ children, redirectTo = '/academy' }) {
   const location = useLocation();
-  const hasValidSession = isAdminSessionValid();
+  const hasValidSession = checkAdminSession();
 
   if (!hasValidSession) {
     // Login surface lives at redirectTo (e.g. /admin). Allow it through so
@@ -33,6 +30,5 @@ export default function ProtectedRoute({ children, redirectTo = '/academy' }) {
     );
   }
 
-  touchAdminSession();
   return children;
 }

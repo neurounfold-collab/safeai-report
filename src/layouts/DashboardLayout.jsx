@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   createTranslator,
   getActiveLanguage,
@@ -12,12 +12,29 @@ import { SAFEAI_MASTER_CONFIG } from '../config/constants.js';
 const STORAGE_KEY = 'safeai.language';
 const LANGUAGE_CHANGE_EVENT = 'safeai:language-change';
 
+/** In-page partner workspace tabs — stays on /dashboard without route navigation. */
+export const DASHBOARD_TABS = {
+  OVERVIEW: 'overview',
+  LICENSES: 'licenses',
+  RESEARCH: 'research',
+  LEDGER: 'ledger',
+};
+
 const SIDEBAR_NAV = [
-  { path: '/dashboard', labelKey: 'dashboard.nav.overview', end: true },
-  { path: '/dashboard/licenses', labelKey: 'dashboard.nav.licenses' },
-  { path: '/dashboard/research', labelKey: 'dashboard.nav.research' },
-  { path: '/dashboard/ledger', labelKey: 'dashboard.nav.ledger' },
+  { key: DASHBOARD_TABS.OVERVIEW, labelKey: 'dashboard.nav.overview' },
+  { key: DASHBOARD_TABS.LICENSES, labelKey: 'dashboard.nav.licenses' },
+  { key: DASHBOARD_TABS.RESEARCH, labelKey: 'dashboard.nav.research' },
+  { key: DASHBOARD_TABS.LEDGER, labelKey: 'dashboard.nav.ledger' },
 ];
+
+const DashboardTabContext = createContext({
+  activeTab: DASHBOARD_TABS.OVERVIEW,
+  setActiveTab: () => {},
+});
+
+export function useDashboardTab() {
+  return useContext(DashboardTabContext);
+}
 
 const DASHBOARD_LAYOUT_STYLES = `
 .dashboard-layout {
@@ -55,6 +72,14 @@ const DASHBOARD_LAYOUT_STYLES = `
   margin-bottom: 1.25rem;
   text-decoration: none;
   color: inherit;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
 }
 
 .dashboard-layout__brand-name {
@@ -112,6 +137,11 @@ const DASHBOARD_LAYOUT_STYLES = `
   letter-spacing: 0.02em;
   text-decoration: none;
   color: var(--dash-muted);
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
   transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
@@ -247,10 +277,15 @@ function useDashboardTranslator(languageProp) {
  * AppShell suppresses global chrome for /dashboard routes; this layout owns partner navigation.
  */
 export default function DashboardLayout({ children, language: languageProp }) {
-  const { pathname } = useLocation();
+  const [activeTab, setActiveTab] = useState(DASHBOARD_TABS.OVERVIEW);
   const { t, language } = useDashboardTranslator(languageProp);
   const { institutionalB2B } = SAFEAI_MASTER_CONFIG.evaluationTiers;
   const { ledgerHost } = SAFEAI_MASTER_CONFIG.infrastructure;
+
+  const tabContextValue = useMemo(
+    () => ({ activeTab, setActiveTab }),
+    [activeTab],
+  );
 
   const handleLanguageChange = (code) => {
     setActiveLanguage(code);
@@ -264,66 +299,75 @@ export default function DashboardLayout({ children, language: languageProp }) {
   }, [language]);
 
   return (
-    <div className="dashboard-layout">
-      <style>{DASHBOARD_LAYOUT_STYLES}</style>
+    <DashboardTabContext.Provider value={tabContextValue}>
+      <div className="dashboard-layout">
+        <style>{DASHBOARD_LAYOUT_STYLES}</style>
 
-      <aside className="dashboard-layout__sidebar" aria-label={t('dashboard.layout.sidebarAria')}>
-        <Link to="/dashboard" className="dashboard-layout__brand">
-          <span className="dashboard-layout__brand-name">{t('branding.name')}</span>
-          <span className="dashboard-layout__brand-tier">{t('dashboard.layout.portalTitle')}</span>
-          <p className="dashboard-layout__license-meta">
-            <strong>{t('monetizationTiers.institutionalB2B.name')}</strong>
-            {t('dashboard.layout.licenseMetaPrefix')}{' '}
-            {institutionalB2B.allottedTokens} {t('dashboard.layout.licenseMetaTokensSuffix')}{' '}
-            · {institutionalB2B.price.toLocaleString()} {institutionalB2B.currency}
-          </p>
-        </Link>
+        <aside className="dashboard-layout__sidebar" aria-label={t('dashboard.layout.sidebarAria')}>
+          <Link
+            to="/dashboard"
+            className="dashboard-layout__brand"
+            onClick={() => setActiveTab(DASHBOARD_TABS.OVERVIEW)}
+          >
+            <span className="dashboard-layout__brand-name">{t('branding.name')}</span>
+            <span className="dashboard-layout__brand-tier">{t('dashboard.layout.portalTitle')}</span>
+            <p className="dashboard-layout__license-meta">
+              <strong>{t('monetizationTiers.institutionalB2B.name')}</strong>
+              {t('dashboard.layout.licenseMetaPrefix')}{' '}
+              {institutionalB2B.allottedTokens} {t('dashboard.layout.licenseMetaTokensSuffix')}{' '}
+              · {institutionalB2B.price.toLocaleString()} {institutionalB2B.currency}
+            </p>
+          </Link>
 
-        <nav className="dashboard-layout__nav" aria-label={t('dashboard.layout.sidebarAria')}>
-          {SIDEBAR_NAV.map(({ path, labelKey, end }) => (
-            <NavLink
-              key={path}
-              to={path}
-              end={end}
-              className={({ isActive }) =>
-                isActive
-                  ? 'dashboard-layout__nav-link dashboard-layout__nav-link--active'
-                  : 'dashboard-layout__nav-link'
-              }
-              aria-current={pathname === path || (!end && pathname.startsWith(`${path}/`)) ? 'page' : undefined}
-            >
-              <span className="dashboard-layout__nav-icon" aria-hidden="true" />
-              {t(labelKey)}
-            </NavLink>
-          ))}
-        </nav>
+          <nav className="dashboard-layout__nav" aria-label={t('dashboard.layout.sidebarAria')}>
+            {SIDEBAR_NAV.map(({ key, labelKey }) => {
+              const isActive = activeTab === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  className={
+                    isActive
+                      ? 'dashboard-layout__nav-link dashboard-layout__nav-link--active'
+                      : 'dashboard-layout__nav-link'
+                  }
+                  aria-current={isActive ? 'page' : undefined}
+                  onClick={() => setActiveTab(key)}
+                >
+                  <span className="dashboard-layout__nav-icon" aria-hidden="true" />
+                  {t(labelKey)}
+                </button>
+              );
+            })}
+          </nav>
 
-        <div className="dashboard-layout__sidebar-footer">
-          <p className="dashboard-layout__ledger-badge">
-            {t('dashboard.layout.ledgerProtocol')}
-            <span>{ledgerHost}</span>
-          </p>
-          <div className="dashboard-layout__locale" role="group" aria-label="Language">
-            {SUPPORTED_LANGUAGES.map((code) => (
-              <button
-                key={code}
-                type="button"
-                className={
-                  language === code
-                    ? 'dashboard-layout__locale-btn dashboard-layout__locale-btn--active'
-                    : 'dashboard-layout__locale-btn'
-                }
-                aria-pressed={language === code}
-                onClick={() => handleLanguageChange(code)}
-              >
-                {code.toUpperCase()}
-              </button>
-            ))}
+          <div className="dashboard-layout__sidebar-footer">
+            <p className="dashboard-layout__ledger-badge">
+              {t('dashboard.layout.ledgerProtocol')}
+              <span>{ledgerHost}</span>
+            </p>
+            <div className="dashboard-layout__locale" role="group" aria-label="Language">
+              {SUPPORTED_LANGUAGES.map((code) => (
+                <button
+                  key={code}
+                  type="button"
+                  className={
+                    language === code
+                      ? 'dashboard-layout__locale-btn dashboard-layout__locale-btn--active'
+                      : 'dashboard-layout__locale-btn'
+                  }
+                  aria-pressed={language === code}
+                  onClick={() => handleLanguageChange(code)}
+                >
+                  {code.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      </aside>
+        </aside>
 
-      <div className="dashboard-layout__main">{children}</div>
-    </div>
+        <div className="dashboard-layout__main">{children}</div>
+      </div>
+    </DashboardTabContext.Provider>
   );
 }

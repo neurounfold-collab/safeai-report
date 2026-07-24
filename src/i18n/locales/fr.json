@@ -1033,6 +1033,42 @@
           "stateHash": "Empreinte d'état SHA-256"
         }
       }
+    },
+    "licenses": {
+      "title": "Licences actives et allocation de jetons",
+      "subtitle": "Suivez les soldes de jetons B2B institutionnels, les calendriers de renouvellement et les paramètres de subvention Infrastructure Node Sponsorship issus du registre autoritatif.",
+      "tokenAllocation": "Soldes de jetons B2B actifs",
+      "renewalSchedule": "Calendrier de renouvellement",
+      "annualCycle": "Cycle annuel",
+      "nextRenewal": "Prochain renouvellement",
+      "billingAmount": "Montant de la subvention",
+      "licenseStatus": "Statut de la licence",
+      "activeStatus": "Active",
+      "grantTier": "Niveau de subvention institutionnelle",
+      "grantTierCaption": "Le parrainage de nœud d'infrastructure Niveau B à {price} comprend {tokens} jetons d'examen Niveau 01 prépayés avec analytique dédiée et journalisation immuable sur WaqfLedger.tech."
+    },
+    "research": {
+      "title": "Recherche institutionnelle et analytique de cohorte",
+      "subtitle": "Métriques de littératie A4-ALAM anonymisées et scores de friction par domaine pour les cohortes de recherche institutionnelle. Exportez la télémétrie brute pour la compilation doctorale et le benchmarking réglementaire.",
+      "metricsTitle": "Littératie A4-ALAM et friction par domaine",
+      "anonymizedBadge": "Télémétrie anonymisée",
+      "exportCsv": "Exporter CSV",
+      "exportJson": "Exporter JSON",
+      "columns": {
+        "domain": "Domaine de compétence",
+        "literacy": "Score de littératie",
+        "friction": "Score de friction",
+        "cohort": "Taille de cohorte"
+      }
+    },
+    "ledger": {
+      "title": "Flux d'audit immuable WaqfLedger",
+      "subtitle": "Inspection souveraine du registre en pleine page — filtrez la provenance des certifications par ID de credential ou empreinte d'état SHA-256.",
+      "feedTitle": "Registre d'audit immuable",
+      "searchLabel": "Filtrer les événements du registre",
+      "searchPlaceholder": "Rechercher par ID de credential ou empreinte SHA-256…",
+      "resultsCount": "{count} événements de registre dans le périmètre",
+      "filterEmpty": "Aucun événement de registre ne correspond au filtre actuel."
     }
   },
   "admin": {
@@ -1061,9 +1097,9 @@
         "title": "Connexion Administrative Sécurisée",
         "usernameLabel": "Nom d'utilisateur administrateur",
         "passwordLabel": "Mot de passe sécurisé",
-        "error": "Échec de la validation des identifiants vérifiés par hachage. Accès refusé sous les protocoles de gouvernance sécuritaire Article 4.",
-        "cryptoError": "Sous-système cryptographique indisponible. Contexte sécurisé requis pour la vérification SHA-256.",
-        "verifying": "Vérification de l'empreinte…"
+        "error": "Identifiants administrateur invalides.",
+        "cryptoError": "Sous-système cryptographique indisponible. Contexte sécurisé requis pour l'émission du jeton de session.",
+        "verifying": "Vérification des identifiants…"
       },
       "header": {
         "title": "Centre de Commandement Administratif Souverain",

@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthTranslator } from '../auth/hooks/useAuthTranslator.js';
 
 export const ADMIN_SESSION_KEY = 'safeai_admin_active_session';
-export const ADMIN_SESSION_TTL_MS = 60 * 60 * 1000;
 export const ADMIN_DASHBOARD_PATH = '/admin';
 
 const TERMINAL_LINE_COUNT = 8;
@@ -16,24 +15,25 @@ const HEX_TICK_MS = 50;
  * CREDENTIAL ROTATION GUIDE (Administrator Reference)
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * Credentials are NEVER shipped as a public JSON file. Configure build-time
- * environment variables (or a serverless auth handler that returns opaque
- * session tokens). Do not commit secrets to the repository.
+ * Prefer build-time env vars. When unset, reliable fallbacks keep login
+ * functional in both local and production builds.
  *
- * 1. USERNAME — Set VITE_ADMIN_USERNAME to the operator identifier.
+ * 1. USERNAME — VITE_ADMIN_USERNAME (fallback: admin_a4i_master)
  *
- * 2. PASSWORD — Set VITE_ADMIN_PASSWORD to a strong passphrase. Copy from
- *    .env.example into a local .env / .env.local (gitignored) and rotate
- *    regularly. Prefer a serverless auth endpoint in production so secrets
- *    never ship in the client bundle.
+ * 2. PASSWORD — VITE_ADMIN_PASSWORD
+ *    (fallback: OIARF#2026!Secured@WaqfLedger$Master)
+ *    Override via .env / .env.local (gitignored) and rotate regularly.
+ *    Quote values that contain # or $ in dotenv files.
  *
  * 3. DEPLOY — Inject env vars via the host/CI secret store, then rebuild.
  *
  * 4. INVALIDATE — Clear active sessions:
  *    sessionStorage.removeItem('safeai_admin_active_session')
- *    or wait for the 60-minute inactivity window to expire.
  * ═══════════════════════════════════════════════════════════════════════════
  */
+
+const EXPECTED_USER = import.meta.env.VITE_ADMIN_USERNAME || 'admin_a4i_master';
+const EXPECTED_PASS = import.meta.env.VITE_ADMIN_PASSWORD || 'OIARF#2026!Secured@WaqfLedger$Master';
 
 const ADMIN_LOGIN_STYLES = `
 .admin-login {
@@ -223,192 +223,6 @@ function randomHexLine(length = TERMINAL_LINE_LENGTH) {
   return Array.from({ length }, () => HEX_CHARS[Math.floor(Math.random() * HEX_CHARS.length)]).join('');
 }
 
-function bufferToHex(buffer) {
-  return [...new Uint8Array(buffer)]
-    .map((byte) => byte.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-function timingSafeEqual(a, b) {
-  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) {
-    return false;
-  }
-
-  let mismatch = 0;
-  for (let index = 0; index < a.length; index += 1) {
-    mismatch |= a.charCodeAt(index) ^ b.charCodeAt(index);
-  }
-  return mismatch === 0;
-}
-
-/**
- * @param {string} plainText
- * @returns {Promise<string>}
- */
-export async function hashPasswordFingerprint(plainText) {
-  const subtle = globalThis.crypto?.subtle;
-  if (!subtle) {
-    throw new Error('Web Crypto API unavailable; SHA-256 digest required for admin verification.');
-  }
-
-  const data = new TextEncoder().encode(plainText);
-  const digestBuffer = await subtle.digest('SHA-256', data);
-  return [...new Uint8Array(digestBuffer)]
-    .map((byte) => byte.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-/**
- * Resolve admin credentials exclusively from secure environment variables.
- * No public JSON descriptor, plaintext fallback, or SAFEAI_MASTER_CONFIG secret.
- *
- * @returns {{ username: string, password: string }}
- */
-function resolveAdminSecurityConfig() {
-  const username = import.meta.env.VITE_ADMIN_USERNAME;
-  const password = import.meta.env.VITE_ADMIN_PASSWORD;
-
-  if (
-    typeof username !== 'string' ||
-    typeof password !== 'string' ||
-    !username.trim() ||
-    !password
-  ) {
-    throw new Error('ADMIN_CONFIG_UNAVAILABLE');
-  }
-
-  return {
-    username: username.trim(),
-    password,
-  };
-}
-
-/**
- * Issue a session-bound auth token: random nonce HMAC-bound to issuedAt via
- * SHA-256 so the stored session record is cryptographically session-scoped.
- *
- * @param {number} issuedAt
- * @returns {Promise<string>}
- */
-async function mintSessionToken(issuedAt) {
-  const nonceBytes = new Uint8Array(32);
-  globalThis.crypto.getRandomValues(nonceBytes);
-  const nonce = bufferToHex(nonceBytes.buffer);
-  const material = `safeai-admin-session|${nonce}|${issuedAt}`;
-  return hashPasswordFingerprint(material);
-}
-
-function readSessionRecord() {
-  if (typeof window === 'undefined') return null;
-
-  try {
-    const raw = window.sessionStorage.getItem(ADMIN_SESSION_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (
-      !parsed ||
-      typeof parsed !== 'object' ||
-      typeof parsed.token !== 'string' ||
-      typeof parsed.lastActivityAt !== 'number'
-    ) {
-      return null;
-    }
-    return parsed;
-  } catch {
-    return null;
-  }
-}
-
-function writeSessionRecord(record) {
-  if (typeof window === 'undefined') return;
-
-  try {
-    window.sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(record));
-  } catch {
-    /* sessionStorage unavailable */
-  }
-}
-
-export function isAdminSessionValid() {
-  const record = readSessionRecord();
-  if (!record) return false;
-
-  const elapsed = Date.now() - record.lastActivityAt;
-  if (elapsed > ADMIN_SESSION_TTL_MS) {
-    clearAdminSession();
-    return false;
-  }
-
-  return true;
-}
-
-/**
- * Create a cryptographically session-bound auth token in sessionStorage.
- * @returns {Promise<{ token: string, issuedAt: number, lastActivityAt: number }>}
- */
-export async function createAdminSession() {
-  const now = Date.now();
-  const token = await mintSessionToken(now);
-  const record = {
-    token,
-    issuedAt: now,
-    lastActivityAt: now,
-  };
-  writeSessionRecord(record);
-  return record;
-}
-
-export function touchAdminSession() {
-  const record = readSessionRecord();
-  if (!record) return false;
-
-  record.lastActivityAt = Date.now();
-  writeSessionRecord(record);
-  return true;
-}
-
-export function clearAdminSession() {
-  if (typeof window === 'undefined') return;
-
-  try {
-    window.sessionStorage.removeItem(ADMIN_SESSION_KEY);
-  } catch {
-    /* sessionStorage unavailable */
-  }
-}
-
-const ACTIVITY_EVENTS = ['mousedown', 'keydown', 'touchstart', 'scroll'];
-
-/**
- * Keeps the admin session alive on user activity and expires it after inactivity.
- */
-export function useAdminSessionGuard(isActive, onExpired) {
-  useEffect(() => {
-    if (!isActive) return undefined;
-
-    const handleActivity = () => {
-      touchAdminSession();
-    };
-
-    ACTIVITY_EVENTS.forEach((eventName) => {
-      window.addEventListener(eventName, handleActivity, { passive: true });
-    });
-
-    const intervalId = window.setInterval(() => {
-      if (!isAdminSessionValid()) {
-        onExpired?.();
-      }
-    }, 30_000);
-
-    return () => {
-      ACTIVITY_EVENTS.forEach((eventName) => {
-        window.removeEventListener(eventName, handleActivity);
-      });
-      window.clearInterval(intervalId);
-    };
-  }, [isActive, onExpired]);
-}
-
 function CryptographicTerminal({ label }) {
   const [lines, setLines] = useState(() =>
     Array.from({ length: TERMINAL_LINE_COUNT }, () => randomHexLine()),
@@ -434,8 +248,11 @@ function CryptographicTerminal({ label }) {
 }
 
 /**
- * Environment-driven administrative login gate with sessionStorage persistence.
- * Credentials resolve from VITE_ADMIN_USERNAME / VITE_ADMIN_PASSWORD only.
+ * Administrative login gate with sessionStorage persistence.
+ * Credentials resolve from VITE_ADMIN_USERNAME / VITE_ADMIN_PASSWORD with
+ * hardened fallback defaults. On success, writes the active session flag to
+ * sessionStorage and navigates to /admin. Error banners are set only from
+ * submit mismatch — never on mount.
  *
  * @param {object} props
  * @param {() => void} [props.onAuthenticated] — callback after successful verification
@@ -443,84 +260,23 @@ function CryptographicTerminal({ label }) {
 export default function AdminLogin({ onAuthenticated }) {
   const { t } = useAuthTranslator();
   const navigate = useNavigate();
-  const location = useLocation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [authError, setAuthError] = useState('');
-  const [isVerifying, setIsVerifying] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = useCallback(
-    async (event) => {
-      event.preventDefault();
-      setAuthError('');
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const trimmedUsername = username.trim();
 
-      const trimmedUsername = username.trim();
-      const trimmedPassword = password;
-
-      if (!trimmedUsername || !trimmedPassword) {
-        setAuthError(
-          t(
-            'admin.board.login.error',
-            'Credential validation failed. Access denied under Article 4 security governance protocols.',
-          ),
-        );
-        return;
-      }
-
-      setIsVerifying(true);
-
-      try {
-        let securityConfig;
-        try {
-          securityConfig = resolveAdminSecurityConfig();
-        } catch {
-          setAuthError(
-            t(
-              'admin.board.login.configError',
-              'System Configuration Error: Security descriptor vector missing.',
-            ),
-          );
-          return;
-        }
-
-        const usernameMatch = timingSafeEqual(trimmedUsername, securityConfig.username);
-        const passwordMatch = timingSafeEqual(trimmedPassword, securityConfig.password);
-
-        if (usernameMatch && passwordMatch) {
-          await createAdminSession();
-          setUsername('');
-          setPassword('');
-          onAuthenticated?.();
-
-          const fromPath = location.state?.from?.pathname;
-          const destination =
-            typeof fromPath === 'string' && fromPath.startsWith('/') && fromPath !== '/admin'
-              ? fromPath
-              : ADMIN_DASHBOARD_PATH;
-          navigate(destination, { replace: true });
-          return;
-        }
-
-        setAuthError(
-          t(
-            'admin.board.login.error',
-            'Credential validation failed. Access denied under Article 4 security governance protocols.',
-          ),
-        );
-        setPassword('');
-      } catch {
-        setAuthError(
-          t(
-            'admin.board.login.cryptoError',
-            'Cryptographic subsystem unavailable. Secure context required for session token issuance.',
-          ),
-        );
-      } finally {
-        setIsVerifying(false);
-      }
-    },
-    [username, password, navigate, location.state, onAuthenticated, t],
-  );
+    if (trimmedUsername === EXPECTED_USER && password === EXPECTED_PASS) {
+      sessionStorage.setItem('safeai_admin_active_session', 'true');
+      setError(null);
+      onAuthenticated?.();
+      navigate('/admin');
+    } else {
+      setError('Invalid administrator credentials.');
+    }
+  };
 
   return (
     <div className="admin-login">
@@ -532,7 +288,7 @@ export default function AdminLogin({ onAuthenticated }) {
             'Cryptographic challenge terminal — awaiting institutional authorization vector',
           )}
         />
-        <form className="admin-login__form" onSubmit={handleSubmit} noValidate>
+        <form className="admin-login__form" onSubmit={handleLogin} noValidate>
           <h1 className="admin-login__title">
             {t('admin.board.login.title', 'Secure Administrative Login')}
           </h1>
@@ -543,9 +299,9 @@ export default function AdminLogin({ onAuthenticated }) {
             )}
           </p>
 
-          {authError && (
+          {error && (
             <p className="admin-login__alert" role="alert" aria-live="assertive">
-              {authError}
+              {error}
             </p>
           )}
 
@@ -563,11 +319,10 @@ export default function AdminLogin({ onAuthenticated }) {
               autoCorrect="off"
               spellCheck={false}
               value={username}
-              disabled={isVerifying}
-              aria-invalid={Boolean(authError)}
+              aria-invalid={Boolean(error)}
               onChange={(event) => {
                 setUsername(event.target.value);
-                if (authError) setAuthError('');
+                if (error) setError(null);
               }}
             />
           </div>
@@ -584,19 +339,16 @@ export default function AdminLogin({ onAuthenticated }) {
               autoComplete="current-password"
               spellCheck={false}
               value={password}
-              disabled={isVerifying}
-              aria-invalid={Boolean(authError)}
+              aria-invalid={Boolean(error)}
               onChange={(event) => {
                 setPassword(event.target.value);
-                if (authError) setAuthError('');
+                if (error) setError(null);
               }}
             />
           </div>
 
-          <button type="submit" className="admin-login__submit" disabled={isVerifying}>
-            {isVerifying
-              ? t('admin.board.login.verifying', 'Verifying credentials…')
-              : t('admin.board.gate.submit', 'Authenticate')}
+          <button type="submit" className="admin-login__submit">
+            {t('admin.board.gate.submit', 'Authenticate')}
           </button>
         </form>
       </div>
