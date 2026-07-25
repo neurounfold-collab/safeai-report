@@ -285,9 +285,11 @@
       "badgeName": "Official Badge",
       "ledgerLogged": "Immutable record eligible for WaqfLedger.tech",
       "credentialLockTitle": "Verify Your Compliance Credential",
-      "linkedinAchievementClaim": "Share to LinkedIn / Copy Credentials",
+      "linkedinAchievementClaim": "Add Credential to LinkedIn Profile",
       "failedTitle": "Certification Threshold Not Met",
       "failedSubtitle": "A minimum weighted compliance score is required for institutional certification",
+      "securityBreachTitle": "Examination Invalidated — Security Breach",
+      "securityBreachSubtitle": "Leaving the active exam environment three times triggered Article 4 integrity invalidation. Telemetry has recorded the breach flag on this attempt.",
       "retryExam": "Review Scenarios & Retry",
       "navigationBlocked": "Compliance credential pending verification. Complete your LinkedIn achievement broadcast to proceed.",
       "waqfLedgerCaption": "The examination engine is an open-access public service; permanent institutional certificate provenance, tamper-proof state auditing, and validation ledger indexing are securely anchored via WaqfLedger.tech infrastructure nodes.",
@@ -779,6 +781,8 @@
       "status": "STATUS: SECURELY RECORDED & PROVENANCE SEALED",
       "statusAnchored": "Anchored to WaqfLedger",
       "statusLocal": "Local SHA-256 Verified",
+      "statusRemoteSealed": "WaqfLedger Consortium Sealed (SHA-256)",
+      "statusLocalFallback": "Local SHA-256 Verified (Pending Remote Seal)",
       "signatureName": "Adel El Bouzagaoui",
       "signatureTitle": "Director of Regulatory Research, L'Institut Article 4",
       "certifiedCandidate": "Certified Candidate",
@@ -792,7 +796,8 @@
     "sharing": {
       "linkedin": {
         "postText": "I validated my regulatory competency through the open-access TOEFL for AI Literacy institutional benchmark under EU AI Act Article 4.\n\nStandardized Human Risk Layer Verification · Empirical Institutional Audit · Open-Access Research Validation\n\nVerified by L'INSTITUT ARTICLE 4 (A4I). Immutable compliance record on WaqfLedger.tech.\n\nVerify my audit record: {verifyUrl}\nSHA-256 State Hash: {hash}\n\n#AILiteracy #EUAIAct #SafeAI #RegTech",
-        "copySuccess": "Open-access achievement broadcast copied to clipboard — paste into LinkedIn to publish your Empirical Institutional Audit record."
+        "copySuccess": "Open-access achievement broadcast copied to clipboard — paste into LinkedIn to publish your Empirical Institutional Audit record.",
+        "broadcastSuccess": "Official Credential Broadcasted & Sealed"
       }
     }
   },

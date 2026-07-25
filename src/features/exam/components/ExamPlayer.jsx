@@ -42,6 +42,23 @@ const EXAM_PLAYER_STYLES = `
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
+.exam-player.select-none {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.exam-player .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .exam-player--locked {
   overflow: hidden;
 }
@@ -398,6 +415,22 @@ const EXAM_PLAYER_STYLES = `
   text-align: center;
   line-height: 1.45;
   animation: exam-player-toast-in 220ms ease-out;
+}
+
+.exam-player__share-toast--pending {
+  border-color: rgba(251, 191, 36, 0.45);
+  color: #fbbf24;
+}
+
+.exam-player__share-toast--success {
+  border-color: rgba(52, 211, 153, 0.45);
+  color: #34d399;
+}
+
+.exam-player__share-toast--warning {
+  border-color: rgba(248, 113, 113, 0.5);
+  color: #fca5a5;
+  z-index: 60;
 }
 
 @keyframes exam-player-toast-in {
@@ -856,7 +889,19 @@ const EXAM_PLAYER_STYLES = `
 
 const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
 const EXAM_PERSIST_KEY = 'SAFEAI_EXAM_SESSION_PERSIST';
-const EXAM_PERSIST_SCHEMA_VERSION = 1;
+const EXAM_PERSIST_SCHEMA_VERSION = 2;
+const TAB_SWITCH_DEBOUNCE_MS = 800;
+const INTEGRITY_WARNING_TOAST =
+  'Article 4 Violation Warning: Leaving the active exam environment is recorded in telemetry logs.';
+const INTEGRITY_BREACH_TOAST =
+  'Article 4 Security Breach: Examination invalidated — environment abandonment recorded.';
+const PENDING_VERIFICATION_TOAST = 'Pending Verification';
+const CREDENTIAL_BROADCASTED_TOAST = 'Official Credential Broadcasted & Sealed';
+const TIER_CERT_TITLES = Object.freeze({
+  'Level 01': 'Certified AI Literacy Deployer (Foundational) — EU AI Act Article 4',
+  'Level 02': 'Certified AI Procurement & Risk Manager — EU AI Act Article 4',
+  'Level 03': 'Certified High-Risk System Compliance Auditor — EU AI Act Article 4',
+});
 const CANDIDATE_NAME_KEY = 'SAFEAI_EXAMINEE_LEGAL_NAME';
 const COHORT_PROFILE_KEY = 'SAFEAI_EXAM_COHORT_PROFILE';
 const REGISTRY_INTAKE_FLAG = 'EXECUTIVE_BRIEFING';
@@ -910,6 +955,7 @@ function persistEntryTier(tierSlug) {
  *   scenarioIds: number[];
  *   currentScenarioIndex: number;
  *   userChoices: Array<{ scenarioId: number; chosenOptionIndex: number; timeSpentMs: number }>;
+ *   optionOrders?: number[][];
  *   examStartedAt?: string;
  * }}
  */
@@ -959,6 +1005,26 @@ function isValidPersistedExamSession(data) {
     if (choice.scenarioId !== data.scenarioIds[index]) return false;
   }
 
+  if (!Array.isArray(data.optionOrders) || data.optionOrders.length !== EXAM_SCENARIO_COUNT) {
+    return false;
+  }
+
+  for (const order of data.optionOrders) {
+    if (!Array.isArray(order) || order.length !== 4) return false;
+    const seen = new Set();
+    for (const originalIndex of order) {
+      if (
+        typeof originalIndex !== 'number'
+        || originalIndex < 0
+        || originalIndex > 3
+        || seen.has(originalIndex)
+      ) {
+        return false;
+      }
+      seen.add(originalIndex);
+    }
+  }
+
   if (
     data.examStartedAt !== undefined
     && (typeof data.examStartedAt !== 'string' || data.examStartedAt.length === 0)
@@ -979,8 +1045,23 @@ function clearExamPersistSession() {
 }
 
 /**
+ * Rebuilds a scenario with options ordered by persisted original-index permutation.
+ * @param {typeof EXAM_SCENARIO_MATRIX[number]} scenario
+ * @param {number[]} optionOrder
+ */
+function applyOptionOrder(scenario, optionOrder) {
+  return {
+    ...scenario,
+    options: optionOrder.map((originalIndex) => ({
+      text: scenario.options[originalIndex],
+      originalIndex,
+    })),
+  };
+}
+
+/**
  * @returns {{
- *   shuffledExamMatrix: typeof EXAM_SCENARIO_MATRIX;
+ *   shuffledExamMatrix: ReturnType<typeof buildTierShuffledExamMatrix>;
  *   currentScenarioIndex: number;
  *   userChoices: Array<{ scenarioId: number; chosenOptionIndex: number; timeSpentMs: number }>;
  *   examStartedAt: string;
@@ -1000,7 +1081,11 @@ function loadPersistedExamSession() {
     }
 
     const shuffledExamMatrix = (parsed.scenarioIds ?? [])
-      .map((scenarioId) => SCENARIO_BY_ID.get(scenarioId))
+      .map((scenarioId, index) => {
+        const base = SCENARIO_BY_ID.get(scenarioId);
+        if (!base) return null;
+        return applyOptionOrder(base, parsed.optionOrders[index]);
+      })
       .filter(Boolean);
 
     if (!isExamMatrixComplete(shuffledExamMatrix)) {
@@ -1021,7 +1106,7 @@ function loadPersistedExamSession() {
 }
 
 /**
- * @param {typeof EXAM_SCENARIO_MATRIX} shuffledExamMatrix
+ * @param {ReturnType<typeof buildTierShuffledExamMatrix>} shuffledExamMatrix
  * @param {number} currentScenarioIndex
  * @param {Array<{ scenarioId: number; chosenOptionIndex: number; timeSpentMs: number }>} userChoices
  * @param {string} examStartedAt
@@ -1032,6 +1117,13 @@ function persistExamSession(shuffledExamMatrix, currentScenarioIndex, userChoice
   const payload = {
     version: EXAM_PERSIST_SCHEMA_VERSION,
     scenarioIds: (shuffledExamMatrix ?? []).map((scenario) => scenario?.id).filter(Boolean),
+    optionOrders: (shuffledExamMatrix ?? []).map((scenario) =>
+      (scenario?.options ?? []).map((option) =>
+        typeof option === 'object' && option !== null && 'originalIndex' in option
+          ? option.originalIndex
+          : 0,
+      ),
+    ),
     currentScenarioIndex,
     userChoices,
     examStartedAt,
@@ -1109,16 +1201,28 @@ function resolveCertificationTier(scoreResult, urlTier) {
 
 /**
  * Maps the serverless grade-exam payload into the ExamPlayer results view model.
- * @param {{ passed: boolean; score: number; hash: string; timestamp: string; assessmentId: string; sealMode?: string }} payload
+ * @param {{
+ *   passed: boolean;
+ *   score: number;
+ *   hash: string;
+ *   timestamp: string;
+ *   assessmentId: string;
+ *   sealMode?: string;
+ *   ledgerStatus?: 'remote_sealed' | 'local_fallback';
+ *   securityBreach?: boolean;
+ * }} payload
  * @param {string} roleId
  * @param {'level01' | 'level02' | 'level03' | null} urlTier
  */
 function buildServerScoreResult(payload, roleId, urlTier) {
   const score = Number(payload.score);
   const scoreBand = resolveCompositeScoreBand(score);
+  const ledgerStatus =
+    payload.ledgerStatus
+    ?? (payload.sealMode === 'remote' ? 'remote_sealed' : 'local_fallback');
 
   return {
-    passesCertification: Boolean(payload.passed),
+    passesCertification: Boolean(payload.passed) && !payload.securityBreach,
     certificationThresholdPercent: INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT,
     weighted: {
       percentage: score,
@@ -1134,6 +1238,8 @@ function buildServerScoreResult(payload, roleId, urlTier) {
     assessmentId: payload.assessmentId,
     sealedAt: payload.timestamp,
     sealMode: payload.sealMode ?? null,
+    ledgerStatus,
+    securityBreach: Boolean(payload.securityBreach),
     certificationTier: resolveCertificationTier(null, urlTier),
     entryTier: urlTier,
     composite: {
@@ -1143,6 +1249,43 @@ function buildServerScoreResult(payload, roleId, urlTier) {
       registryFirewallActive: score < REGISTRY_FIREWALL_THRESHOLD_PERCENT,
     },
   };
+}
+
+/**
+ * Attaches Fisher–Yates-shuffled options that retain originalIndex for grading.
+ * @param {typeof EXAM_SCENARIO_MATRIX[number]} scenario
+ */
+function withShuffledOptions(scenario) {
+  const optionsWithIds = (scenario.options ?? []).map((text, originalIndex) => ({
+    text,
+    originalIndex,
+  }));
+
+  return {
+    ...scenario,
+    options: fisherYatesShuffle(optionsWithIds),
+  };
+}
+
+/**
+ * Resolves display option text from either a shuffled option object or a raw string.
+ * @param {{ text: string; originalIndex: number } | string} option
+ */
+function getOptionText(option) {
+  if (typeof option === 'string') return option;
+  return option?.text ?? '';
+}
+
+/**
+ * Maps a displayed option selection back to the master-key original index.
+ * @param {{ text: string; originalIndex: number } | string | undefined} option
+ * @param {number} displayIndex
+ */
+function resolveOriginalOptionIndex(option, displayIndex) {
+  if (typeof option === 'object' && option !== null && typeof option.originalIndex === 'number') {
+    return option.originalIndex;
+  }
+  return displayIndex;
 }
 
 const EMPTY_CERTIFICATION_PIPELINE = {
@@ -1170,8 +1313,8 @@ function fisherYatesShuffle(array) {
 
 /**
  * Segregates the authoritative matrix by tier, shuffles each tier independently,
- * and concatenates into a linear 30-scenario examination sequence.
- * @returns {typeof EXAM_SCENARIO_MATRIX}
+ * Fisher–Yates-shuffles each scenario's options (preserving originalIndex), and
+ * concatenates into a linear 30-scenario examination sequence.
  */
 function buildTierShuffledExamMatrix() {
   const level01 = EXAM_SCENARIO_MATRIX.filter((scenario) => scenario.id >= 1 && scenario.id <= 10);
@@ -1182,7 +1325,7 @@ function buildTierShuffledExamMatrix() {
     ...fisherYatesShuffle(level01),
     ...fisherYatesShuffle(level02),
     ...fisherYatesShuffle(level03),
-  ];
+  ].map(withShuffledOptions);
 }
 
 /**
@@ -1401,12 +1544,23 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   const [ledgerStatus, setLedgerStatus] = useState(null);
   const [sealingError, setSealingError] = useState('');
   const [isSealing, setIsSealing] = useState(false);
+  const [tabSwitchCount, setTabSwitchCount] = useState(0);
+  const [integrityToast, setIntegrityToast] = useState(null);
+  const [isShared, setIsShared] = useState(false);
+  const [shareToast, setShareToast] = useState(null);
 
   const screenEnteredAtRef = useRef(Date.now());
   const examStartedAtRef = useRef(initialSession.examStartedAt);
   const credentialIdRef = useRef(null);
   const socialUnlockTriggeredRef = useRef(false);
   const certificationPipelineRef = useRef({ ...EMPTY_CERTIFICATION_PIPELINE });
+  const lastTabSwitchAtRef = useRef(0);
+  const userChoicesRef = useRef(userChoices);
+  const submitInFlightRef = useRef(false);
+  const examPhaseRef = useRef(examPhase);
+
+  userChoicesRef.current = userChoices;
+  examPhaseRef.current = examPhase;
 
   useEffect(() => {
     if (tierParamInvalid || sessionInitFailed) {
@@ -1490,26 +1644,13 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     };
   }, [navigationLocked, t]);
 
-  const recordChoiceAndAdvance = useCallback(async () => {
-    if (selectedOptionIndex === null || !currentScenario || isSealing) return;
-
-    const timeSpentMs = Date.now() - screenEnteredAtRef.current;
-    const response = {
-      scenarioId: currentScenario.id,
-      chosenOptionIndex: selectedOptionIndex,
-      timeSpentMs,
-    };
-
-    const nextChoices = [...userChoices, response];
-    setUserChoices(nextChoices);
-
-    if (!isFinalScenario) {
-      setCurrentScenarioIndex((index) => index + 1);
-      return;
-    }
+  const sealExamination = useCallback(async (scenarioAnswers, { securityBreach = false } = {}) => {
+    if (submitInFlightRef.current) return;
+    submitInFlightRef.current = true;
 
     const roleId = cohortProfile || readStoredCohortProfile();
     if (!roleId || !COHORT_PROFILE_IDS.includes(roleId)) {
+      submitInFlightRef.current = false;
       setSealingError(t('exam.player.cohort.title'));
       setExamPhase('cohort');
       return;
@@ -1525,11 +1666,12 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          scenarioAnswers: nextChoices,
+          scenarioAnswers,
           roleId,
           language: activeLocale,
           examineeName: resolveCandidateLegalName(candidateNameProp, storedLegalName, t),
           cohort: COHORT_LEDGER_LABELS[roleId] ?? 'CLL_COMPLIANCE_LEGAL',
+          securityBreach,
         }),
       });
 
@@ -1560,7 +1702,10 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
       };
 
       setStateHash(payload.hash);
-      setLedgerStatus(payload.sealMode === 'remote' ? 'anchored' : 'local');
+      setLedgerStatus(
+        payload.ledgerStatus
+        ?? (payload.sealMode === 'remote' ? 'remote_sealed' : 'local_fallback'),
+      );
 
       try {
         window.localStorage.setItem('SAFEAI_CREDENTIAL_STATE_HASH', payload.hash);
@@ -1570,15 +1715,20 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         // Storage may be unavailable in hardened browser profiles.
       }
 
-      transmitDoctoralResearchPacket(nextChoices, examStartedAtRef.current, activeLocale, {
+      transmitDoctoralResearchPacket(scenarioAnswers, examStartedAtRef.current, activeLocale, {
         score: payload.score,
         passed: payload.passed,
         assessmentId: payload.assessmentId,
       });
 
-      if (!masterTestOverride && result.composite?.registryFirewallActive) {
+      if (securityBreach || result.securityBreach) {
+        setIntegrityToast(INTEGRITY_BREACH_TOAST);
+        setExamPhase('failed');
+      } else if (!masterTestOverride && result.composite?.registryFirewallActive) {
         setExamPhase('registryExposure');
       } else if (result.passesCertification) {
+        setIsShared(Boolean(masterTestOverride));
+        setShareToast(masterTestOverride ? null : PENDING_VERIFICATION_TOAST);
         setExamPhase('passed');
       } else {
         setExamPhase('failed');
@@ -1590,13 +1740,9 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
       setExamPhase('sealing');
     } finally {
       setIsSealing(false);
+      submitInFlightRef.current = false;
     }
   }, [
-    selectedOptionIndex,
-    currentScenario,
-    userChoices,
-    isFinalScenario,
-    isSealing,
     activeLocale,
     cohortProfile,
     masterTestOverride,
@@ -1604,6 +1750,79 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     storedLegalName,
     t,
     urlTier,
+  ]);
+
+  useEffect(() => {
+    if (examPhase !== 'active') return undefined;
+
+    const recordEnvironmentAbandonment = () => {
+      const now = Date.now();
+      if (now - lastTabSwitchAtRef.current < TAB_SWITCH_DEBOUNCE_MS) return;
+      lastTabSwitchAtRef.current = now;
+
+      setTabSwitchCount((previous) => {
+        const next = previous + 1;
+        if (next <= 2) {
+          setIntegrityToast(INTEGRITY_WARNING_TOAST);
+          window.setTimeout(() => {
+            setIntegrityToast((current) =>
+              (current === INTEGRITY_WARNING_TOAST ? null : current),
+            );
+          }, 4200);
+        } else if (examPhaseRef.current === 'active') {
+          void sealExamination(userChoicesRef.current, { securityBreach: true });
+        }
+        return next;
+      });
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        recordEnvironmentAbandonment();
+      }
+    };
+
+    const handleWindowBlur = () => {
+      recordEnvironmentAbandonment();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleWindowBlur);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
+    };
+  }, [examPhase, sealExamination]);
+
+  const recordChoiceAndAdvance = useCallback(async () => {
+    if (selectedOptionIndex === null || !currentScenario || isSealing) return;
+
+    const timeSpentMs = Date.now() - screenEnteredAtRef.current;
+    const selectedOption = currentScenario.options?.[selectedOptionIndex];
+    const response = {
+      scenarioId: currentScenario.id,
+      chosenOptionIndex: resolveOriginalOptionIndex(selectedOption, selectedOptionIndex),
+      timeSpentMs,
+    };
+
+    const nextChoices = [...userChoices, response];
+    setUserChoices(nextChoices);
+    userChoicesRef.current = nextChoices;
+
+    if (!isFinalScenario) {
+      setCurrentScenarioIndex((index) => index + 1);
+      return;
+    }
+
+    await sealExamination(nextChoices, { securityBreach: false });
+  }, [
+    selectedOptionIndex,
+    currentScenario,
+    userChoices,
+    isFinalScenario,
+    isSealing,
+    sealExamination,
   ]);
 
   const handleInitializeIdentity = useCallback(() => {
@@ -1639,6 +1858,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     setShuffledExamMatrix(freshSession.shuffledExamMatrix);
     setCurrentScenarioIndex(freshSession.currentScenarioIndex);
     setUserChoices(freshSession.userChoices);
+    userChoicesRef.current = freshSession.userChoices;
     setSelectedOptionIndex(null);
     setScoreResult(null);
     setCredentialUnlocked(masterTestOverride);
@@ -1650,8 +1870,15 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     setRegistryMessage('');
     setRegistrySubmitted(false);
     setRegistrySubmitError('');
+    setTabSwitchCount(0);
+    setIntegrityToast(null);
+    setIsShared(false);
+    setShareToast(null);
+    setLinkedInToast(null);
     credentialIdRef.current = null;
     socialUnlockTriggeredRef.current = false;
+    submitInFlightRef.current = false;
+    lastTabSwitchAtRef.current = 0;
     certificationPipelineRef.current = { ...EMPTY_CERTIFICATION_PIPELINE };
     setExamPhase('active');
     examStartedAtRef.current = freshSession.examStartedAt;
@@ -1660,18 +1887,29 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   const handleLinkedInAchievementClaim = useCallback(async () => {
     try {
+      const certTitle =
+        TIER_CERT_TITLES[certificationTier] ?? TIER_CERT_TITLES['Level 01'];
+      const assessmentId = scoreResult?.assessmentId ?? '';
       const payload = await triggerLinkedInSocialUnlock({
         stateHash,
         language: activeLocale,
+        certTitle,
+        assessmentId,
       });
+
+      window.open(payload.linkedInAddUrl, '_blank', 'noopener,noreferrer');
+
       certificationPipelineRef.current.socialUnlockSucceeded = true;
       socialUnlockTriggeredRef.current = true;
-      setLinkedInToast(payload.copySuccessMessage);
+      setIsShared(true);
       setCredentialUnlocked(true);
+      setShareToast(CREDENTIAL_BROADCASTED_TOAST);
+      setLinkedInToast(null);
       window.setTimeout(() => {
-        window.open(payload.linkedInShareUrl, '_blank', 'noopener,noreferrer');
-      }, 350);
-      window.setTimeout(() => setLinkedInToast(null), 4200);
+        setShareToast((current) =>
+          (current === CREDENTIAL_BROADCASTED_TOAST ? null : current),
+        );
+      }, 4200);
 
       const hashForLedger =
         stateHash
@@ -1693,17 +1931,19 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
           score: scoreResult?.composite?.score ?? scoreResult?.weighted?.percentage,
           timestamp: completedAt,
         });
-        setLedgerStatus(ledgerResult?.success ? 'anchored' : 'local');
-      } else if (!hashForLedger) {
-        setLedgerStatus('local');
+        if (ledgerStatus !== 'remote_sealed') {
+          setLedgerStatus(ledgerResult?.success ? 'remote_sealed' : 'local_fallback');
+        }
+      } else if (!hashForLedger && ledgerStatus !== 'remote_sealed') {
+        setLedgerStatus('local_fallback');
       }
     } catch {
-      // Clipboard or hash unavailable — credential remains locked until retry.
+      // Hash unavailable — credential remains locked until retry.
     }
-  }, [stateHash, activeLocale, certificationTier, scoreResult]);
+  }, [stateHash, activeLocale, certificationTier, scoreResult, ledgerStatus]);
 
   const requiresAchievementClaim = !masterTestOverride;
-  const effectiveCredentialUnlocked = masterTestOverride || credentialUnlocked;
+  const effectiveCredentialUnlocked = masterTestOverride || credentialUnlocked || isShared;
   const credentialShrouded = requiresAchievementClaim && !effectiveCredentialUnlocked;
   const registryFirewallActive =
     !masterTestOverride && Boolean(scoreResult?.composite?.registryFirewallActive);
@@ -1961,7 +2201,9 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
                   <button
                     type="button"
                     className="exam-player__achievement-claim"
-                    onClick={handleLinkedInAchievementClaim}
+                    onClick={() => {
+                      void handleLinkedInAchievementClaim();
+                    }}
                   >
                     {t('exam.player.linkedinAchievementClaim')}
                   </button>
@@ -1976,9 +2218,17 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
           {t('exam.player.navigationBlocked')}
         </p>
 
-        {linkedInToast && (
-          <p className="exam-player__share-toast" role="status" aria-live="polite">
-            {linkedInToast}
+        {(shareToast || linkedInToast) && (
+          <p
+            className={
+              isShared
+                ? 'exam-player__share-toast exam-player__share-toast--success'
+                : 'exam-player__share-toast exam-player__share-toast--pending'
+            }
+            role="status"
+            aria-live="polite"
+          >
+            {shareToast || linkedInToast}
           </p>
         )}
       </div>
@@ -2030,15 +2280,30 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         <style>{EXAM_PLAYER_STYLES}</style>
         <div className="exam-player__shell exam-player__credential">
           <CompositeScorePanel composite={scoreResult.composite} t={t} />
-          <h2 className="exam-player__fail-title">{t('exam.player.failedTitle')}</h2>
+          <h2 className="exam-player__fail-title">
+            {scoreResult.securityBreach
+              ? t('exam.player.securityBreachTitle')
+              : t('exam.player.failedTitle')}
+          </h2>
           <p className="exam-player__fail-subtitle">
-            {t('exam.player.failedSubtitle')} ({INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT}
-            %). {t('exam.player.weightedScore')}: {scoreResult?.weighted?.percentage ?? 0}%.
+            {scoreResult.securityBreach
+              ? t('exam.player.securityBreachSubtitle')
+              : (
+                <>
+                  {t('exam.player.failedSubtitle')} ({INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT}
+                  %). {t('exam.player.weightedScore')}: {scoreResult?.weighted?.percentage ?? 0}%.
+                </>
+              )}
           </p>
           <button type="button" className="exam-player__retry" onClick={handleRetry}>
             {t('exam.player.retryExam')}
           </button>
         </div>
+        {integrityToast && (
+          <p className="exam-player__share-toast exam-player__share-toast--warning" role="alert">
+            {integrityToast}
+          </p>
+        )}
       </div>
     );
   }
@@ -2059,7 +2324,11 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   }
 
   return (
-    <div className="exam-player">
+    <div
+      className="exam-player select-none"
+      onCopy={(event) => event.preventDefault()}
+      onContextMenu={(event) => event.preventDefault()}
+    >
       <style>{EXAM_PLAYER_STYLES}</style>
       <div className="exam-player__shell">
         <div className="exam-player__status-row">
@@ -2095,11 +2364,15 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         </p>
 
         <div className="exam-player__options" role="listbox" aria-label={t('exam.player.selectOption')}>
-          {(currentScenario?.options ?? []).map((optionText, optionIndex) => {
+          {(currentScenario?.options ?? []).map((option, optionIndex) => {
             const isSelected = selectedOptionIndex === optionIndex;
+            const optionKey =
+              typeof option === 'object' && option !== null
+                ? `${currentScenario.id}-${option.originalIndex}`
+                : `${currentScenario.id}-${optionIndex}`;
             return (
               <button
-                key={optionIndex}
+                key={optionKey}
                 type="button"
                 role="option"
                 aria-selected={isSelected}
@@ -2111,7 +2384,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
                 onClick={() => setSelectedOptionIndex(optionIndex)}
               >
                 <span className="exam-player__option-index">{OPTION_LETTERS[optionIndex]}</span>
-                <span className="exam-player__option-text">{optionText}</span>
+                <span className="exam-player__option-text">{getOptionText(option)}</span>
               </button>
             );
           })}
@@ -2130,6 +2403,15 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
           </button>
         </div>
       </div>
+
+      {integrityToast && (
+        <p className="exam-player__share-toast exam-player__share-toast--warning" role="alert">
+          {integrityToast}
+        </p>
+      )}
+      <span className="sr-only" aria-live="polite">
+        Tab switches recorded: {tabSwitchCount}
+      </span>
     </div>
   );
 }

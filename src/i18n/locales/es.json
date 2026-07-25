@@ -285,9 +285,11 @@
       "badgeName": "Insignia oficial",
       "ledgerLogged": "Registro inmutable elegible para WaqfLedger.tech",
       "credentialLockTitle": "Verifique su credencial de cumplimiento",
-      "linkedinAchievementClaim": "Compartir en LinkedIn / Copiar credenciales",
+      "linkedinAchievementClaim": "Añadir credencial al perfil de LinkedIn",
       "failedTitle": "Umbral de certificación no alcanzado",
       "failedSubtitle": "Se requiere una puntuación de cumplimiento ponderada mínima para la certificación institucional",
+      "securityBreachTitle": "Examen invalidado — Brecha de seguridad",
+      "securityBreachSubtitle": "Abandonar el entorno activo del examen tres veces activó la invalidación de integridad del Artículo 4. La telemetría ha registrado el indicador de brecha en este intento.",
       "retryExam": "Revisar escenarios e intentar de nuevo",
       "navigationBlocked": "Credencial de cumplimiento pendiente de verificación. Complete su difusión de logro en LinkedIn para continuar.",
       "waqfLedgerCaption": "El motor de examen es un servicio público de open access; la procedencia permanente de certificados institucionales, la auditoría de estado a prueba de manipulaciones y la indexación del registro de validación están firmemente ancladas a través de nodos de infraestructura WaqfLedger.tech.",
@@ -779,6 +781,8 @@
       "status": "ESTADO: REGISTRADO DE FORMA SEGURA Y SELLADO POR PROCEDENCIA",
       "statusAnchored": "Anclado en WaqfLedger",
       "statusLocal": "SHA-256 local verificado",
+      "statusRemoteSealed": "Sellado del Consorcio WaqfLedger (SHA-256)",
+      "statusLocalFallback": "SHA-256 local verificado (sello remoto pendiente)",
       "signatureName": "Adel El Bouzagaoui",
       "signatureTitle": "Director de Investigación Regulatoria, L'Institut Article 4",
       "certifiedCandidate": "Candidato Certificado",
@@ -792,7 +796,8 @@
     "sharing": {
       "linkedin": {
         "postText": "Validé mi competencia regulatoria mediante el referente institucional open access TOEFL for AI Literacy, en virtud del Artículo 4 de la Ley de IA de la UE.\n\nVerificación estandarizada de la capa de riesgo humano · Auditoría institucional empírica · Validación de investigación open access\n\nVerificado por L'INSTITUT ARTICLE 4 (A4I). Registro de cumplimiento inmutable en WaqfLedger.tech.\n\nVerifique mi expediente de auditoría: {verifyUrl}\nHash de estado SHA-256: {hash}\n\n#AILiteracy #EUAIAct #SafeAI #RegTech",
-        "copySuccess": "Difusión de logro open access copiada — péguela en LinkedIn para publicar su expediente de Auditoría institucional empírica."
+        "copySuccess": "Difusión de logro open access copiada — péguela en LinkedIn para publicar su expediente de Auditoría institucional empírica.",
+        "broadcastSuccess": "Credencial oficial difundida y sellada"
       }
     }
   },

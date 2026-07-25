@@ -106,26 +106,55 @@ function buildHashWatermark(hash, rows = 14, cols = 6) {
 }
 
 /**
+ * Normalizes legacy and current ledger status tokens into badge mode.
+ * @param {string | null | undefined} ledgerStatus
+ * @returns {'remote_sealed' | 'local_fallback' | null}
+ */
+function resolveLedgerBadgeMode(ledgerStatus) {
+  if (
+    ledgerStatus === 'remote_sealed'
+    || ledgerStatus === 'anchored'
+  ) {
+    return 'remote_sealed';
+  }
+  if (
+    ledgerStatus === 'local_fallback'
+    || ledgerStatus === 'local'
+  ) {
+    return 'local_fallback';
+  }
+  return null;
+}
+
+/**
  * Authoritative digital credential canvas with WaqfLedger provenance sealing.
  *
  * @param {object} props
  * @param {string} props.candidateName — Candidate full legal name.
  * @param {string} props.tierId — Certification tier (e.g. "Level 01").
  * @param {string | null} props.stateHash — 64-character SHA-256 verification state hash.
- * @param {'anchored' | 'local' | null | undefined} props.ledgerStatus — Ledger anchor state after social unlock.
+ * @param {'remote_sealed' | 'local_fallback' | 'anchored' | 'local' | null | undefined} props.ledgerStatus
  * @param {(key: string) => string} props.t — i18n translator.
  */
 export default function CertificateBadge({ candidateName, tierId, stateHash, ledgerStatus, t }) {
   const competencyKey = TIER_COMPETENCY_KEYS[tierId] ?? TIER_COMPETENCY_KEYS['Level 01'];
   const displayHash = stateHash ?? '0'.repeat(64);
   const watermarkText = useMemo(() => buildHashWatermark(displayHash), [displayHash]);
+  const badgeMode = resolveLedgerBadgeMode(ledgerStatus);
 
   const statusLabel =
-    ledgerStatus === 'anchored'
-      ? t('academy.badge.statusAnchored')
-      : ledgerStatus === 'local'
-        ? t('academy.badge.statusLocal')
+    badgeMode === 'remote_sealed'
+      ? t('academy.badge.statusRemoteSealed')
+      : badgeMode === 'local_fallback'
+        ? t('academy.badge.statusLocalFallback')
         : t('academy.badge.status');
+
+  const badgeClassName =
+    badgeMode === 'remote_sealed'
+      ? 'mt-2 inline-flex items-center rounded-md border border-emerald-400/40 bg-emerald-500/15 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide text-emerald-300 sm:text-xs'
+      : badgeMode === 'local_fallback'
+        ? 'mt-2 inline-flex items-center rounded-md border border-amber-400/40 bg-amber-500/15 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide text-amber-300 sm:text-xs'
+        : 'mt-1 text-emerald-400/80';
 
   return (
     <article
@@ -182,7 +211,9 @@ export default function CertificateBadge({ candidateName, tierId, stateHash, led
               {t('academy.badge.auditHashLabel')}{' '}
               <span className="text-emerald-400/90">{displayHash}</span>
             </p>
-            <p className="mt-1 text-emerald-400/80">{statusLabel}</p>
+            <p className={badgeClassName} role="status">
+              {statusLabel}
+            </p>
           </div>
 
           <div className="flex flex-col items-center justify-end text-center sm:items-end sm:text-right">

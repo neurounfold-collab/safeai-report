@@ -32,39 +32,42 @@ const PILLAR_BLOCKS = Object.freeze([
 /**
  * Server-side master answer key (scenario id → correct option + compliance weight).
  * Never ship this map in the client bundle.
+ * correctOptionIndex is evenly distributed across A(0)/B(1)/C(2)/D(3) (8/8/7/7).
+ * ExamPlayer may Fisher–Yates shuffle display order and must map choices back
+ * to these original option indices before submission.
  */
 const MASTER_ANSWER_KEY = Object.freeze(
   Object.fromEntries(
     [
-      [1, 1, 1.0],
+      [1, 0, 1.0],
       [2, 1, 1.1],
-      [3, 1, 1.2],
-      [4, 0, 1.0],
-      [5, 1, 1.1],
+      [3, 2, 1.2],
+      [4, 3, 1.0],
+      [5, 0, 1.1],
       [6, 1, 1.2],
-      [7, 1, 1.1],
-      [8, 1, 1.2],
-      [9, 1, 1.3],
+      [7, 2, 1.1],
+      [8, 3, 1.2],
+      [9, 0, 1.3],
       [10, 1, 1.4],
-      [11, 1, 1.6],
-      [12, 1, 1.7],
-      [13, 1, 1.8],
+      [11, 2, 1.6],
+      [12, 3, 1.7],
+      [13, 0, 1.8],
       [14, 1, 1.9],
-      [15, 1, 2.0],
-      [16, 1, 1.8],
-      [17, 1, 1.9],
+      [15, 2, 2.0],
+      [16, 3, 1.8],
+      [17, 0, 1.9],
       [18, 1, 2.0],
-      [19, 1, 1.7],
-      [20, 1, 2.1],
-      [21, 1, 2.5],
+      [19, 2, 1.7],
+      [20, 3, 2.1],
+      [21, 0, 2.5],
       [22, 1, 2.6],
-      [23, 1, 2.8],
-      [24, 1, 2.7],
-      [25, 1, 2.6],
+      [23, 2, 2.8],
+      [24, 3, 2.7],
+      [25, 0, 2.6],
       [26, 1, 2.5],
-      [27, 1, 2.7],
-      [28, 1, 2.8],
-      [29, 1, 2.9],
+      [27, 2, 2.7],
+      [28, 3, 2.8],
+      [29, 0, 2.9],
       [30, 1, 3.0],
     ].map(([id, correctOptionIndex, complianceWeight]) => [
       id,
@@ -213,7 +216,7 @@ async function writeFallbackSeal(sealRecord) {
 /**
  * @param {object} canonicalPayload
  * @param {string} hash
- * @returns {Promise<{ sealed: boolean; mode: 'remote' | 'local'; remoteStatus?: number }>}
+ * @returns {Promise<{ sealed: boolean; mode: 'remote' | 'local'; ledgerStatus: 'remote_sealed' | 'local_fallback'; remoteStatus?: number }>}
  */
 async function sealOnWaqfLedger(canonicalPayload, hash) {
   const endpoint =
@@ -254,7 +257,12 @@ async function sealOnWaqfLedger(canonicalPayload, hash) {
       throw new Error(`WaqfLedger rejected seal (${response.status})`);
     }
 
-    return { sealed: true, mode: 'remote', remoteStatus: response.status };
+    return {
+      sealed: true,
+      mode: 'remote',
+      ledgerStatus: 'remote_sealed',
+      remoteStatus: response.status,
+    };
   } catch (error) {
     const sealRecord = {
       ...canonicalPayload,
@@ -269,7 +277,7 @@ async function sealOnWaqfLedger(canonicalPayload, hash) {
       console.error('[grade-exam] Fallback storage failed', fallbackError);
     }
 
-    return { sealed: true, mode: 'local' };
+    return { sealed: true, mode: 'local', ledgerStatus: 'local_fallback' };
   } finally {
     clearTimeout(timeoutId);
   }
@@ -325,6 +333,7 @@ export default async function handler(req, res) {
       language,
       examineeName,
       cohort,
+      securityBreach,
     } = body ?? {};
 
     if (!roleId || !COHORT_WEIGHTS[roleId]) {
@@ -335,8 +344,11 @@ export default async function handler(req, res) {
       return;
     }
 
-    const calculatedScore = calculateMcdaScore(scenarioAnswers, roleId);
-    const passed = calculatedScore >= PASS_THRESHOLD;
+    const breachFlag = Boolean(securityBreach);
+    const calculatedScore = breachFlag
+      ? 0
+      : calculateMcdaScore(scenarioAnswers, roleId);
+    const passed = !breachFlag && calculatedScore >= PASS_THRESHOLD;
     const timestamp = new Date().toISOString();
     const assessmentId = `A4-ALAM-2026-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
 
@@ -347,6 +359,7 @@ export default async function handler(req, res) {
       examinee_name: examineeName || 'Anonymous Operator',
       language: language || 'en',
       passed,
+      security_breach: breachFlag,
       timestamp,
     };
 
@@ -361,6 +374,8 @@ export default async function handler(req, res) {
       timestamp,
       assessmentId,
       sealMode: ledgerResult.mode,
+      ledgerStatus: ledgerResult.ledgerStatus,
+      securityBreach: breachFlag,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Grading failed.';

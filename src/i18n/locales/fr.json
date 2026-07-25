@@ -285,9 +285,11 @@
       "badgeName": "Badge officiel",
       "ledgerLogged": "Enregistrement immuable éligible pour WaqfLedger.tech",
       "credentialLockTitle": "Vérifiez votre credential de conformité",
-      "linkedinAchievementClaim": "Partager sur LinkedIn / Copier les identifiants",
+      "linkedinAchievementClaim": "Ajouter le certificat au profil LinkedIn",
       "failedTitle": "Seuil de certification non atteint",
       "failedSubtitle": "Un score de conformité pondéré minimum est requis pour la certification institutionnelle",
+      "securityBreachTitle": "Examen invalidé — Violation de sécurité",
+      "securityBreachSubtitle": "Quitter l'environnement d'examen actif à trois reprises a déclenché l'invalidation d'intégrité Article 4. La télémétrie a enregistré le drapeau de violation pour cette tentative.",
       "retryExam": "Revoir les scénarios et réessayer",
       "navigationBlocked": "Credential de conformité en attente de vérification. Terminez votre diffusion d'accomplissement LinkedIn pour continuer.",
       "waqfLedgerCaption": "Le moteur d'examen est un service public open access ; la provenance permanente des certificats institutionnels, l'audit d'état inviolable et l'indexation du registre de validation sont solidement ancrés via les nœuds d'infrastructure WaqfLedger.tech.",
@@ -779,6 +781,8 @@
       "status": "STATUT : ENREGISTRÉ DE FAÇON SÉCURISÉE ET SCELLÉ PAR PROVENANCE",
       "statusAnchored": "Ancré sur WaqfLedger",
       "statusLocal": "SHA-256 local vérifié",
+      "statusRemoteSealed": "Scellé Consortium WaqfLedger (SHA-256)",
+      "statusLocalFallback": "SHA-256 local vérifié (scellement distant en attente)",
       "signatureName": "Adel El Bouzagaoui",
       "signatureTitle": "Directeur de la Recherche Réglementaire, L'Institut Article 4",
       "certifiedCandidate": "Candidat Certifié",
@@ -792,7 +796,8 @@
     "sharing": {
       "linkedin": {
         "postText": "J'ai validé ma compétence réglementaire via le référentiel institutionnel open access TOEFL for AI Literacy, au titre de l'article 4 du règlement européen sur l'IA.\n\nVérification standardisée de la couche de risque humain · Audit institutionnel empirique · Validation de recherche open access\n\nVérifié par L'INSTITUT ARTICLE 4 (A4I). Enregistrement de conformité immuable sur WaqfLedger.tech.\n\nVérifiez mon dossier d'audit : {verifyUrl}\nEmpreinte d'état SHA-256 : {hash}\n\n#AILiteracy #EUAIAct #SafeAI #RegTech",
-        "copySuccess": "Diffusion d'accomplissement open access copiée — collez-la sur LinkedIn pour publier votre dossier d'Audit institutionnel empirique."
+        "copySuccess": "Diffusion d'accomplissement open access copiée — collez-la sur LinkedIn pour publier votre dossier d'Audit institutionnel empirique.",
+        "broadcastSuccess": "Identifiant officiel diffusé et scellé"
       }
     }
   },
