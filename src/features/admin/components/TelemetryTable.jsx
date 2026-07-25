@@ -86,6 +86,10 @@ const TELEMETRY_TABLE_STYLES = `
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+  text-align: start;
 }
 
 .telemetry-table__viewport {
@@ -93,6 +97,8 @@ const TELEMETRY_TABLE_STYLES = `
   border: 1px solid rgba(148, 163, 184, 0.2);
   background: rgba(0, 0, 0, 0.22);
   overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .telemetry-table__toolbar {
@@ -104,6 +110,7 @@ const TELEMETRY_TABLE_STYLES = `
   padding: 0.75rem 0.85rem;
   border-bottom: 1px solid rgba(148, 163, 184, 0.16);
   background: rgba(10, 14, 23, 0.55);
+  min-width: 0;
 }
 
 .telemetry-table__heading {
@@ -113,6 +120,8 @@ const TELEMETRY_TABLE_STYLES = `
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #94a3b8;
+  min-width: 0;
+  flex: 1 1 10rem;
 }
 
 .telemetry-table__wire-tabs {
@@ -122,6 +131,7 @@ const TELEMETRY_TABLE_STYLES = `
   padding: 0.65rem 0.85rem;
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
   background: rgba(10, 14, 23, 0.38);
+  min-width: 0;
 }
 
 .telemetry-table__wire-tab {
@@ -138,6 +148,7 @@ const TELEMETRY_TABLE_STYLES = `
   cursor: pointer;
   transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
   white-space: nowrap;
+  max-width: 100%;
 }
 
 .telemetry-table__wire-tab:hover {
@@ -160,17 +171,11 @@ const TELEMETRY_TABLE_STYLES = `
 .telemetry-table__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 0.5rem;
   margin-inline-start: auto;
-}
-
-[dir="rtl"] .telemetry-table__toolbar {
-  flex-direction: row-reverse;
-}
-
-[dir="rtl"] .telemetry-table__actions {
-  margin-inline-start: 0;
-  margin-inline-end: auto;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .telemetry-table__export {
@@ -186,6 +191,7 @@ const TELEMETRY_TABLE_STYLES = `
   cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease;
   white-space: nowrap;
+  max-width: 100%;
 }
 
 .telemetry-table__export:hover {
@@ -206,14 +212,18 @@ const TELEMETRY_TABLE_STYLES = `
 .telemetry-table__scroll {
   position: relative;
   max-height: 440px;
+  max-width: 100%;
   overflow-x: auto;
   overflow-y: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .telemetry-table__grid {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.6875rem;
+  table-layout: auto;
 }
 
 .telemetry-table__grid thead {
@@ -373,16 +383,20 @@ const TELEMETRY_TABLE_STYLES = `
   background: rgba(2, 6, 23, 0.82);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .telemetry-table__modal-shell {
   width: min(100%, 42rem);
   max-height: calc(100vh - 2rem);
   overflow: auto;
+  overflow-x: clip;
   border-radius: 0.75rem;
   border: 1px solid rgba(148, 163, 184, 0.28);
   background: #f8fafc;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  text-align: start;
 }
 
 .telemetry-table__modal-toolbar {
@@ -394,6 +408,7 @@ const TELEMETRY_TABLE_STYLES = `
   padding: 0.75rem 1rem;
   border-bottom: 1px solid rgba(148, 163, 184, 0.35);
   background: #0f172a;
+  min-width: 0;
 }
 
 .telemetry-table__modal-toolbar-title {
@@ -404,12 +419,18 @@ const TELEMETRY_TABLE_STYLES = `
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #5eead4;
+  min-width: 0;
+  flex: 1 1 12rem;
 }
 
 .telemetry-table__modal-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 0.45rem;
+  margin-inline-start: auto;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .telemetry-table__modal-btn {

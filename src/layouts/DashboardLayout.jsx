@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   createTranslator,
   getActiveLanguage,
+  getLanguageMeta,
   isRtlLanguage,
   SUPPORTED_LANGUAGES,
   setActiveLanguage,
@@ -50,6 +51,10 @@ const DASHBOARD_LAYOUT_STYLES = `
   display: grid;
   grid-template-columns: minmax(15rem, 17.5rem) 1fr;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  text-align: start;
   background:
     radial-gradient(ellipse 70% 50% at 0% 0%, rgba(201, 162, 39, 0.08), transparent 55%),
     linear-gradient(180deg, #0b1120 0%, #0f172a 100%);
@@ -60,7 +65,8 @@ const DASHBOARD_LAYOUT_STYLES = `
 .dashboard-layout__sidebar {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--dash-sidebar-border);
+  min-width: 0;
+  border-inline-end: 1px solid var(--dash-sidebar-border);
   background: var(--dash-sidebar);
   padding: 1.5rem 1rem;
 }
@@ -73,11 +79,10 @@ const DASHBOARD_LAYOUT_STYLES = `
   text-decoration: none;
   color: inherit;
   background: none;
-  border-left: none;
-  border-right: none;
+  border-inline: none;
   border-top: none;
   width: 100%;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   font: inherit;
 }
@@ -139,7 +144,7 @@ const DASHBOARD_LAYOUT_STYLES = `
   color: var(--dash-muted);
   background: transparent;
   width: 100%;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   font-family: inherit;
   transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
@@ -153,8 +158,21 @@ const DASHBOARD_LAYOUT_STYLES = `
 .dashboard-layout__nav-link--active {
   color: var(--dash-text);
   border-color: var(--dash-accent-dim);
-  background: linear-gradient(90deg, rgba(201, 162, 39, 0.18), rgba(201, 162, 39, 0.04));
+  background: linear-gradient(
+    to right,
+    rgba(201, 162, 39, 0.18),
+    rgba(201, 162, 39, 0.04)
+  );
   box-shadow: inset 3px 0 0 var(--dash-accent);
+}
+
+[dir="rtl"] .dashboard-layout__nav-link--active {
+  background: linear-gradient(
+    to left,
+    rgba(201, 162, 39, 0.18),
+    rgba(201, 162, 39, 0.04)
+  );
+  box-shadow: inset -3px 0 0 var(--dash-accent);
 }
 
 .dashboard-layout__nav-icon {
@@ -224,7 +242,10 @@ const DASHBOARD_LAYOUT_STYLES = `
 
 .dashboard-layout__main {
   min-width: 0;
+  max-width: 100%;
   overflow: auto;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
 }
 
 @media (max-width: 768px) {
@@ -234,13 +255,23 @@ const DASHBOARD_LAYOUT_STYLES = `
   }
 
   .dashboard-layout__sidebar {
-    border-right: none;
+    border-inline-end: none;
     border-bottom: 1px solid var(--dash-sidebar-border);
   }
 
   .dashboard-layout__nav {
     flex-direction: row;
     flex-wrap: wrap;
+  }
+
+  .dashboard-layout__nav-link--active,
+  [dir="rtl"] .dashboard-layout__nav-link--active {
+    background: linear-gradient(
+      180deg,
+      rgba(201, 162, 39, 0.18),
+      rgba(201, 162, 39, 0.04)
+    );
+    box-shadow: inset 0 -3px 0 var(--dash-accent);
   }
 }
 `;
@@ -292,15 +323,16 @@ export default function DashboardLayout({ children, language: languageProp }) {
     window.dispatchEvent(new CustomEvent(LANGUAGE_CHANGE_EVENT));
   };
 
+  const rtl = isRtlLanguage(language);
+
   useEffect(() => {
-    const rtl = isRtlLanguage(language);
     document.documentElement.dir = rtl ? 'rtl' : 'ltr';
     document.documentElement.lang = language;
-  }, [language]);
+  }, [language, rtl]);
 
   return (
     <DashboardTabContext.Provider value={tabContextValue}>
-      <div className="dashboard-layout">
+      <div className="dashboard-layout" dir={rtl ? 'rtl' : 'ltr'} lang={language}>
         <style>{DASHBOARD_LAYOUT_STYLES}</style>
 
         <aside className="dashboard-layout__sidebar" aria-label={t('dashboard.layout.sidebarAria')}>
@@ -356,6 +388,7 @@ export default function DashboardLayout({ children, language: languageProp }) {
                       ? 'dashboard-layout__locale-btn dashboard-layout__locale-btn--active'
                       : 'dashboard-layout__locale-btn'
                   }
+                  aria-label={getLanguageMeta(code).label}
                   aria-pressed={language === code}
                   onClick={() => handleLanguageChange(code)}
                 >

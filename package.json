@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "safeAI.report — TOEFL of AI Literacy certification platform",
+  "description": "safeAI.report — Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -3,13 +3,27 @@ import fr from './locales/fr.json';
 import es from './locales/es.json';
 import ar from './locales/ar.json';
 
+/** Official quadlingual locale codes (EN / FR / ES / AR). */
 export const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'ar'];
 export const DEFAULT_LANGUAGE = 'en';
 
+/**
+ * Per-locale presentation metadata — `dir` drives document writing mode.
+ * Arabic (`ar`) is officially declared with `dir: "rtl"`.
+ */
+export const LANGUAGE_META = {
+  en: { code: 'en', dir: 'ltr', label: 'English' },
+  fr: { code: 'fr', dir: 'ltr', label: 'Français' },
+  es: { code: 'es', dir: 'ltr', label: 'Español' },
+  ar: { code: 'ar', dir: 'rtl', label: 'العربية' },
+};
+
 const dictionaries = { en, fr, es, ar };
 
-/** Locales that render with right-to-left document flow. */
-export const RTL_LANGUAGES = ['ar'];
+/** Locales that render with right-to-left document flow (derived from LANGUAGE_META). */
+export const RTL_LANGUAGES = SUPPORTED_LANGUAGES.filter(
+  (code) => LANGUAGE_META[code]?.dir === 'rtl',
+);
 
 const STORAGE_KEY = 'safeai.language';
 
@@ -108,19 +122,29 @@ export function getActiveLanguage() {
 }
 
 /**
+ * Resolve presentation metadata for a supported locale (includes `dir`).
+ */
+export function getLanguageMeta(lang) {
+  const code = normalizeLanguage(lang);
+  return LANGUAGE_META[code] ?? LANGUAGE_META[DEFAULT_LANGUAGE];
+}
+
+/**
  * Whether the given locale requires RTL document direction.
  */
 export function isRtlLanguage(lang) {
-  return RTL_LANGUAGES.includes(normalizeLanguage(lang));
+  return getLanguageMeta(lang).dir === 'rtl';
 }
 
 export { dictionaries };
 
 export default {
   SUPPORTED_LANGUAGES,
+  LANGUAGE_META,
   RTL_LANGUAGES,
   DEFAULT_LANGUAGE,
   dictionaries,
+  getLanguageMeta,
   isRtlLanguage,
   normalizeLanguage,
   getDictionary,

@@ -6,7 +6,7 @@ const LANGUAGE_CHANGE_EVENT = 'safeai:language-change';
 
 /**
  * Custom translation factory hook for authentication and gated portal surfaces.
- * Binds the active trilingual locale (en | fr | es) and returns a stable `t` resolver.
+ * Binds the active quadlingual locale (en | fr | es | ar) and returns a stable `t` resolver.
  */
 export function useAuthTranslator(languageProp) {
   const [language, setLanguage] = useState(() => languageProp ?? getActiveLanguage());

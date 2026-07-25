@@ -68,8 +68,12 @@ const ADMIN_DASHBOARD_STYLES = `
   --ad-error: #f87171;
   flex: 1 1 auto;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+  overflow-x: clip;
+  text-align: start;
   background: var(--ad-bg);
   color: var(--ad-text);
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -128,6 +132,9 @@ const ADMIN_DASHBOARD_STYLES = `
   backdrop-filter: blur(18px) saturate(145%);
   -webkit-backdrop-filter: blur(18px) saturate(145%);
   padding: 1.25rem 1.35rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
@@ -154,6 +161,8 @@ const ADMIN_DASHBOARD_STYLES = `
   background: rgba(10, 14, 23, 0.94);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
+  min-width: 0;
+  max-width: calc(100% + 2.7rem);
 }
 
 .admin-research__filter {
@@ -282,13 +291,17 @@ const ADMIN_DASHBOARD_STYLES = `
 
 .admin-metric-card__locale-track {
   flex: 1;
+  display: flex;
+  justify-content: flex-start;
   height: 0.45rem;
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.4);
   overflow: hidden;
+  min-width: 0;
 }
 
 .admin-metric-card__locale-fill {
+  flex: 0 0 auto;
   height: 100%;
   border-radius: 999px;
   transition: width 0.35s ease;
@@ -310,18 +323,6 @@ const ADMIN_DASHBOARD_STYLES = `
   color: var(--ad-muted);
 }
 
-[dir="rtl"] .admin-metric-card__locale-pct {
-  text-align: start;
-}
-
-[dir="rtl"] .admin-research__filter-bar {
-  flex-direction: row-reverse;
-}
-
-[dir="rtl"] .admin-metric-card__locale-row {
-  flex-direction: row-reverse;
-}
-
 .admin-switchboard {
   display: flex;
   flex-direction: column;
@@ -337,6 +338,7 @@ const ADMIN_DASHBOARD_STYLES = `
   border-radius: 0.625rem;
   border: 1px solid var(--ad-border);
   background: rgba(0, 0, 0, 0.22);
+  min-width: 0;
 }
 
 .admin-switch__copy {
@@ -365,14 +367,6 @@ const ADMIN_DASHBOARD_STYLES = `
   align-items: flex-end;
   gap: 0.35rem;
   flex-shrink: 0;
-}
-
-[dir="rtl"] .admin-switch {
-  flex-direction: row-reverse;
-}
-
-[dir="rtl"] .admin-switch__control {
-  align-items: flex-start;
 }
 
 .admin-switch__toggle {
@@ -426,8 +420,11 @@ const ADMIN_DASHBOARD_STYLES = `
 
 .admin-audit__table-wrap {
   overflow-x: auto;
+  max-width: 100%;
   border-radius: 0.5rem;
   border: 1px solid var(--ad-border);
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .admin-audit__table {

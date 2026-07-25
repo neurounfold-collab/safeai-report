@@ -2,7 +2,8 @@
   "branding": {
     "name": "safeAI.report",
     "standardName": "Certificación estándar TOEFL de alfabetización en IA",
-    "authority": "Profesor Adel El Bouzagaoui"
+    "authority": "Profesor Adel El Bouzagaoui",
+    "platformClaim": "Plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR)"
   },
   "legalAnchors": {
     "processingEntity": "Global Capital Intelligence LLC",
@@ -78,7 +79,7 @@
     }
   },
   "page_titles": {
-    "home": "safeAI.report — Certificación estándar TOEFL de alfabetización en IA",
+    "home": "safeAI.report — Plataforma cuatrilingüe soberana de gobernanza IA (EN / FR / ES / AR)",
     "academy": "Academia Soberana — Formación alfabetización IA Artículo 4",
     "industrial": "Apoyo a la investigación institucional y contribución a nodos",
     "verify": "Registro soberano de procedencia y portal de verificación",
@@ -100,7 +101,7 @@
   },
   "hero": {
     "headline": "Certificación estándar TOEFL de alfabetización en IA",
-    "subheading": "Métricas oficiales de cumplimiento del Artículo 4 e insignias de certificación verificables bajo la autoridad académica de L'INSTITUT ARTICLE 4 (A4I), procesadas por Global Capital Intelligence LLC.",
+    "subheading": "Plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR). Métricas oficiales de cumplimiento del Artículo 4 e insignias de certificación verificables bajo la autoridad académica de L'INSTITUT ARTICLE 4 (A4I), procesadas por Global Capital Intelligence LLC.",
     "cta_academy": "Iniciar certificación",
     "cta_industrial": "Apoyo a la investigación institucional"
   },
@@ -124,12 +125,12 @@
     "support": "Soporte",
     "contact": "Contáctenos",
     "registrarContact": "Contactar la Oficina del Registrador",
-    "compliance_statement": "Desarrollado bajo la autoridad académica del Profesor Adel El Bouzagaoui. Procesamiento por Global Capital Intelligence LLC.",
+    "compliance_statement": "Plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR). Desarrollado bajo la autoridad académica del Profesor Adel El Bouzagaoui. Procesamiento por Global Capital Intelligence LLC.",
     "poweredBy": "Impulsado por el motor del Consorcio WaqfLedger de Acceso Abierto — Un registro de confianza permanente de beneficio público dedicado a mantener la integridad criptográfica de los registros globales de cumplimiento de IA."
   },
   "landing": {
     "hero": {
-      "citationLead": "El Artículo 4 de la Ley de IA de la UE exige a los desplegadores verificar la alfabetización IA y la supervisión humana del personal que opera sistemas IA de alto riesgo. safeAI.report opera el estándar TOEFL AI Literacy — 30 escenarios diagnósticos, 3 vías de gobernanza, umbral de aprobación 85 %, registro SHA-256 vía WaqfLedger.tech — bajo L'INSTITUT ARTICLE 4 (A4I). Aplicación estatutaria: agosto de 2026.",
+      "citationLead": "El Artículo 4 de la Ley de IA de la UE exige a los desplegadores verificar la alfabetización IA y la supervisión humana del personal que opera sistemas IA de alto riesgo. safeAI.report es la plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR) que opera el estándar TOEFL AI Literacy — 30 escenarios diagnósticos, 3 vías de gobernanza, umbral de aprobación 85 %, registro SHA-256 vía WaqfLedger.tech — bajo L'INSTITUT ARTICLE 4 (A4I). Aplicación estatutaria: agosto de 2026.",
       "headline": "Audite el riesgo de IA institucional. Ancle sus evidencias de cumplimiento.",
       "subheadline": "Despliegue el Open Institutional AI Readiness Framework (OIARF) para ejecutar evaluaciones de madurez basadas en evidencia en todo su campus. Evalúe la alfabetización de la fuerza laboral, el linaje de datos y los controles de gobernanza mediante un pipeline de retención cero de datos asegurado por verificación criptográfica a prueba de manipulación.",
       "universalOpenAccess": "Nivel open access: 3 vías diagnósticas (Nivel 01–03), 30 escenarios por examen, 0 USD de tarifa de evaluación pública.",
@@ -350,8 +351,8 @@
       }
     },
     "hub": {
-      "metaDescription": "Hub de preparación diagnóstica Artículo 4: 3 vías, 9 módulos, exámenes de 30 escenarios, umbral 85 %, registro SHA-256 WaqfLedger.tech bajo L'INSTITUT ARTICLE 4 (A4I).",
-      "citationLead": "Hub de preparación de alfabetización desplegador Artículo 4 Ley de IA de la UE: 3 vías (Nivel 01 operacional, Nivel 02 ejecutivo, Nivel 03 auditor), 9 módulos curriculum, examen estandarizado de 30 escenarios por vía, umbral de cumplimiento 85 %, procedencia SHA-256 WaqfLedger.tech. Autoridad: L'INSTITUT ARTICLE 4 (A4I). Aplicación: agosto de 2026.",
+      "metaDescription": "Plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR). Hub de preparación diagnóstica Artículo 4: 3 vías, 9 módulos, exámenes de 30 escenarios, umbral 85 %, registro SHA-256 WaqfLedger.tech bajo L'INSTITUT ARTICLE 4 (A4I).",
+      "citationLead": "Plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR). Hub de preparación de alfabetización desplegador Artículo 4 Ley de IA de la UE: 3 vías (Nivel 01 operacional, Nivel 02 ejecutivo, Nivel 03 auditor), 9 módulos curriculum, examen estandarizado de 30 escenarios por vía, umbral de cumplimiento 85 %, procedencia SHA-256 WaqfLedger.tech. Autoridad: L'INSTITUT ARTICLE 4 (A4I). Aplicación: agosto de 2026.",
       "headline": "Hub de preparación diagnóstica Artículo 4",
       "subtitle": "9 módulos · 3 vías de gobernanza · 30 escenarios por examen · Evaluación open access (0 USD) · Protocolo credencial SHA-256 a prueba de manipulación",
       "trackPickerLabel": "Selección de nivel de preparación",

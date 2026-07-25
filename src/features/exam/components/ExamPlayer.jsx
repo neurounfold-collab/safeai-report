@@ -7,19 +7,22 @@ import {
   EXAM_SCENARIO_COUNT,
 } from '../data/scenarios.js';
 import {
-  buildResearchDataPacket,
-  calculateExamScore,
   COHORT_PROFILE_IDS,
-  createWaqfLedgerPayload,
   INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT,
   REGISTRY_FIREWALL_THRESHOLD_PERCENT,
   resolveCompositeScoreBand,
 } from '../utils/scoringEngine.js';
-import { calculateAdaptiveScore } from '../../../utils/scoringEngine.js';
 import { triggerLinkedInSocialUnlock } from '../../../utils/linkedInSocialUnlock.js';
 import { streamComplianceToLedger } from '../../../utils/waqfLedgerClient';
 import { getDomainContext, submitIntakeForm } from '../../../utils/emailRouter.js';
 import CertificateBadge from './CertificateBadge.jsx';
+
+const GRADE_EXAM_ENDPOINT = '/api/grade-exam';
+const COHORT_LEDGER_LABELS = Object.freeze({
+  CLL: 'CLL_COMPLIANCE_LEGAL',
+  ExL: 'EXL_EXECUTIVE_LEADERSHIP',
+  OEL: 'OEL_OPERATIONAL_EXECUTION',
+});
 
 const EXAM_PLAYER_STYLES = `
 .exam-player {
@@ -823,6 +826,32 @@ const EXAM_PLAYER_STYLES = `
   line-height: 1.5;
   color: #fca5a5;
 }
+
+.exam-player__sealing-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--exam-accent);
+}
+
+.exam-player__sealing-subtitle {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--exam-muted);
+}
+
+.exam-player__sealing-error {
+  margin: 1rem 0 0;
+  padding: 0.75rem 0.95rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  background: rgba(127, 29, 29, 0.14);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #fca5a5;
+}
 `;
 
 const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
@@ -1060,18 +1089,60 @@ function renderScenarioMarkdown(text) {
 }
 
 /**
- * Resolves the highest certification tier meeting the institutional threshold.
- * @param {import('../utils/scoringEngine.js').ExamScoreResult} scoreResult
+ * Resolves certification tier for badge rendering after server-side grading.
+ * Prefers an explicit server/assessment hint; otherwise uses the entry URL tier.
+ * @param {{ assessmentId?: string; entryTier?: string | null } | null} scoreResult
+ * @param {'level01' | 'level02' | 'level03' | null} urlTier
  */
-function resolveCertificationTier(scoreResult) {
-  const qualifying = (scoreResult?.tierBreakdown ?? [])
-    .filter((tier) => tier.weightedPercentage >= scoreResult?.certificationThresholdPercent)
-    .sort((a, b) => {
-      const order = { 'Level 01': 1, 'Level 02': 2, 'Level 03': 3 };
-      return (order[b.tier] ?? 0) - (order[a.tier] ?? 0);
-    });
+function resolveCertificationTier(scoreResult, urlTier) {
+  const fromResult = scoreResult?.certificationTier;
+  if (fromResult) return fromResult;
 
-  return qualifying[0]?.tier ?? 'Level 03';
+  const tierMap = {
+    level01: 'Level 01',
+    level02: 'Level 02',
+    level03: 'Level 03',
+  };
+
+  return tierMap[urlTier ?? scoreResult?.entryTier] ?? 'Level 03';
+}
+
+/**
+ * Maps the serverless grade-exam payload into the ExamPlayer results view model.
+ * @param {{ passed: boolean; score: number; hash: string; timestamp: string; assessmentId: string; sealMode?: string }} payload
+ * @param {string} roleId
+ * @param {'level01' | 'level02' | 'level03' | null} urlTier
+ */
+function buildServerScoreResult(payload, roleId, urlTier) {
+  const score = Number(payload.score);
+  const scoreBand = resolveCompositeScoreBand(score);
+
+  return {
+    passesCertification: Boolean(payload.passed),
+    certificationThresholdPercent: INSTITUTIONAL_CERTIFICATION_THRESHOLD_PERCENT,
+    weighted: {
+      percentage: score,
+      earned: score,
+      maximum: 100,
+    },
+    raw: {
+      correct: null,
+      total: EXAM_SCENARIO_COUNT,
+      percentage: score,
+    },
+    tierBreakdown: [],
+    assessmentId: payload.assessmentId,
+    sealedAt: payload.timestamp,
+    sealMode: payload.sealMode ?? null,
+    certificationTier: resolveCertificationTier(null, urlTier),
+    entryTier: urlTier,
+    composite: {
+      score,
+      scoreBand,
+      cohortProfileId: roleId,
+      registryFirewallActive: score < REGISTRY_FIREWALL_THRESHOLD_PERCENT,
+    },
+  };
 }
 
 const EMPTY_CERTIFICATION_PIPELINE = {
@@ -1208,31 +1279,50 @@ function resolveCandidateLegalName(explicitName, storedName, t) {
 }
 
 /**
- * Fire-and-forget POST of the anonymous doctoral research telemetry packet.
+ * Fire-and-forget anonymous session telemetry (no client-side answer-key grading).
  * @param {Array<{ scenarioId: number; chosenOptionIndex: number; timeSpentMs: number }>} responses
  * @param {string} examinationStartedAt
  * @param {string | undefined} locale
+ * @param {{ score?: number; passed?: boolean; assessmentId?: string } | null} [gradeSummary]
  */
-function transmitDoctoralResearchPacket(responses, examinationStartedAt, locale) {
+function transmitDoctoralResearchPacket(responses, examinationStartedAt, locale, gradeSummary = null) {
   const examinationCompletedAt = new Date().toISOString();
-
-  let packet;
-  try {
-    packet = buildResearchDataPacket(
-      {
-        anonymousSessionKey: crypto.randomUUID(),
-        examinationStartedAt,
-        examinationCompletedAt,
-        locale,
-      },
-      responses,
-    );
-  } catch {
-    return;
-  }
-
   const endpoint = SAFEAI_MASTER_CONFIG?.infrastructure?.emailRouterEndpoint;
   if (!endpoint) return;
+
+  const totalDurationMs = (responses ?? []).reduce(
+    (sum, response) => sum + (response.timeSpentMs ?? 0),
+    0,
+  );
+
+  const packet = {
+    meta: {
+      protocol: 'safeAI.report Research Instrument v1',
+      schemaVersion: '1.1.0',
+      instrumentId: 'EU-AI-ACT-A4-30-SCENARIO',
+      anonymityClass: 'de-identified',
+      collectionPurpose: 'doctoral-research-compliance-analytics',
+      gradingAuthority: 'api/grade-exam',
+      scenarioCount: EXAM_SCENARIO_COUNT,
+    },
+    session: {
+      anonymousSessionKey: crypto.randomUUID(),
+      examinationStartedAt,
+      examinationCompletedAt,
+      totalDurationMs,
+      locale: locale ?? null,
+      assessmentId: gradeSummary?.assessmentId ?? null,
+    },
+    observations: (responses ?? []).map((entry) => ({
+      questionId: entry.scenarioId,
+      chosenIndex: entry.chosenOptionIndex,
+      timeSpentMs: entry.timeSpentMs ?? 0,
+    })),
+    aggregates: {
+      serverCompositeScore: gradeSummary?.score ?? null,
+      passesCertification: gradeSummary?.passed ?? null,
+    },
+  };
 
   void fetch(endpoint, {
     method: 'POST',
@@ -1309,6 +1399,8 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   const [registrySubmitting, setRegistrySubmitting] = useState(false);
   const [registrySubmitError, setRegistrySubmitError] = useState('');
   const [ledgerStatus, setLedgerStatus] = useState(null);
+  const [sealingError, setSealingError] = useState('');
+  const [isSealing, setIsSealing] = useState(false);
 
   const screenEnteredAtRef = useRef(Date.now());
   const examStartedAtRef = useRef(initialSession.examStartedAt);
@@ -1348,7 +1440,9 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   const progressPercent = ((currentScenarioIndex + 1) / EXAM_SCENARIO_COUNT) * 100;
   const navigationLocked = examPhase === 'passed';
 
-  const certificationTier = scoreResult ? resolveCertificationTier(scoreResult) : null;
+  const certificationTier = scoreResult
+    ? resolveCertificationTier(scoreResult, urlTier)
+    : null;
 
   const candidateLegalName = useMemo(
     () => resolveCandidateLegalName(candidateNameProp, storedLegalName, t),
@@ -1356,69 +1450,6 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   );
 
   const activeLocale = languageProp ?? getActiveLanguage();
-
-  useEffect(() => {
-    if (examPhase !== 'passed' || !scoreResult?.passesCertification || !certificationTier) {
-      return undefined;
-    }
-
-    if (!credentialIdRef.current) {
-      credentialIdRef.current = crypto.randomUUID();
-    }
-
-    const credentialId = credentialIdRef.current;
-    let cancelled = false;
-
-    const persistHashArtifacts = (hash, examinationCompletedAt) => {
-      setStateHash(hash);
-      try {
-        window.localStorage.setItem('SAFEAI_CREDENTIAL_STATE_HASH', hash);
-        window.localStorage.setItem('SAFEAI_CERTIFICATION_TIER', certificationTier);
-        window.localStorage.setItem('SAFEAI_CREDENTIAL_TIMESTAMP', examinationCompletedAt);
-      } catch {
-        // Storage may be unavailable in hardened browser profiles.
-      }
-    };
-
-    const resumePipeline = certificationPipelineRef.current;
-    if (resumePipeline.credentialId === credentialId && resumePipeline.hash) {
-      persistHashArtifacts(resumePipeline.hash, resumePipeline.examinationCompletedAt);
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    const examinationCompletedAt = new Date().toISOString();
-
-    createWaqfLedgerPayload(scoreResult, {
-      credentialId,
-      examinationCompletedAt,
-      tier: certificationTier,
-    })
-      .then((payload) => {
-        if (cancelled) return;
-
-        const hash = payload.integrity.stateHash;
-        const completedAt = payload.certification.examinationCompletedAt ?? examinationCompletedAt;
-
-        certificationPipelineRef.current = {
-          credentialId,
-          hash,
-          examinationCompletedAt: completedAt,
-          ledgerDispatched: certificationPipelineRef.current.ledgerDispatched,
-          socialUnlockSucceeded: certificationPipelineRef.current.socialUnlockSucceeded,
-        };
-
-        persistHashArtifacts(hash, completedAt);
-      })
-      .catch(() => {
-        // Hash generation failure — badge renders with pending digest state.
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [examPhase, scoreResult, certificationTier, masterTestOverride]);
 
   useEffect(() => {
     screenEnteredAtRef.current = Date.now();
@@ -1459,8 +1490,8 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     };
   }, [navigationLocked, t]);
 
-  const recordChoiceAndAdvance = useCallback(() => {
-    if (selectedOptionIndex === null || !currentScenario) return;
+  const recordChoiceAndAdvance = useCallback(async () => {
+    if (selectedOptionIndex === null || !currentScenario || isSealing) return;
 
     const timeSpentMs = Date.now() - screenEnteredAtRef.current;
     const response = {
@@ -1472,30 +1503,78 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     const nextChoices = [...userChoices, response];
     setUserChoices(nextChoices);
 
-    if (isFinalScenario) {
-      clearExamPersistSession();
-      const result = calculateExamScore(nextChoices);
+    if (!isFinalScenario) {
+      setCurrentScenarioIndex((index) => index + 1);
+      return;
+    }
 
-      const composite = cohortProfile
-        ? (() => {
-            const adaptive = calculateAdaptiveScore(nextChoices, cohortProfile);
-            return {
-              score: adaptive.score,
-              pillarPerformances: {
-                p1: adaptive.pillarPerformances.p1 * 100,
-                p2: adaptive.pillarPerformances.p2 * 100,
-                p3: adaptive.pillarPerformances.p3 * 100,
-                p4: adaptive.pillarPerformances.p4 * 100,
-              },
-              cohortWeights: adaptive.cohortWeights,
-              cohortProfileId: cohortProfile,
-              registryFirewallActive: adaptive.score < REGISTRY_FIREWALL_THRESHOLD_PERCENT,
-              scoreBand: resolveCompositeScoreBand(adaptive.score),
-            };
-          })()
-        : null;
+    const roleId = cohortProfile || readStoredCohortProfile();
+    if (!roleId || !COHORT_PROFILE_IDS.includes(roleId)) {
+      setSealingError(t('exam.player.cohort.title'));
+      setExamPhase('cohort');
+      return;
+    }
 
-      setScoreResult({ ...result, composite });
+    clearExamPersistSession();
+    setIsSealing(true);
+    setSealingError('');
+    setExamPhase('sealing');
+
+    try {
+      const gradeResponse = await fetch(GRADE_EXAM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scenarioAnswers: nextChoices,
+          roleId,
+          language: activeLocale,
+          examineeName: resolveCandidateLegalName(candidateNameProp, storedLegalName, t),
+          cohort: COHORT_LEDGER_LABELS[roleId] ?? 'CLL_COMPLIANCE_LEGAL',
+        }),
+      });
+
+      const payload = await gradeResponse.json().catch(() => null);
+      if (!gradeResponse.ok || !payload?.success) {
+        throw new Error(payload?.error || `Grading request failed (${gradeResponse.status})`);
+      }
+
+      if (
+        typeof payload.hash !== 'string'
+        || !/^[a-fA-F0-9]{64}$/.test(payload.hash)
+        || typeof payload.score !== 'number'
+      ) {
+        throw new Error('Invalid grading response from attestation service.');
+      }
+
+      const result = buildServerScoreResult(payload, roleId, urlTier);
+      setScoreResult(result);
+
+      const credentialId = crypto.randomUUID();
+      credentialIdRef.current = credentialId;
+      certificationPipelineRef.current = {
+        credentialId,
+        hash: payload.hash,
+        examinationCompletedAt: payload.timestamp,
+        ledgerDispatched: false,
+        socialUnlockSucceeded: false,
+      };
+
+      setStateHash(payload.hash);
+      setLedgerStatus(payload.sealMode === 'remote' ? 'anchored' : 'local');
+
+      try {
+        window.localStorage.setItem('SAFEAI_CREDENTIAL_STATE_HASH', payload.hash);
+        window.localStorage.setItem('SAFEAI_CERTIFICATION_TIER', result.certificationTier);
+        window.localStorage.setItem('SAFEAI_CREDENTIAL_TIMESTAMP', payload.timestamp);
+      } catch {
+        // Storage may be unavailable in hardened browser profiles.
+      }
+
+      transmitDoctoralResearchPacket(nextChoices, examStartedAtRef.current, activeLocale, {
+        score: payload.score,
+        passed: payload.passed,
+        assessmentId: payload.assessmentId,
+      });
 
       if (!masterTestOverride && result.composite?.registryFirewallActive) {
         setExamPhase('registryExposure');
@@ -1504,13 +1583,28 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
       } else {
         setExamPhase('failed');
       }
-
-      transmitDoctoralResearchPacket(nextChoices, examStartedAtRef.current, activeLocale);
-      return;
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Unable to seal attestation on WaqfLedger.';
+      setSealingError(message);
+      setExamPhase('sealing');
+    } finally {
+      setIsSealing(false);
     }
-
-    setCurrentScenarioIndex((index) => index + 1);
-  }, [selectedOptionIndex, currentScenario, userChoices, isFinalScenario, activeLocale, cohortProfile, masterTestOverride]);
+  }, [
+    selectedOptionIndex,
+    currentScenario,
+    userChoices,
+    isFinalScenario,
+    isSealing,
+    activeLocale,
+    cohortProfile,
+    masterTestOverride,
+    candidateNameProp,
+    storedLegalName,
+    t,
+    urlTier,
+  ]);
 
   const handleInitializeIdentity = useCallback(() => {
     const trimmed = legalNameInput.trim();
@@ -1550,6 +1644,8 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     setCredentialUnlocked(masterTestOverride);
     setStateHash(null);
     setLedgerStatus(null);
+    setSealingError('');
+    setIsSealing(false);
     setRegistryEmail('');
     setRegistryMessage('');
     setRegistrySubmitted(false);
@@ -1657,6 +1753,42 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   if (tierParamInvalid || sessionInitFailed) {
     return <ExamPlayerRecoveryShell message={t('exam.player.navigationBlocked')} />;
+  }
+
+  if (examPhase === 'sealing') {
+    return (
+      <div className="exam-player" aria-live="polite" aria-busy={isSealing}>
+        <style>{EXAM_PLAYER_STYLES}</style>
+        <div className="exam-player__shell exam-player__credential">
+          <div className="exam-player__status-indicator" style={{ marginBottom: '1.25rem' }}>
+            <span className="exam-player__status-dot" aria-hidden="true" />
+            WaqfLedger
+          </div>
+          <h2 className="exam-player__sealing-title">
+            Sealing Attestation on WaqfLedger...
+          </h2>
+          <p className="exam-player__sealing-subtitle">
+            Computing MCDA composite score and anchoring the SHA-256 state hash to the
+            sovereign compliance ledger.
+          </p>
+          {sealingError ? (
+            <>
+              <p className="exam-player__sealing-error" role="alert">
+                {sealingError}
+              </p>
+              <button
+                type="button"
+                className="exam-player__retry"
+                onClick={handleRetry}
+                style={{ marginTop: '1rem' }}
+              >
+                {t('exam.player.retryExam')}
+              </button>
+            </>
+          ) : null}
+        </div>
+      </div>
+    );
   }
 
   if (examPhase === 'registryExposure' && scoreResult) {
@@ -1989,8 +2121,10 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
           <button
             type="button"
             className="exam-player__submit"
-            disabled={selectedOptionIndex === null}
-            onClick={recordChoiceAndAdvance}
+            disabled={selectedOptionIndex === null || isSealing}
+            onClick={() => {
+              void recordChoiceAndAdvance();
+            }}
           >
             {isFinalScenario ? t('academy.submitExam') : t('exam.player.continue')}
           </button>

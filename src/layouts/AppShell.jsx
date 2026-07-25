@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   createTranslator,
   getActiveLanguage,
+  getLanguageMeta,
   isRtlLanguage,
   SUPPORTED_LANGUAGES,
   setActiveLanguage,
@@ -37,6 +38,8 @@ body,
   margin: 0;
   padding: 0;
   min-height: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   background-color: #0b0f19;
 }
 
@@ -55,6 +58,10 @@ body,
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  text-align: start;
   background:
     radial-gradient(ellipse 80% 55% at 50% -10%, rgba(94, 234, 212, 0.07), transparent 58%),
     radial-gradient(ellipse 60% 40% at 100% 0%, rgba(201, 162, 39, 0.06), transparent 52%),
@@ -71,10 +78,10 @@ body,
 .app-shell-header {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline: 0;
   z-index: 200;
   width: 100%;
+  max-width: 100%;
   border-bottom: 1px solid var(--shell-glass-border);
   background: var(--shell-glass);
   backdrop-filter: blur(20px) saturate(160%);
@@ -227,7 +234,10 @@ body,
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  min-width: 0;
   min-height: 0;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .app-shell-footer {
@@ -614,6 +624,7 @@ function GlobalHeader({ t, language, onLanguageChange }) {
                   ? 'app-shell-header__locale-btn app-shell-header__locale-btn--active'
                   : 'app-shell-header__locale-btn'
               }
+              aria-label={getLanguageMeta(code).label}
               aria-pressed={language === code}
               onClick={() => onLanguageChange(code)}
             >
@@ -634,6 +645,7 @@ function InstitutionalFooter({ t }) {
           <h2 id="footer-authority" className="app-shell-footer__heading">
             {t('legalAnchors.academicInstitution')}
           </h2>
+          <p className="app-shell-footer__meta">{t('branding.platformClaim')}</p>
           <p className="app-shell-footer__meta">{t('legalAnchors.registry.registryLine')}</p>
           <p className="app-shell-footer__meta">{t('legalAnchors.registry.address')}</p>
           <p className="app-shell-footer__meta">{t('legalAnchors.registry.iceStatement')}</p>
@@ -677,14 +689,19 @@ export default function AppShell({ children, language: languageProp }) {
     window.dispatchEvent(new CustomEvent(LANGUAGE_CHANGE_EVENT));
   };
 
+  const rtl = isRtlLanguage(language);
+
   useEffect(() => {
-    const rtl = isRtlLanguage(language);
     document.documentElement.dir = rtl ? 'rtl' : 'ltr';
     document.documentElement.lang = language;
-  }, [language]);
+  }, [language, rtl]);
 
   return (
-    <div className={isolated ? 'app-shell app-shell--isolated' : 'app-shell'}>
+    <div
+      className={isolated ? 'app-shell app-shell--isolated' : 'app-shell'}
+      dir={rtl ? 'rtl' : 'ltr'}
+      lang={language}
+    >
       <style>{APP_SHELL_STYLES}</style>
       {!isolated && (
         <GlobalHeader t={t} language={language} onLanguageChange={handleLanguageChange} />

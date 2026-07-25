@@ -173,8 +173,8 @@ export default function AlamMatrixBrief({ language: languageProp }) {
               the Open Institutional AI Readiness Framework (OIARF) v2.0.0.
             </p>
             <p className="m-0 break-words">
-              The matrix is structurally invariant across trilingual delivery surfaces (English, French,
-              Spanish) and enforces a role-adaptive evaluation topology: front-line operators, executive
+              The matrix is structurally invariant across quadlingual delivery surfaces (English, French,
+              Spanish, Arabic) and enforces a role-adaptive evaluation topology: front-line operators, executive
               procurement officers, compliance auditors, and authorized institutional partners each encounter
               scenario blocks calibrated to their statutory intervention boundaries. Weighted compliance
               scoring aggregates per-scenario structural weights across the four A4-ALAM pillars; certification

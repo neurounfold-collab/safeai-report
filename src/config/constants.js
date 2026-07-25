@@ -27,6 +27,8 @@ export const SAFEAI_MASTER_CONFIG = {
   branding: {
     name: "safeAI.report",
     standardName: "TOEFL AI Literacy Standard Certification",
+    platformClaim:
+      "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR)",
     authority: "Professor Adel El Bouzagaoui",
     authorityProfiles: {
       linkedIn: "https://www.linkedin.com/in/adel-el-bouzagaoui",

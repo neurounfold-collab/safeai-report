@@ -2,7 +2,8 @@
   "branding": {
     "name": "safeAI.report",
     "standardName": "TOEFL AI Literacy Standard Certification",
-    "authority": "Professor Adel El Bouzagaoui"
+    "authority": "Professor Adel El Bouzagaoui",
+    "platformClaim": "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR)"
   },
   "legalAnchors": {
     "processingEntity": "Global Capital Intelligence LLC",
@@ -78,7 +79,7 @@
     }
   },
   "page_titles": {
-    "home": "safeAI.report — TOEFL AI Literacy Standard Certification",
+    "home": "safeAI.report — Quadlingual Sovereign AI Governance & Deployer Literacy (EN / FR / ES / AR)",
     "academy": "Sovereign Academy — Article 4 AI Literacy Training",
     "industrial": "Institutional Research Support & Node Contribution",
     "verify": "Sovereign Provenance Registry & Verification Gateway",
@@ -100,7 +101,7 @@
   },
   "hero": {
     "headline": "TOEFL AI Literacy Standard Certification",
-    "subheading": "Official Article 4 compliance metrics and verifiable certification badges under the academic authority of L'INSTITUT ARTICLE 4 (A4I), processed by Global Capital Intelligence LLC.",
+    "subheading": "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR). Official Article 4 compliance metrics and verifiable certification badges under the academic authority of L'INSTITUT ARTICLE 4 (A4I), processed by Global Capital Intelligence LLC.",
     "cta_academy": "Start Certification",
     "cta_industrial": "Institutional Research Support"
   },
@@ -124,12 +125,12 @@
     "support": "Support",
     "contact": "Contact Us",
     "registrarContact": "Contact Office of the Registrar",
-    "compliance_statement": "Developed under the academic authority of Professor Adel El Bouzagaoui. Processing by Global Capital Intelligence LLC.",
+    "compliance_statement": "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR). Developed under the academic authority of Professor Adel El Bouzagaoui. Processing by Global Capital Intelligence LLC.",
     "poweredBy": "Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records."
   },
   "landing": {
     "hero": {
-      "citationLead": "EU AI Act Article 4 mandates deployer AI literacy and human oversight verification for staff operating high-risk AI systems. safeAI.report operates the TOEFL AI Literacy Standard — 30 diagnostic scenarios, 3 governance tracks, 85% pass threshold, SHA-256 credential logging via WaqfLedger.tech — under L'INSTITUT ARTICLE 4 (A4I). Statutory enforcement: August 2026.",
+      "citationLead": "EU AI Act Article 4 mandates deployer AI literacy and human oversight verification for staff operating high-risk AI systems. safeAI.report is the Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR) operating the TOEFL AI Literacy Standard — 30 diagnostic scenarios, 3 governance tracks, 85% pass threshold, SHA-256 credential logging via WaqfLedger.tech — under L'INSTITUT ARTICLE 4 (A4I). Statutory enforcement: August 2026.",
       "headline": "Audit Institutional AI Risk. Anchor Your Compliance Evidence.",
       "subheadline": "Deploy the Open Institutional AI Readiness Framework (OIARF) to execute evidence-informed maturity assessments across your campus. Evaluate workforce literacy, data lineage, and governance controls through a zero-data-retention pipeline secured by tamper-evident cryptographic verification.",
       "universalOpenAccess": "Open-access tier: 3 diagnostic tracks (Level 01–03), 30 scenarios per examination, 0 USD public evaluation fee.",
@@ -350,8 +351,8 @@
       }
     },
     "hub": {
-      "metaDescription": "Article 4 diagnostic preparation hub: 3 tracks, 9 modules, 30-scenario examinations, 85% pass threshold, WaqfLedger.tech SHA-256 credential logging under L'INSTITUT ARTICLE 4 (A4I).",
-      "citationLead": "EU AI Act Article 4 deployer literacy preparation hub: 3 tracks (Level 01 operational, Level 02 executive, Level 03 auditor), 9 curriculum modules, 30-scenario standardized examination per tier, 85% compliance pass threshold, WaqfLedger.tech SHA-256 provenance logging. Authority: L'INSTITUT ARTICLE 4 (A4I). Enforcement: August 2026.",
+      "metaDescription": "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR). Article 4 diagnostic preparation hub: 3 tracks, 9 modules, 30-scenario examinations, 85% pass threshold, WaqfLedger.tech SHA-256 credential logging under L'INSTITUT ARTICLE 4 (A4I).",
+      "citationLead": "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR). EU AI Act Article 4 deployer literacy preparation hub: 3 tracks (Level 01 operational, Level 02 executive, Level 03 auditor), 9 curriculum modules, 30-scenario standardized examination per tier, 85% compliance pass threshold, WaqfLedger.tech SHA-256 provenance logging. Authority: L'INSTITUT ARTICLE 4 (A4I). Enforcement: August 2026.",
       "headline": "Article 4 Diagnostic Preparation Hub",
       "subtitle": "9 modules · 3 governance tracks · 30 scenarios per examination · Open-access evaluation (0 USD) · SHA-256 tamper-evident credential protocol",
       "trackPickerLabel": "Preparation Tier Selection",

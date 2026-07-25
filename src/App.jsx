@@ -27,7 +27,10 @@ function EnterpriseShellRoute({ children }) {
 }
 
 const BRAND_TITLE = SAFEAI_MASTER_CONFIG?.branding?.name ?? 'safeAI.report';
-const BRAND_META_DESCRIPTION = `${BRAND_TITLE} — Official Article 4 AI Literacy Certification`;
+const BRAND_PLATFORM_CLAIM =
+  SAFEAI_MASTER_CONFIG?.branding?.platformClaim ??
+  'Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR)';
+const BRAND_META_DESCRIPTION = `${BRAND_TITLE} — ${BRAND_PLATFORM_CLAIM}`;
 
 /** Non-blocking skeleton while route chunks hydrate — reserves main viewport height to avoid CLS/white flash. */
 function RouteLoadingFallback() {

@@ -1,9 +1,13 @@
 /**
  * Examination Scoring & Analytics Engine — safeAI.report
  *
- * Processes the authoritative 30-scenario EU AI Act Article 4 compliance matrix,
- * computes weighted institutional certification scores, emits anonymous doctoral
- * research packets, and fabricates immutable WaqfLedger.tech cryptographic states.
+ * DISPLAY / DOCS UTILITIES ONLY for the client bundle.
+ * Authoritative MCDA grading, pass/fail, SHA-256 hashing, and WaqfLedger sealing
+ * are performed exclusively by POST /api/grade-exam (api/grade-exam.js).
+ *
+ * Remaining exports support documentation (AlamMatrixBrief), cohort UI labels,
+ * and legacy research helpers. Do not call calculateExamScore / createWaqfLedgerPayload
+ * from the examination player.
  */
 
 import { SAFEAI_MASTER_CONFIG } from "../../../config/constants.js";
@@ -28,8 +32,9 @@ export const COHORT_PROFILE_IDS = ["ExL", "CLL", "OEL"];
  * Cohort weight vectors (w1–w4) mapped to evaluation pillars P1–P4.
  * Weights sum to 1.0 per profile.
  */
+/** Unified cohort weights — mirrored by api/grade-exam.js (server is authoritative). */
 export const COHORT_WEIGHT_PROFILES = {
-  ExL: { w1: 0.2, w2: 0.4, w3: 0.1, w4: 0.3 },
+  ExL: { w1: 0.3, w2: 0.3, w3: 0.2, w4: 0.2 },
   CLL: { w1: 0.1, w2: 0.5, w3: 0.2, w4: 0.2 },
   OEL: { w1: 0.4, w2: 0.1, w3: 0.4, w4: 0.1 }
 };
@@ -360,7 +365,7 @@ export function calculateExamScore(responses, options = {}) {
  * @property {string} anonymousSessionKey — De-identified session identifier (no PII).
  * @property {string} examinationStartedAt — ISO-8601 timestamp.
  * @property {string} examinationCompletedAt — ISO-8601 timestamp.
- * @property {string} [locale] — Trilingual locale code (en | fr | es).
+ * @property {string} [locale] — Quadlingual locale code (en | fr | es | ar).
  * @property {string} [targetTier] — Certification tier under evaluation, if scoped.
  */
 
