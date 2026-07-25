@@ -1,7 +1,9 @@
 /**
- * Authoritative Examination Matrix — safeAI.report
- * 30 situational compliance simulation scenarios aligned with EU AI Act Article 4
- * metrics and the Sovereign Algorithmic Governance Ledger (WaqfLedger.tech).
+ * Client-facing Examination Matrix — safeAI.report
+ * 30 situational compliance simulation scenarios aligned with EU AI Act Article 4.
+ *
+ * Answer keys (correctOptionIndex, complianceWeight) are intentionally omitted.
+ * Authoritative grading runs exclusively in api/grade-exam.js (MASTER_ANSWER_KEY).
  *
  * Tier sequencing mirrors evaluationTiers.publicTiers in src/config/constants.js.
  */
@@ -20,8 +22,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Append a generic disclaimer stating that the document may contain errors, without specifying AI involvement or conducting substantive verification.",
       "Defer dissemination indefinitely until a third-party legal audit of the AI vendor's training corpus is completed."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.0
   },
   {
     id: 2,
@@ -35,8 +35,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Re-run the candidate's profile through the system to confirm the rejection score, treating identical output as sufficient explanation.",
       "Advise the candidate to reapply using formatting conventions known to produce favorable scores within the automated pipeline."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.1
   },
   {
     id: 3,
@@ -50,8 +48,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Anonymize only the patient's surname while retaining the diagnosis code and date of birth, treating partial redaction as sufficient de-identification.",
       "Request the patient's verbal consent by telephone before pasting their data, without assessing the processor agreement or transfer impact."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.2
   },
   {
     id: 4,
@@ -65,8 +61,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Generative systems are unsuitable for any professional use and must be prohibited categorically within regulated institutions.",
       "Legal accuracy is guaranteed when the model provider publishes a SOC 2 Type II attestation."
     ],
-    correctOptionIndex: 0,
-    complianceWeight: 1.0
   },
   {
     id: 5,
@@ -80,8 +74,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Transfer accountability to the AI vendor via the software license agreement, which indemnifies end users for content errors.",
       "Limit review to spell-checking and formatting, as generative systems are exempt from securities disclosure rules."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.1
   },
   {
     id: 6,
@@ -95,8 +87,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Disable all telephone communications in favor of email, which cannot be forged by AI systems.",
       "Authorize transfers below a threshold without verification to preserve operational velocity."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.2
   },
   {
     id: 7,
@@ -110,8 +100,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Assume implied consent because students voluntarily accessed the advising portal.",
       "Remove the AI component silently while retaining historical interaction logs without notifying affected students."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.1
   },
   {
     id: 8,
@@ -125,8 +113,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Request the model regenerate the summary until clause numbering aligns, treating consistency across iterations as validation.",
       "Outsource verification to the vendor, as counterparty documents are their responsibility to interpret."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.2
   },
   {
     id: 9,
@@ -140,8 +126,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Adjust display settings so shift patterns are less visible to frontline managers.",
       "Replace the tool with an identical product from a different vendor without examining underlying data or model behavior."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.3
   },
   {
     id: 10,
@@ -155,8 +139,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Change usernames on the AI platform to prevent attribution of the upload.",
       "Issue a department-wide memo discouraging uploads without notifying information security or assessing contractual confidentiality impact."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.4
   },
 
   // ── Level 02: Executive Governance (Scenarios 11–20) ───────────────────────
@@ -172,8 +154,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Delegate procurement sign-off to the vendor's customer success team, who certify best-effort alignment with unspecified regulatory frameworks.",
       "License the tool for a pilot cohort only, thereby eliminating enterprise-level governance obligations."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.6
   },
   {
     id: 12,
@@ -187,8 +167,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Rely on peer institutions' adoption decisions as implicit certification of vendor suitability.",
       "Limit deployment to non-EU jurisdictions to avoid documentation requirements altogether."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.7
   },
   {
     id: 13,
@@ -202,8 +180,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Instruct researchers to paraphrase prompts so that verbatim training capture is impossible.",
       "Accept the new terms because industry-wide providers uniformly reserve training rights."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.8
   },
   {
     id: 14,
@@ -217,8 +193,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Limit testing to the vendor's published safety card without institution-specific attack scenarios.",
       "Defer red-teaming until after full deployment to capture real-world failure modes organically."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.9
   },
   {
     id: 15,
@@ -232,8 +206,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Indemnify the institution via the vendor contract and continue automated grading at scale.",
       "Shift liability to students by requiring them to opt in to AI detection in enrollment agreements."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.0
   },
   {
     id: 16,
@@ -247,8 +219,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Remove all liability caps by deleting the clause without replacement instruments.",
       "Transfer the agreement to a shell subsidiary to isolate institutional exposure."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.8
   },
   {
     id: 17,
@@ -262,8 +232,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Encrypt audio files locally and assume encryption alone satisfies cross-border transfer rules without further assessment.",
       "Anonymize hearing participants by replacing names with initials in filenames only."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.9
   },
   {
     id: 18,
@@ -277,8 +245,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "An informal Slack channel for AI enthusiasts to share prompts and tools.",
       "Delegation of all governance functions to individual department heads without central standards."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.0
   },
   {
     id: 19,
@@ -292,8 +258,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Capture screenshots of admin panels on a quarterly basis.",
       "Destroy logs after ninety days to minimize storage costs and liability surface."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 1.7
   },
   {
     id: 20,
@@ -307,8 +271,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Accountability attaches only to the model provider once the system bears CE marking.",
       "Public relations management satisfies accountability obligations if corrected statements are issued within forty-eight hours."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.1
   },
 
   // ── Level 03: Institutional Partner (Scenarios 21–30) ──────────────────────
@@ -324,8 +286,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Limit deployment to private beta clinicians who sign informal confidentiality acknowledgments.",
       "Deploy exclusively on-premises to avoid cloud-related high-risk classification triggers."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.5
   },
   {
     id: 22,
@@ -339,8 +299,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Replace human reviewers with a secondary AI checker to improve consistency.",
       "Publish override statistics externally without changing operational practices."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.6
   },
   {
     id: 23,
@@ -354,8 +312,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Publish hashes on the institution's public website without ledger integration.",
       "Store hashes in a shared cloud folder accessible to partner administrators only."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.8
   },
   {
     id: 24,
@@ -369,8 +325,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Rebrand the use case internally as 'research analytics' to lower regulatory classification.",
       "Outsource biometric processing to a non-EU affiliate to circumvent conformity requirements."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.7
   },
   {
     id: 25,
@@ -384,8 +338,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Recalibrate display dashboards to mask disparity metrics from non-technical stakeholders.",
       "Retrain admissions staff to manually adjust scores post-hoc without systemic investigation."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.6
   },
   {
     id: 26,
@@ -399,8 +351,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Pseudonymize records by removing given names while retaining national ID numbers in the training set.",
       "Shift liability to students via enrollment consent forms referencing international processing."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.5
   },
   {
     id: 27,
@@ -414,8 +364,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Survey proctoring administrators on subjective satisfaction scores.",
       "Limit assessment to legal review of the vendor's terms of service updates."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.7
   },
   {
     id: 28,
@@ -429,8 +377,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Log only aggregate usage metrics to reduce storage and privacy overhead.",
       "Trust verbal confirmations from vendor account managers that logs are 'effectively immutable.'"
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.8
   },
   {
     id: 29,
@@ -444,8 +390,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Transfer tokens to individual faculty as personal property.",
       "Create an unregistered secondary market with discounted bulk pricing for alumni startups."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 2.9
   },
   {
     id: 30,
@@ -459,8 +403,6 @@ export const EXAM_SCENARIO_MATRIX = [
       "Publish badges with a disclaimer that ledger verification may be temporarily unavailable.",
       "Manually edit ledger hashes to match issued badges without re-examination or re-sealing."
     ],
-    correctOptionIndex: 1,
-    complianceWeight: 3.0
   }
 ];
 

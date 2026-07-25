@@ -289,9 +289,10 @@ export default function AlamMatrixBrief({ language: languageProp }) {
           </div>
 
           <p className="m-0 mt-4 break-words text-xs leading-[1.7] text-slate-500">
-            Where n = {EXAM_SCENARIO_COUNT}, wᵢ is the per-scenario complianceWeight from the authoritative
-            matrix, ℬ<sub>t</sub> denotes the scenario block for tier t, and 𝕀<sub>correct</sub> is the
-            indicator function returning 1 when the candidate selects the matrix-validated option index.
+            Where n = {EXAM_SCENARIO_COUNT}, wᵢ is the per-scenario complianceWeight from the server-side
+            master answer key (api/grade-exam.js), ℬ<sub>t</sub> denotes the scenario block for tier t,
+            and 𝕀<sub>correct</sub> is the indicator function returning 1 when the candidate selects the
+            matrix-validated option index.
           </p>
         </section>
 
