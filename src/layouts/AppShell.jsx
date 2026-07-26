@@ -128,9 +128,17 @@ body,
   height: 2rem;
 }
 
+.app-logo__wordmark {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.5rem;
+  min-width: 0;
+}
+
 .app-logo__text {
   font-family: Georgia, 'Times New Roman', Times, serif;
-  font-size: clamp(0.6875rem, 1.6vw, 0.8125rem);
+  font-size: clamp(0.75rem, 1.7vw, 0.9375rem);
   font-weight: 600;
   letter-spacing: 0.045em;
   line-height: 1.2;
@@ -276,6 +284,15 @@ body,
 
 .app-shell-footer__meta:last-of-type {
   margin-bottom: 0.85rem;
+}
+
+.app-shell-footer__ecosystem-synergy {
+  margin: 0.5rem 0 0.85rem;
+  max-width: 42rem;
+  font-size: 0.75rem;
+  line-height: 1.625;
+  color: #94a3b8;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 .app-shell-footer__statement {
@@ -570,11 +587,20 @@ function A4ScalesMark() {
   );
 }
 
+const LOGO_FRAMEWORK_NAME = 'SafeAI Framework';
+
 function AppLogo({ t }) {
+  const frameworkName = t('branding.frameworkName', LOGO_FRAMEWORK_NAME) || LOGO_FRAMEWORK_NAME;
+
   return (
     <span className="app-logo">
       <A4ScalesMark />
-      <span className="app-logo__text">{t('legalAnchors.academicInstitution')}</span>
+      <span className="app-logo__wordmark">
+        <span className="app-logo__text">{frameworkName}</span>
+        <span className="hidden sm:inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono me-3">
+          {t('branding.technicalEngine')}
+        </span>
+      </span>
     </span>
   );
 }
@@ -585,7 +611,11 @@ function GlobalHeader({ t, language, onLanguageChange }) {
   return (
     <header className="app-shell-header">
       <div className="app-shell-header__inner">
-        <Link to="/" className="app-shell-header__brand" aria-label={t('legalAnchors.academicInstitution')}>
+        <Link
+          to="/"
+          className="app-shell-header__brand"
+          aria-label={t('branding.frameworkName', LOGO_FRAMEWORK_NAME) || LOGO_FRAMEWORK_NAME}
+        >
           <AppLogo t={t} />
         </Link>
 
@@ -647,6 +677,7 @@ function InstitutionalFooter({ t }) {
           </h2>
           <p className="app-shell-footer__meta">{t('branding.platformClaim')}</p>
           <p className="app-shell-footer__meta">{t('legalAnchors.registry.registryLine')}</p>
+          <p className="app-shell-footer__ecosystem-synergy">{t('branding.ecosystemSynergy')}</p>
           <p className="app-shell-footer__meta">{t('legalAnchors.registry.address')}</p>
           <p className="app-shell-footer__meta">{t('legalAnchors.registry.iceStatement')}</p>
           <p className="app-shell-footer__statement">{t('footer.compliance_statement')}</p>

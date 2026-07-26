@@ -1,9 +1,12 @@
 {
   "branding": {
     "name": "safeAI.report",
+    "frameworkName": "SafeAI Framework",
+    "technicalEngine": "A4I Technical Engine",
     "standardName": "Certificación estándar TOEFL de alfabetización en IA",
     "authority": "Profesor Adel El Bouzagaoui",
-    "platformClaim": "Plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR)"
+    "platformClaim": "Plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR)",
+    "ecosystemSynergy": "El marco de cumplimiento automatizado utilizado por L'Institut Article 4 para la investigación en gobernanza digital europea."
   },
   "legalAnchors": {
     "processingEntity": "Global Capital Intelligence LLC",
@@ -130,7 +133,8 @@
   },
   "landing": {
     "hero": {
-      "citationLead": "El Artículo 4 de la Ley de IA de la UE exige a los desplegadores verificar la alfabetización IA y la supervisión humana del personal que opera sistemas IA de alto riesgo. safeAI.report es la plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR) que opera el estándar TOEFL AI Literacy — 30 escenarios diagnósticos, 3 vías de gobernanza, umbral de aprobación 85 %, registro SHA-256 vía WaqfLedger.tech — bajo L'INSTITUT ARTICLE 4 (A4I). Aplicación estatutaria: agosto de 2026.",
+      "announcementBadge": "Estándar de alfabetización y cumplimiento de desplegadores — Artículo 4 de la Ley de IA de la UE — Aplicación estatutaria: agosto de 2026",
+      "citationLead": "safeAI.report es la plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR) que opera el estándar TOEFL AI Literacy — 30 escenarios diagnósticos, 3 vías de gobernanza, umbral de aprobación 85 %, registro SHA-256 vía WaqfLedger.tech — bajo L'INSTITUT ARTICLE 4 (A4I).",
       "headline": "Audite el riesgo de IA institucional. Ancle sus evidencias de cumplimiento.",
       "subheadline": "Despliegue el Open Institutional AI Readiness Framework (OIARF) para ejecutar evaluaciones de madurez basadas en evidencia en todo su campus. Evalúe la alfabetización de la fuerza laboral, el linaje de datos y los controles de gobernanza mediante un pipeline de retención cero de datos asegurado por verificación criptográfica a prueba de manipulación.",
       "universalOpenAccess": "Nivel open access: 3 vías diagnósticas (Nivel 01–03), 30 escenarios por examen, 0 USD de tarifa de evaluación pública.",

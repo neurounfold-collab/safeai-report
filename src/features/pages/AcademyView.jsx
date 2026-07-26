@@ -566,6 +566,9 @@ export default function AcademyView({ language: languageProp }) {
               <p className="mt-1 break-words text-sm leading-[1.7] text-slate-400">
                 {legalAnchors?.academicInstitution} · {SAFEAI_MASTER_CONFIG?.infrastructure?.targetFramework}
               </p>
+              <p className="mt-2 max-w-2xl break-words text-xs font-sans leading-relaxed text-slate-400">
+                {t('branding.ecosystemSynergy')}
+              </p>
               <p className="mt-3 break-words text-xs leading-[1.7] text-slate-500">
                 {registry.address} · {t('legalAnchors.registry.registryLine')}
               </p>

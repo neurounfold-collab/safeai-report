@@ -49,22 +49,27 @@ const HOME_STYLES = `
   min-width: 0;
 }
 
+.home-view__announcement {
+  align-self: flex-start;
+  max-width: 100%;
+}
+
 .home-view__citation-lead {
   margin: 0;
-  font-size: clamp(0.875rem, 1.7vw, 1rem);
+  font-size: clamp(0.9375rem, 1.8vw, 1.0625rem);
   font-weight: 500;
   line-height: 1.7;
   overflow-wrap: break-word;
   word-break: break-word;
-  color: rgba(248, 250, 252, 0.92);
+  color: rgba(248, 250, 252, 0.88);
 }
 
 .home-view__headline {
   margin: 0;
-  font-size: clamp(1.75rem, 4.2vw, 2.875rem);
+  font-size: clamp(1.875rem, 4.6vw, 3.125rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.35;
+  line-height: 1.2;
   overflow-wrap: break-word;
   word-break: break-word;
   color: var(--home-text);
@@ -124,6 +129,16 @@ const HOME_STYLES = `
   overflow-wrap: break-word;
   word-break: break-word;
   color: var(--home-muted);
+}
+
+.home-view__profile-ecosystem {
+  margin: 0.15rem 0 0;
+  max-width: 42rem;
+  font-size: 0.75rem;
+  line-height: 1.625;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: #94a3b8;
 }
 
 .home-view__cta-row {
@@ -627,12 +642,18 @@ export default function HomeView({ language: languageProp }) {
       <div className="home-view__inner">
         <header className="home-view__hero" aria-label={t('landing.hero.headline')}>
           <div className="home-view__hero-content">
+            <div className="home-view__announcement inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300 mb-4">
+              <span className="w-2 h-2 shrink-0 rounded-full bg-teal-400 animate-pulse" aria-hidden="true" />
+              <span className="min-w-0 break-words leading-snug">
+                {t('landing.hero.announcementBadge')}
+              </span>
+            </div>
+            <h1 className="home-view__headline break-words leading-[1.2]">
+              {t('landing.hero.headline')}
+            </h1>
             <p className="home-view__citation-lead break-words leading-[1.7]">
               {t('landing.hero.citationLead')}
             </p>
-            <h1 className="home-view__headline break-words leading-[1.7]">
-              {t('landing.hero.headline')}
-            </h1>
             <p className="home-view__subheadline break-words leading-[1.7]">
               {t('landing.hero.subheadline')}
             </p>
@@ -648,6 +669,9 @@ export default function HomeView({ language: languageProp }) {
             </p>
             <p className="home-view__profile-institution break-words leading-[1.7]">
               {t('legalAnchors.academicInstitution')} · {t('infrastructure.targetFramework')}
+            </p>
+            <p className="home-view__profile-ecosystem break-words leading-relaxed">
+              {t('branding.ecosystemSynergy')}
             </p>
           </aside>
 

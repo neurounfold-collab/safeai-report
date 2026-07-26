@@ -1,9 +1,12 @@
 {
   "branding": {
     "name": "safeAI.report",
+    "frameworkName": "SafeAI Framework",
+    "technicalEngine": "A4I Technical Engine",
     "standardName": "TOEFL AI Literacy Standard Certification",
     "authority": "Professor Adel El Bouzagaoui",
-    "platformClaim": "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR)"
+    "platformClaim": "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR)",
+    "ecosystemSynergy": "The automated compliance framework utilized by L'Institut Article 4 for European digital governance research."
   },
   "legalAnchors": {
     "processingEntity": "Global Capital Intelligence LLC",
@@ -130,7 +133,8 @@
   },
   "landing": {
     "hero": {
-      "citationLead": "EU AI Act Article 4 mandates deployer AI literacy and human oversight verification for staff operating high-risk AI systems. safeAI.report is the Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR) operating the TOEFL AI Literacy Standard — 30 diagnostic scenarios, 3 governance tracks, 85% pass threshold, SHA-256 credential logging via WaqfLedger.tech — under L'INSTITUT ARTICLE 4 (A4I). Statutory enforcement: August 2026.",
+      "announcementBadge": "EU AI Act Article 4 Deployer Literacy & Compliance Standard — Statutory Enforcement: August 2026",
+      "citationLead": "safeAI.report is the Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR) operating the TOEFL AI Literacy Standard — 30 diagnostic scenarios, 3 governance tracks, 85% pass threshold, SHA-256 credential logging via WaqfLedger.tech — under L'INSTITUT ARTICLE 4 (A4I).",
       "headline": "Audit Institutional AI Risk. Anchor Your Compliance Evidence.",
       "subheadline": "Deploy the Open Institutional AI Readiness Framework (OIARF) to execute evidence-informed maturity assessments across your campus. Evaluate workforce literacy, data lineage, and governance controls through a zero-data-retention pipeline secured by tamper-evident cryptographic verification.",
       "universalOpenAccess": "Open-access tier: 3 diagnostic tracks (Level 01–03), 30 scenarios per examination, 0 USD public evaluation fee.",
