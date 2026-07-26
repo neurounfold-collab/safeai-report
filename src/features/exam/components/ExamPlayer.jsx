@@ -1,9 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { createTranslator, getActiveLanguage } from '../../../i18n/index.js';
+import {
+  createTranslator,
+  getActiveLanguage,
+  isRtlLanguage,
+  normalizeLanguage,
+} from '../../../i18n/index.js';
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';
 import {
-  EXAM_SCENARIO_MATRIX,
+  scenariosByLanguage,
+  getScenariosForLanguage,
   EXAM_SCENARIO_COUNT,
 } from '../data/scenarios.js';
 import {
@@ -127,6 +133,11 @@ const EXAM_PLAYER_STYLES = `
   transition: width 320ms ease;
 }
 
+.exam-player[dir="rtl"] .exam-player__progress-fill {
+  background: linear-gradient(270deg, #2dd4bf, #6366f1);
+  margin-inline-start: auto;
+}
+
 .exam-player__category {
   display: inline-block;
   margin-bottom: 1rem;
@@ -143,7 +154,7 @@ const EXAM_PLAYER_STYLES = `
 
 .exam-player__category-label {
   color: var(--exam-accent);
-  margin-right: 0.35rem;
+  margin-inline-end: 0.35rem;
 }
 
 .exam-player__markdown {
@@ -186,13 +197,32 @@ const EXAM_PLAYER_STYLES = `
   border: 1px solid var(--exam-border);
   background: rgba(15, 23, 42, 0.55);
   color: var(--exam-text);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition:
     border-color 180ms ease,
     background 180ms ease,
     box-shadow 180ms ease,
     transform 120ms ease;
+}
+
+.exam-player[dir="rtl"] .exam-player__option {
+  flex-direction: row;
+}
+
+.exam-player[dir="rtl"] .exam-player__markdown,
+.exam-player[dir="rtl"] .exam-player__option-text,
+.exam-player[dir="rtl"] .exam-player__status-indicator {
+  text-align: start;
+  unicode-bidi: plaintext;
+}
+
+.exam-player[dir="rtl"] .exam-player__actions {
+  justify-content: flex-start;
+}
+
+.exam-player[dir="rtl"] .exam-player__shell {
+  overflow-wrap: anywhere;
 }
 
 .exam-player__option:hover:not(:disabled) {
@@ -911,9 +941,6 @@ const MASTER_TEST_AUDIT_KEY = 'SAFEAI_MASTER_TEST_AUDIT';
 const EXAM_ENTRY_TIER_KEY = 'SAFEAI_EXAM_ENTRY_TIER';
 const VALID_EXAM_TIER_PARAMS = new Set(['level01', 'level02', 'level03']);
 
-/** @type {Map<number, typeof EXAM_SCENARIO_MATRIX[number]>} */
-const SCENARIO_BY_ID = new Map(EXAM_SCENARIO_MATRIX.map((scenario) => [scenario.id, scenario]));
-
 /**
  * Reads a validated tier slug from the current URL query string.
  * @param {URLSearchParams | null | undefined} [searchParams]
@@ -931,7 +958,7 @@ function readUrlTierParam(searchParams) {
 }
 
 /**
- * @param {typeof EXAM_SCENARIO_MATRIX | null | undefined} matrix
+ * @param {ReturnType<typeof getScenariosForLanguage> | null | undefined} matrix
  */
 function isExamMatrixComplete(matrix) {
   return Array.isArray(matrix) && matrix.length === EXAM_SCENARIO_COUNT
@@ -950,6 +977,7 @@ function persistEntryTier(tierSlug) {
 
 /**
  * @param {unknown} data
+ * @param {Map<number, ReturnType<typeof getScenariosForLanguage>[number]>} scenarioById
  * @returns {data is {
  *   version: number;
  *   scenarioIds: number[];
@@ -957,9 +985,10 @@ function persistEntryTier(tierSlug) {
  *   userChoices: Array<{ scenarioId: number; chosenOptionIndex: number; timeSpentMs: number }>;
  *   optionOrders?: number[][];
  *   examStartedAt?: string;
+ *   language?: string;
  * }}
  */
-function isValidPersistedExamSession(data) {
+function isValidPersistedExamSession(data, scenarioById) {
   if (!data || typeof data !== 'object') return false;
   if (data.version !== EXAM_PERSIST_SCHEMA_VERSION) return false;
   if (!Array.isArray(data.scenarioIds) || data.scenarioIds.length !== EXAM_SCENARIO_COUNT) {
@@ -975,7 +1004,7 @@ function isValidPersistedExamSession(data) {
     if (typeof scenarioId !== 'number' || !expectedIds.has(scenarioId) || seenIds.has(scenarioId)) {
       return false;
     }
-    if (!SCENARIO_BY_ID.has(scenarioId)) return false;
+    if (!scenarioById.has(scenarioId)) return false;
     seenIds.add(scenarioId);
   }
 
@@ -1046,7 +1075,7 @@ function clearExamPersistSession() {
 
 /**
  * Rebuilds a scenario with options ordered by persisted original-index permutation.
- * @param {typeof EXAM_SCENARIO_MATRIX[number]} scenario
+ * @param {ReturnType<typeof getScenariosForLanguage>[number]} scenario
  * @param {number[]} optionOrder
  */
 function applyOptionOrder(scenario, optionOrder) {
@@ -1060,6 +1089,7 @@ function applyOptionOrder(scenario, optionOrder) {
 }
 
 /**
+ * @param {ReturnType<typeof getScenariosForLanguage>} scenarioSet
  * @returns {{
  *   shuffledExamMatrix: ReturnType<typeof buildTierShuffledExamMatrix>;
  *   currentScenarioIndex: number;
@@ -1067,22 +1097,24 @@ function applyOptionOrder(scenario, optionOrder) {
  *   examStartedAt: string;
  * } | null}
  */
-function loadPersistedExamSession() {
+function loadPersistedExamSession(scenarioSet) {
   if (typeof window === 'undefined') return null;
+
+  const scenarioById = new Map((scenarioSet ?? []).map((scenario) => [scenario.id, scenario]));
 
   try {
     const raw = window.localStorage.getItem(EXAM_PERSIST_KEY);
     if (!raw) return null;
 
     const parsed = JSON.parse(raw);
-    if (!isValidPersistedExamSession(parsed)) {
+    if (!isValidPersistedExamSession(parsed, scenarioById)) {
       clearExamPersistSession();
       return null;
     }
 
     const shuffledExamMatrix = (parsed.scenarioIds ?? [])
       .map((scenarioId, index) => {
-        const base = SCENARIO_BY_ID.get(scenarioId);
+        const base = scenarioById.get(scenarioId);
         if (!base) return null;
         return applyOptionOrder(base, parsed.optionOrders[index]);
       })
@@ -1110,12 +1142,20 @@ function loadPersistedExamSession() {
  * @param {number} currentScenarioIndex
  * @param {Array<{ scenarioId: number; chosenOptionIndex: number; timeSpentMs: number }>} userChoices
  * @param {string} examStartedAt
+ * @param {string} language
  */
-function persistExamSession(shuffledExamMatrix, currentScenarioIndex, userChoices, examStartedAt) {
+function persistExamSession(
+  shuffledExamMatrix,
+  currentScenarioIndex,
+  userChoices,
+  examStartedAt,
+  language,
+) {
   if (typeof window === 'undefined') return;
 
   const payload = {
     version: EXAM_PERSIST_SCHEMA_VERSION,
+    language,
     scenarioIds: (shuffledExamMatrix ?? []).map((scenario) => scenario?.id).filter(Boolean),
     optionOrders: (shuffledExamMatrix ?? []).map((scenario) =>
       (scenario?.options ?? []).map((option) =>
@@ -1136,8 +1176,12 @@ function persistExamSession(shuffledExamMatrix, currentScenarioIndex, userChoice
   }
 }
 
-function createInitialExamSessionState(urlTier) {
-  const persisted = loadPersistedExamSession();
+/**
+ * @param {'level01' | 'level02' | 'level03' | null} urlTier
+ * @param {ReturnType<typeof getScenariosForLanguage>} scenarioSet
+ */
+function createInitialExamSessionState(urlTier, scenarioSet) {
+  const persisted = loadPersistedExamSession(scenarioSet);
   if (persisted && isExamMatrixComplete(persisted.shuffledExamMatrix)) {
     if (urlTier) persistEntryTier(urlTier);
     return persisted;
@@ -1145,7 +1189,7 @@ function createInitialExamSessionState(urlTier) {
 
   if (persisted) clearExamPersistSession();
 
-  const shuffledExamMatrix = buildTierShuffledExamMatrix();
+  const shuffledExamMatrix = buildTierShuffledExamMatrix(scenarioSet);
   if (!isExamMatrixComplete(shuffledExamMatrix)) {
     return null;
   }
@@ -1253,7 +1297,7 @@ function buildServerScoreResult(payload, roleId, urlTier) {
 
 /**
  * Attaches Fisher–Yates-shuffled options that retain originalIndex for grading.
- * @param {typeof EXAM_SCENARIO_MATRIX[number]} scenario
+ * @param {ReturnType<typeof getScenariosForLanguage>[number]} scenario
  */
 function withShuffledOptions(scenario) {
   const optionsWithIds = (scenario.options ?? []).map((text, originalIndex) => ({
@@ -1315,11 +1359,13 @@ function fisherYatesShuffle(array) {
  * Segregates the authoritative matrix by tier, shuffles each tier independently,
  * Fisher–Yates-shuffles each scenario's options (preserving originalIndex), and
  * concatenates into a linear 30-scenario examination sequence.
+ * @param {ReturnType<typeof getScenariosForLanguage>} scenarioSet
  */
-function buildTierShuffledExamMatrix() {
-  const level01 = EXAM_SCENARIO_MATRIX.filter((scenario) => scenario.id >= 1 && scenario.id <= 10);
-  const level02 = EXAM_SCENARIO_MATRIX.filter((scenario) => scenario.id >= 11 && scenario.id <= 20);
-  const level03 = EXAM_SCENARIO_MATRIX.filter((scenario) => scenario.id >= 21 && scenario.id <= 30);
+function buildTierShuffledExamMatrix(scenarioSet) {
+  const matrix = scenarioSet ?? getScenariosForLanguage('en');
+  const level01 = matrix.filter((scenario) => scenario.id >= 1 && scenario.id <= 10);
+  const level02 = matrix.filter((scenario) => scenario.id >= 11 && scenario.id <= 20);
+  const level03 = matrix.filter((scenario) => scenario.id >= 21 && scenario.id <= 30);
 
   return [
     ...fisherYatesShuffle(level01),
@@ -1498,9 +1544,14 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  /** Active examinee language from i18n (EN / FR / ES / AR). */
+  const currentLang = normalizeLanguage(languageProp ?? getActiveLanguage());
+  const scenarioSet = scenariosByLanguage[currentLang] || scenariosByLanguage.en;
+  const examDir = isRtlLanguage(currentLang) ? 'rtl' : 'ltr';
+
   const { t } = useMemo(
-    () => createTranslator(languageProp ?? getActiveLanguage()),
-    [languageProp],
+    () => createTranslator(currentLang),
+    [currentLang],
   );
 
   const urlTier = useMemo(() => readUrlTierParam(searchParams), [searchParams]);
@@ -1511,7 +1562,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   const initialSessionRef = useRef(null);
   if (initialSessionRef.current === null) {
-    initialSessionRef.current = createInitialExamSessionState(urlTier);
+    initialSessionRef.current = createInitialExamSessionState(urlTier, scenarioSet);
   }
   const initialSession = initialSessionRef.current ?? {
     shuffledExamMatrix: [],
@@ -1576,7 +1627,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     if (isExamMatrixComplete(shuffledExamMatrix)) return;
 
     clearExamPersistSession();
-    const recovered = createInitialExamSessionState(urlTier);
+    const recovered = createInitialExamSessionState(urlTier, scenarioSet);
     if (!recovered) {
       navigate('/academy', { replace: true });
       return;
@@ -1587,7 +1638,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     setCurrentScenarioIndex(recovered.currentScenarioIndex);
     setUserChoices(recovered.userChoices);
     examStartedAtRef.current = recovered.examStartedAt;
-  }, [tierParamInvalid, sessionInitFailed, urlTier, navigate, shuffledExamMatrix]);
+  }, [tierParamInvalid, sessionInitFailed, urlTier, navigate, shuffledExamMatrix, scenarioSet]);
 
   const currentScenario = shuffledExamMatrix[currentScenarioIndex];
   const isFinalScenario = currentScenarioIndex === EXAM_SCENARIO_COUNT - 1;
@@ -1603,7 +1654,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     [candidateNameProp, storedLegalName, t],
   );
 
-  const activeLocale = languageProp ?? getActiveLanguage();
+  const activeLocale = currentLang;
 
   useEffect(() => {
     screenEnteredAtRef.current = Date.now();
@@ -1619,8 +1670,9 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
       currentScenarioIndex,
       userChoices,
       examStartedAtRef.current,
+      currentLang,
     );
-  }, [userChoices, currentScenarioIndex, shuffledExamMatrix, examPhase]);
+  }, [userChoices, currentScenarioIndex, shuffledExamMatrix, examPhase, currentLang]);
 
   useEffect(() => {
     if (!navigationLocked) return undefined;
@@ -1850,7 +1902,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   const handleRetry = useCallback(() => {
     clearExamPersistSession();
-    const freshSession = createInitialExamSessionState(urlTier);
+    const freshSession = createInitialExamSessionState(urlTier, scenarioSet);
     if (!freshSession) {
       navigate('/academy', { replace: true });
       return;
@@ -1883,7 +1935,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
     setExamPhase('active');
     examStartedAtRef.current = freshSession.examStartedAt;
     screenEnteredAtRef.current = Date.now();
-  }, [masterTestOverride, urlTier, navigate]);
+  }, [masterTestOverride, urlTier, navigate, scenarioSet]);
 
   const handleLinkedInAchievementClaim = useCallback(async () => {
     try {
@@ -1997,7 +2049,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   if (examPhase === 'sealing') {
     return (
-      <div className="exam-player" aria-live="polite" aria-busy={isSealing}>
+      <div className="exam-player" dir={examDir} lang={currentLang} aria-live="polite" aria-busy={isSealing}>
         <style>{EXAM_PLAYER_STYLES}</style>
         <div className="exam-player__shell exam-player__credential">
           <div className="exam-player__status-indicator" style={{ marginBottom: '1.25rem' }}>
@@ -2033,7 +2085,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   if (examPhase === 'registryExposure' && scoreResult) {
     return (
-      <div className="exam-player" aria-live="polite">
+      <div className="exam-player" dir={examDir} lang={currentLang} aria-live="polite">
         <style>{EXAM_PLAYER_STYLES}</style>
         <div className="exam-player__shell exam-player__credential">
           <CompositeScorePanel composite={scoreResult.composite} t={t} />
@@ -2108,7 +2160,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   if (examPhase === 'cohort') {
     return (
-      <div className="exam-player" aria-live="polite">
+      <div className="exam-player" dir={examDir} lang={currentLang} aria-live="polite">
         <style>{EXAM_PLAYER_STYLES}</style>
         <div className="exam-player__shell exam-player__cohort">
           <h2 className="exam-player__cohort-title">{t('exam.player.cohort.title')}</h2>
@@ -2155,7 +2207,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   if (examPhase === 'passed' && scoreResult) {
     return (
-      <div className="exam-player exam-player--locked" aria-live="polite">
+      <div className="exam-player exam-player--locked" dir={examDir} lang={currentLang} aria-live="polite">
         <style>{EXAM_PLAYER_STYLES}</style>
         <div className="exam-player__shell exam-player__shell--credential-badge exam-player__credential">
           <CompositeScorePanel composite={scoreResult.composite} t={t} />
@@ -2237,7 +2289,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   if (examPhase === 'identity') {
     return (
-      <div className="exam-player" aria-live="polite">
+      <div className="exam-player" dir={examDir} lang={currentLang} aria-live="polite">
         <style>{EXAM_PLAYER_STYLES}</style>
         <div className="exam-player__shell exam-player__identity">
           <div className="exam-player__identity-seal" aria-hidden="true">
@@ -2276,7 +2328,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   if (examPhase === 'failed' && scoreResult) {
     return (
-      <div className="exam-player" aria-live="polite">
+      <div className="exam-player" dir={examDir} lang={currentLang} aria-live="polite">
         <style>{EXAM_PLAYER_STYLES}</style>
         <div className="exam-player__shell exam-player__credential">
           <CompositeScorePanel composite={scoreResult.composite} t={t} />
@@ -2310,7 +2362,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
 
   if (examPhase === 'active' && !currentScenario) {
     return (
-      <div className="exam-player" aria-live="polite">
+      <div className="exam-player" dir={examDir} lang={currentLang} aria-live="polite">
         <style>{EXAM_PLAYER_STYLES}</style>
         <div className="exam-player__shell exam-player__credential">
           <h2 className="exam-player__fail-title">{t('exam.player.failedTitle')}</h2>
@@ -2326,6 +2378,8 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
   return (
     <div
       className="exam-player select-none"
+      dir={examDir}
+      lang={currentLang}
       onCopy={(event) => event.preventDefault()}
       onContextMenu={(event) => event.preventDefault()}
     >
