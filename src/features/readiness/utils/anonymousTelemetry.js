@@ -1,5 +1,7 @@
+import { LEDGER_TRACK } from '../../../config/ledgerTracks.js';
 import { OIARF_SPEC_VERSION } from '../data/oiarfAssessment.js';
-import { computeMcdaComposite } from './mcdaComposite.js';
+import { FRIA_DIMENSION } from '../data/verifiaRiskEngine.js';
+import { computeDimensionScore, computeMcdaComposite } from './mcdaComposite.js';
 
 /**
  * Recursively sorts object keys for deterministic JSON serialization prior to hashing.
@@ -56,29 +58,39 @@ export async function computeSha256Hex(payload) {
 
 /**
  * Compile an anonymous readiness telemetry payload (no PII):
- * 8 numeric dimension scores, overall MCDA index, optional sector tag.
+ * unrounded MCDA scores, FRIA score, VerifIA role and Annex III selections.
  *
  * @param {Record<string, number>} answers
- * @param {string | null | undefined} sector
- * @returns {{
- *   schemaVersion: string,
- *   trackType: string,
- *   dimensionScores: Record<string, number>,
- *   overallIndex: number,
- *   overallIndexPercent: number,
- *   sector: string | null
- * }}
+ * @param {{
+ *   sector?: string | null,
+ *   regulatoryRole?: string | null,
+ *   annexUseCases?: Record<string, boolean> | null,
+ * }} [context]
  */
-export function buildAnonymousTelemetryPayload(answers, sector) {
-  const composite = computeMcdaComposite(answers);
+export function buildAnonymousTelemetryPayload(answers, context = {}) {
+  const composite = computeMcdaComposite(answers, { unrounded: true });
+  const friaScore = computeDimensionScore(answers, FRIA_DIMENSION);
+
   const sectorTag =
-    typeof sector === 'string' && sector.trim().length > 0
-      ? sector.trim()
+    typeof context.sector === 'string' && context.sector.trim().length > 0
+      ? context.sector.trim()
       : null;
+
+  const annexIIISection3 =
+    context.annexUseCases && typeof context.annexUseCases === 'object'
+      ? Object.keys(context.annexUseCases)
+          .filter((id) => context.annexUseCases[id] === true)
+          .sort()
+      : [];
 
   return {
     schemaVersion: OIARF_SPEC_VERSION,
-    trackType: 'OIARF_INSTITUTIONAL_READINESS',
+    trackType: LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS,
+    engine: 'VerifIA-Risk-Engine',
+    regulatoryRole:
+      typeof context.regulatoryRole === 'string' ? context.regulatoryRole : null,
+    annexIIISection3,
+    friaScore,
     dimensionScores: { ...composite.dimensionScores },
     overallIndex: composite.overallIndex,
     overallIndexPercent: composite.overallIndexPercent,
@@ -90,14 +102,18 @@ export function buildAnonymousTelemetryPayload(answers, sector) {
  * Package anonymous telemetry and seal with SHA-256 validation string.
  *
  * @param {Record<string, number>} answers
- * @param {string | null | undefined} sector
+ * @param {{
+ *   sector?: string | null,
+ *   regulatoryRole?: string | null,
+ *   annexUseCases?: Record<string, boolean> | null,
+ * }} [context]
  * @returns {Promise<{
  *   payload: ReturnType<typeof buildAnonymousTelemetryPayload>,
  *   stateHash: string
  * }>}
  */
-export async function packageAnonymousTelemetry(answers, sector) {
-  const payload = buildAnonymousTelemetryPayload(answers, sector);
+export async function packageAnonymousTelemetry(answers, context = {}) {
+  const payload = buildAnonymousTelemetryPayload(answers, context);
   const stateHash = await computeSha256Hex(payload);
   return { payload, stateHash };
 }

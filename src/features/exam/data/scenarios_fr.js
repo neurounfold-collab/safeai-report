@@ -297,7 +297,7 @@ export const EXAM_SCENARIO_MATRIX_FR = [
   },
   {
     id: 30, tier: "Level 03", category: "Certification de partenaire institutionnel",
-    scenarioText: "Lors de l'attribution du badge de partenaire institutionnel Level 03, le partenaire doit activer la vérification publique sur https://safeai.report/verification, reliant les titres des candidats aux enregistrements WaqfLedger.tech. Un lot de trois titres échoue au rapprochement des hachages en raison d'un décalage d'horloge lors de la soumission de l'examen. Quel protocole de finalisation de la certification fait autorité ?",
+    scenarioText: "Lors de l'attribution du badge de partenaire institutionnel Level 03, le partenaire doit activer la vérification publique sur https://safeai.report/verify, reliant les titres des candidats aux enregistrements WaqfLedger.tech. Un lot de trois titres échoue au rapprochement des hachages en raison d'un décalage d'horloge lors de la soumission de l'examen. Quel protocole de finalisation de la certification fait autorité ?",
     options: [
       "Délivrer immédiatement les badges et corriger les entrées du registre de manière opportuniste lorsque cela sera commode.",
       "Suspendre l'activation de la vérification publique jusqu'à la réussite du rapprochement des hachages, resceller les éléments d'examen au moyen du hachage d'état SHA-256 attestant de l'intégrité conformément au protocole Sovereign Algorithmic Governance Ledger, et documenter la remédiation dans le dossier d'audit du partenaire institutionnel avant la délivrance des titres.",

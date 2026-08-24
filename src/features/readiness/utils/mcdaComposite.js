@@ -37,6 +37,7 @@ export function computeDimensionScore(answers, dimension) {
  *   I_sr = Σ_{d=1}^{8} (W_d × D_d)
  *
  * @param {Record<string, number>} answers
+ * @param {{ unrounded?: boolean }} [options]
  * @returns {{
  *   dimensionScores: Record<string, number>,
  *   weights: Record<string, number>,
@@ -44,7 +45,8 @@ export function computeDimensionScore(answers, dimension) {
  *   overallIndexPercent: number
  * }}
  */
-export function computeMcdaComposite(answers) {
+export function computeMcdaComposite(answers, options = {}) {
+  const { unrounded = false } = options;
   /** @type {Record<string, number>} */
   const dimensionScores = {};
   /** @type {Record<string, number>} */
@@ -54,7 +56,7 @@ export function computeMcdaComposite(answers) {
   for (const dimension of OIARF_DIMENSIONS) {
     const D_d = computeDimensionScore(answers, dimension);
     const W_d = dimension.weight;
-    dimensionScores[dimension.key] = Number(D_d.toFixed(6));
+    dimensionScores[dimension.key] = unrounded ? D_d : Number(D_d.toFixed(6));
     weights[dimension.key] = W_d;
     overallIndex += W_d * D_d;
   }
@@ -64,7 +66,9 @@ export function computeMcdaComposite(answers) {
   return {
     dimensionScores,
     weights,
-    overallIndex: Number(clamped.toFixed(6)),
-    overallIndexPercent: Number((clamped * 100).toFixed(2)),
+    overallIndex: unrounded ? clamped : Number(clamped.toFixed(6)),
+    overallIndexPercent: unrounded
+      ? clamped * 100
+      : Number((clamped * 100).toFixed(2)),
   };
 }

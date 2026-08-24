@@ -8,11 +8,13 @@
  * Prompt copy lives in i18n (readiness.dimensions.*.prompts.q1–q3) for EN/FR/ES/AR parity.
  */
 
+import { FRIA_DIMENSION } from './verifiaRiskEngine.js';
+
 export const OIARF_SPEC_VERSION = '2.0.0-OIARF';
 
 export const READINESS_STORAGE_KEY = 'safeai.oiarf.readiness.v1';
 
-export const READINESS_PERSIST_SCHEMA_VERSION = 1;
+export const READINESS_PERSIST_SCHEMA_VERSION = 2;
 
 /** Likert maturity scale — mapped to 0–1 contribution per answer. */
 export const LIKERT_SCALE = Object.freeze([
@@ -212,16 +214,22 @@ export const OIARF_DIMENSIONS = Object.freeze([
   }),
 ]);
 
-/** Ordered dimension keys for navigation and completion checks. */
+/** Ordered OIARF dimension keys (excludes Article 27 FRIA pre-step). */
 export const DIMENSION_KEYS = Object.freeze(
   OIARF_DIMENSIONS.map((dimension) => dimension.key),
 );
 
 export const DEFAULT_DIMENSION_KEY = DIMENSION_KEYS[0];
 
-const DIMENSION_BY_KEY = new Map(
-  OIARF_DIMENSIONS.map((dimension) => [dimension.key, dimension]),
-);
+/** VerifIA assessment flow: Article 27 FRIA pre-step followed by eight OIARF dimensions. */
+export const ASSESSMENT_DIMENSION_KEYS = Object.freeze(['fria', ...DIMENSION_KEYS]);
+
+export const DEFAULT_ASSESSMENT_DIMENSION_KEY = FRIA_DIMENSION.key;
+
+const DIMENSION_BY_KEY = new Map([
+  [FRIA_DIMENSION.key, FRIA_DIMENSION],
+  ...OIARF_DIMENSIONS.map((dimension) => [dimension.key, dimension]),
+]);
 
 /**
  * @param {unknown} key
@@ -245,9 +253,9 @@ export function getDimensionByKey(key) {
  * @returns {string | null}
  */
 export function getNextDimensionKey(key) {
-  const index = DIMENSION_KEYS.indexOf(key);
-  if (index < 0 || index >= DIMENSION_KEYS.length - 1) return null;
-  return DIMENSION_KEYS[index + 1];
+  const index = ASSESSMENT_DIMENSION_KEYS.indexOf(key);
+  if (index < 0 || index >= ASSESSMENT_DIMENSION_KEYS.length - 1) return null;
+  return ASSESSMENT_DIMENSION_KEYS[index + 1];
 }
 
 /**
@@ -255,9 +263,9 @@ export function getNextDimensionKey(key) {
  * @returns {string | null}
  */
 export function getPreviousDimensionKey(key) {
-  const index = DIMENSION_KEYS.indexOf(key);
+  const index = ASSESSMENT_DIMENSION_KEYS.indexOf(key);
   if (index <= 0) return null;
-  return DIMENSION_KEYS[index - 1];
+  return ASSESSMENT_DIMENSION_KEYS[index - 1];
 }
 
 /**

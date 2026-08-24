@@ -3,6 +3,18 @@ import { useSearchParams } from 'react-router-dom';
 import { createTranslator, getActiveLanguage } from '../../i18n/index.js';
 import { isValidSha256HexHash } from '../verify/utils/waqfLedgerSimulator.js';
 import { resolveVerificationRecord } from '../verify/utils/verificationRegistry.js';
+import {
+  LEDGER_TRACK,
+  isOiarfReadinessTrack,
+} from '../../config/ledgerTracks.js';
+import {
+  generateAuditPassport,
+  generateArticle4AttestationReceipt,
+  downloadAuditPassportJsonLd,
+  printComplianceSummary,
+  printArticle4AttestationReceipt,
+  canMintAuditPassport,
+} from '../../utils/auditPassportGenerator.js';
 
 const STORAGE_KEY = 'safeai.language';
 const LANGUAGE_CHANGE_EVENT = 'safeai:language-change';
@@ -454,6 +466,38 @@ const VERIFY_VIEW_STYLES = `
   font-weight: 600;
   color: #6ee7b7;
 }
+
+.verify-view__passport-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.35rem;
+}
+
+.verify-view__passport-btn {
+  appearance: none;
+  padding: 0.7rem 1.05rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: linear-gradient(180deg, rgba(201, 162, 39, 0.28), rgba(201, 162, 39, 0.1));
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--vv-text);
+  cursor: pointer;
+}
+
+.verify-view__passport-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.verify-view__passport-btn--ghost {
+  background: transparent;
+  border-color: var(--vv-border);
+  color: var(--vv-muted);
+}
 `;
 
 function usePageTranslator(languageProp) {
@@ -592,6 +636,9 @@ export default function VerifyView({ language: languageProp }) {
   const [verificationResult, setVerificationResult] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [validationKey, setValidationKey] = useState(null);
+  const [auditPassport, setAuditPassport] = useState(null);
+  const [article4Receipt, setArticle4Receipt] = useState(null);
+  const [passportBusy, setPassportBusy] = useState(false);
 
   useEffect(() => {
     document.title = t('page_titles.verify');
@@ -655,6 +702,80 @@ export default function VerifyView({ language: languageProp }) {
     setHashInput(urlHash);
     runVerification(urlHash);
   }, [searchParams, runVerification]);
+
+  useEffect(() => {
+    if (!verificationResult?.verified) {
+      setAuditPassport(null);
+      setArticle4Receipt(null);
+      return undefined;
+    }
+
+    let cancelled = false;
+    setPassportBusy(true);
+
+    const mintPromise = canMintAuditPassport(verificationResult)
+      ? generateAuditPassport(verificationResult).then((doc) => ({ kind: 'passport', doc }))
+      : isOiarfReadinessTrack(verificationResult.trackType)
+        ? Promise.resolve({ kind: 'oiarf-hash-only', doc: null })
+        : generateArticle4AttestationReceipt({
+            ...verificationResult,
+            trackType: verificationResult.trackType ?? LEDGER_TRACK.ARTICLE_4_LITERACY_EXAM,
+          }).then((doc) => ({ kind: 'exam', doc }));
+
+    mintPromise
+      .then((result) => {
+        if (cancelled) return;
+        if (result.kind === 'passport') {
+          setAuditPassport(result.doc);
+          setArticle4Receipt(null);
+        } else if (result.kind === 'exam') {
+          setArticle4Receipt(result.doc);
+          setAuditPassport(null);
+        } else {
+          setAuditPassport(null);
+          setArticle4Receipt(null);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setAuditPassport(null);
+          setArticle4Receipt(null);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setPassportBusy(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [verificationResult]);
+
+  const handleDownloadPassport = useCallback(() => {
+    if (auditPassport) {
+      downloadAuditPassportJsonLd(auditPassport);
+      return;
+    }
+    if (article4Receipt) {
+      downloadAuditPassportJsonLd(article4Receipt);
+    }
+  }, [auditPassport, article4Receipt]);
+
+  const handlePrintSummary = useCallback(() => {
+    if (auditPassport) {
+      printComplianceSummary(auditPassport, {
+        title: t('verify.portal.passport.printTitle'),
+        subtitle: t('verify.portal.passport.printSubtitle'),
+      });
+      return;
+    }
+    if (article4Receipt) {
+      printArticle4AttestationReceipt(article4Receipt, {
+        title: t('verify.portal.attestation.printTitle'),
+        subtitle: t('verify.portal.attestation.printSubtitle'),
+      });
+    }
+  }, [auditPassport, article4Receipt, t]);
 
   const handleInputChange = (event) => {
     const nextValue = event.target.value;
@@ -783,6 +904,17 @@ export default function VerifyView({ language: languageProp }) {
                     </div>
                   ) : null}
 
+                  {verificationResult?.trackType ? (
+                    <div className="verify-view__field">
+                      <dt className="verify-view__field-label">
+                        {t('verify.portal.fields.trackType')}
+                      </dt>
+                      <dd className="verify-view__field-value">
+                        {verificationResult.trackType}
+                      </dd>
+                    </div>
+                  ) : null}
+
                   <div className="verify-view__field verify-view__field--full">
                     <dt className="verify-view__field-label">
                       {t('verify.portal.fields.waqfLedgerHash')}
@@ -792,6 +924,53 @@ export default function VerifyView({ language: languageProp }) {
                     </dd>
                   </div>
                 </dl>
+                <div className="verify-view__passport-actions">
+                  {auditPassport ? (
+                    <>
+                      <button
+                        type="button"
+                        className="verify-view__passport-btn"
+                        disabled={passportBusy || !auditPassport}
+                        onClick={handleDownloadPassport}
+                      >
+                        {t('verify.portal.passport.downloadJson')}
+                      </button>
+                      <button
+                        type="button"
+                        className="verify-view__passport-btn verify-view__passport-btn--ghost"
+                        disabled={passportBusy || !auditPassport}
+                        onClick={handlePrintSummary}
+                      >
+                        {t('verify.portal.passport.printSummary')}
+                      </button>
+                    </>
+                  ) : null}
+                  {article4Receipt ? (
+                    <>
+                      <button
+                        type="button"
+                        className="verify-view__passport-btn"
+                        disabled={passportBusy || !article4Receipt}
+                        onClick={handleDownloadPassport}
+                      >
+                        {t('verify.portal.attestation.downloadJson')}
+                      </button>
+                      <button
+                        type="button"
+                        className="verify-view__passport-btn verify-view__passport-btn--ghost"
+                        disabled={passportBusy || !article4Receipt}
+                        onClick={handlePrintSummary}
+                      >
+                        {t('verify.portal.attestation.printSummary')}
+                      </button>
+                    </>
+                  ) : null}
+                  {!auditPassport && !article4Receipt && !passportBusy ? (
+                    <p className="verify-view__waqf-caption">
+                      {t('verify.portal.passport.readinessOnly')}
+                    </p>
+                  ) : null}
+                </div>
               </div>
             </article>
           )}

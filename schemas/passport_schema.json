@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://safeai.report/schemas/passport_schema.json",
+  "title": "VerifIA Audit Passport™",
+  "description": "Machine-readable JSON-LD credential for EU AI Act Annex III §3 educational AI assurance under L'INSTITUT ARTICLE 4 (A4I).",
+  "type": "object",
+  "required": [
+    "@context",
+    "@type",
+    "passport_id",
+    "system_profile",
+    "compliance_assurance",
+    "algorithmic_assurance_metrics",
+    "cryptographic_provenance"
+  ],
+  "properties": {
+    "@context": {
+      "type": ["object", "array"]
+    },
+    "@type": {
+      "const": "VerifIAAuditPassport"
+    },
+    "$schema": {
+      "type": "string",
+      "const": "https://safeai.report/schemas/passport_schema.json"
+    },
+    "trackType": {
+      "const": "OIARF_INSTITUTIONAL_READINESS"
+    },
+    "passport_id": {
+      "type": "string",
+      "pattern": "^A4I-2026-EU-[A-F0-9]{8}$"
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "issuer": {
+      "type": "string"
+    },
+    "system_profile": {
+      "type": "object",
+      "required": ["system_name", "system_version", "deployer_id", "annex_iii_classification", "role"],
+      "properties": {
+        "system_name": { "type": "string" },
+        "system_version": { "type": "string" },
+        "deployer_id": { "type": "string" },
+        "role": { "enum": ["Deployer", "Provider"] },
+        "regulatory_role": { "type": ["string", "null"] },
+        "sector": { "type": ["string", "null"] },
+        "annex_iii_classification": {
+          "type": "array",
+          "items": { "enum": ["3a", "3b", "3c", "3d"] }
+        }
+      }
+    },
+    "compliance_assurance": {
+      "type": "object",
+      "required": [
+        "article_4_literacy",
+        "article_11_technical_files",
+        "article_14_human_oversight",
+        "article_27_fria",
+        "iso_42001_aims"
+      ],
+      "properties": {
+        "article_4_literacy": { "$ref": "#/$defs/assuranceRecord" },
+        "article_11_technical_files": { "$ref": "#/$defs/assuranceRecord" },
+        "article_14_human_oversight": { "$ref": "#/$defs/assuranceRecord" },
+        "article_27_fria": { "$ref": "#/$defs/assuranceRecord" },
+        "iso_42001_aims": { "$ref": "#/$defs/assuranceRecord" }
+      }
+    },
+    "algorithmic_assurance_metrics": {
+      "type": "object",
+      "required": ["status", "subgroup_fairness_testing", "methodology"],
+      "properties": {
+        "status": { "const": "SELF_ATTESTED_POLICY_CONTROLS" },
+        "subgroup_fairness_testing": { "const": "NOT_EMPIRICALLY_ASSESSED" },
+        "methodology": { "const": "OIARF_LIKERT_READINESS_REVIEW" }
+      }
+    },
+    "cryptographic_provenance": {
+      "type": "object",
+      "required": [
+        "ledger_engine",
+        "model_config_sha256",
+        "evidence_package_sha256",
+        "waqfledger_anchor",
+        "verification_url"
+      ],
+      "properties": {
+        "ledger_engine": { "type": "string" },
+        "model_config_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "evidence_package_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "waqfledger_anchor": {
+          "type": "object",
+          "required": ["host", "protocol", "evidence_package_sha256"],
+          "properties": {
+            "host": { "type": "string" },
+            "protocol": { "type": "string" },
+            "encryption_protocol": { "type": "string" },
+            "log_endpoint": { "type": ["string", "null"] },
+            "verify_endpoint": { "type": ["string", "null"] },
+            "evidence_package_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "anchored": { "type": "boolean" },
+            "status": { "enum": ["ANCHORED", "LOCAL_FALLBACK"] }
+          }
+        },
+        "verification_url": { "type": "string", "format": "uri" }
+      }
+    },
+    "mcda_summary": {
+      "type": "object",
+      "properties": {
+        "overall_index": { "type": "number" },
+        "overall_index_percent": { "type": "number" },
+        "fria_score": { "type": "number" }
+      }
+    }
+  },
+  "$defs": {
+    "assuranceStatus": {
+      "enum": ["within_threshold", "partial_gap", "gap_identified", "not_assessed"]
+    },
+    "assuranceRecord": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/assuranceStatus" },
+        "score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "article_ref": { "type": "string" }
+      }
+    },
+    "metricRecord": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/assuranceStatus" },
+        "score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "layer": { "type": "string" }
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import {
   normalizeLanguage,
 } from '../../../i18n/index.js';
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';
+import { LEDGER_TRACK } from '../../../config/ledgerTracks.js';
 import {
   scenariosByLanguage,
   getScenariosForLanguage,
@@ -1982,6 +1983,7 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
           tierId: certificationTier,
           score: scoreResult?.composite?.score ?? scoreResult?.weighted?.percentage,
           timestamp: completedAt,
+          trackType: LEDGER_TRACK.ARTICLE_4_LITERACY_EXAM,
         });
         if (ledgerStatus !== 'remote_sealed') {
           setLedgerStatus(ledgerResult?.success ? 'remote_sealed' : 'local_fallback');

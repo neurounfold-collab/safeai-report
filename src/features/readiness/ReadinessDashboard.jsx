@@ -1,10 +1,16 @@
-import { Component, Suspense, useCallback, useEffect, useState } from 'react';
+import { Component, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SAFEAI_MASTER_CONFIG } from '../../config/constants.js';
+import { LEDGER_ANCHOR_STATUS, LEDGER_TRACK } from '../../config/ledgerTracks.js';
+import { streamComplianceToLedger } from '../../utils/waqfLedgerClient.js';
+import {
+  downloadAuditPassportJsonLd,
+  printComplianceSummary,
+} from '../../utils/auditPassportGenerator.js';
 import { createTranslator, getActiveLanguage, isRtlLanguage } from '../../i18n/index.js';
 import {
-  DEFAULT_DIMENSION_KEY,
-  DIMENSION_KEYS,
+  ASSESSMENT_DIMENSION_KEYS,
+  DEFAULT_ASSESSMENT_DIMENSION_KEY,
   LIKERT_SCALE,
   OIARF_DIMENSIONS,
   SECTOR_OPTIONS,
@@ -13,16 +19,28 @@ import {
   getPreviousDimensionKey,
   normalizeDimensionParam,
 } from './data/oiarfAssessment.js';
+import {
+  ANNEX_III_USE_CASES,
+  FRIA_DIMENSION,
+  REGULATORY_ROLES,
+  createEmptyAnnexUseCases,
+  hasAnnexSelection,
+  isSetupComplete,
+  isValidRegulatoryRole,
+} from './data/verifiaRiskEngine.js';
 import { packageAnonymousTelemetry } from './utils/anonymousTelemetry.js';
-import { computeMcdaComposite } from './utils/mcdaComposite.js';
+import { buildAssessmentProfile } from './utils/assessmentProfile.js';
+import { computeDimensionScore, computeMcdaComposite } from './utils/mcdaComposite.js';
 import {
   clearPersistedSession,
   createEmptyAnswers,
   isAssessmentComplete,
   isDimensionComplete,
   loadPersistedSession,
+  peekPersistedSession,
   persistSession,
 } from './utils/persistSession.js';
+import AuditPassportModal, { useAuditPassport } from './components/AuditPassportModal.jsx';
 
 const LANGUAGE_STORAGE_KEY = 'safeai.language';
 const LANGUAGE_CHANGE_EVENT = 'safeai:language-change';
@@ -465,6 +483,135 @@ const READINESS_STYLES = `
   margin: 0 0 1rem;
   line-height: 1.5;
 }
+
+.readiness-segmented {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0 0 1.35rem;
+}
+
+@media (min-width: 720px) {
+  .readiness-segmented {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.readiness-segmented__option {
+  appearance: none;
+  text-align: start;
+  border: 1px solid var(--rd-border);
+  border-radius: 0.4rem;
+  padding: 0.85rem 0.95rem;
+  background: rgba(11, 15, 25, 0.55);
+  color: var(--rd-text);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.readiness-segmented__option:hover {
+  border-color: rgba(94, 234, 212, 0.35);
+}
+
+.readiness-segmented__option--selected {
+  border-color: rgba(201, 162, 39, 0.7);
+  background: rgba(201, 162, 39, 0.1);
+}
+
+.readiness-segmented__label {
+  display: block;
+  margin: 0 0 0.35rem;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--rd-text);
+}
+
+.readiness-segmented__focus {
+  display: block;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--rd-muted);
+}
+
+.readiness-annex {
+  margin: 0 0 1.25rem;
+}
+
+.readiness-annex__title {
+  margin: 0 0 0.45rem;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rd-muted);
+}
+
+.readiness-annex__hint {
+  margin: 0 0 0.75rem;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--rd-muted);
+}
+
+.readiness-annex__list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.readiness-annex__item label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--rd-border);
+  border-radius: 0.35rem;
+  background: rgba(11, 15, 25, 0.45);
+  cursor: pointer;
+  transition: border-color 160ms ease;
+}
+
+.readiness-annex__item label:hover {
+  border-color: rgba(94, 234, 212, 0.35);
+}
+
+.readiness-annex__item input {
+  margin-top: 0.15rem;
+  accent-color: var(--rd-accent);
+}
+
+.readiness-annex__item span {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--rd-text);
+}
+
+.readiness-meta {
+  margin: 0 0 0.65rem;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--rd-muted);
+}
+
+.readiness-meta strong {
+  color: var(--rd-text);
+  font-weight: 600;
+}
+
+.readiness-raw-score {
+  margin: 0 0 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--rd-teal);
+  word-break: break-all;
+}
 `;
 
 class ReadinessErrorBoundary extends Component {
@@ -511,11 +658,13 @@ function ReadinessLoadingFallback({ t }) {
 function DimensionNav({ t, answers, activeKey, onSelect }) {
   return (
     <ul className="readiness-nav" aria-label={t('readiness.title')}>
-      {OIARF_DIMENSIONS.map((dimension) => {
-        const complete = isDimensionComplete(answers, dimension.key);
-        const active = dimension.key === activeKey;
+      {ASSESSMENT_DIMENSION_KEYS.map((dimensionKey) => {
+        const dimension = getDimensionByKey(dimensionKey);
+        if (!dimension) return null;
+        const complete = isDimensionComplete(answers, dimensionKey);
+        const active = dimensionKey === activeKey;
         return (
-          <li key={dimension.key}>
+          <li key={dimensionKey}>
             <button
               type="button"
               className={[
@@ -526,7 +675,7 @@ function DimensionNav({ t, answers, activeKey, onSelect }) {
                 .filter(Boolean)
                 .join(' ')}
               aria-current={active ? 'step' : undefined}
-              onClick={() => onSelect(dimension.key)}
+              onClick={() => onSelect(dimensionKey)}
             >
               {t(dimension.nameKey)}
             </button>
@@ -537,19 +686,133 @@ function DimensionNav({ t, answers, activeKey, onSelect }) {
   );
 }
 
+function SetupPanel({
+  t,
+  regulatoryRole,
+  annexUseCases,
+  onRoleChange,
+  onAnnexToggle,
+  onContinue,
+  canContinue,
+}) {
+  return (
+    <section className="readiness-panel" aria-labelledby="verifia-setup-title">
+      <h2 id="verifia-setup-title" className="readiness-panel__heading">
+        {t('readiness.verifia.setup.title')}
+      </h2>
+      <p className="readiness-panel__focus">{t('readiness.verifia.setup.subtitle')}</p>
+
+      <p className="readiness-annex__title">{t('readiness.verifia.setup.roleLabel')}</p>
+      <div className="readiness-segmented" role="radiogroup" aria-label={t('readiness.verifia.setup.roleLabel')}>
+        {REGULATORY_ROLES.map((role) => {
+          const selected = regulatoryRole === role.id;
+          return (
+            <button
+              key={role.id}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              className={[
+                'readiness-segmented__option',
+                selected && 'readiness-segmented__option--selected',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              onClick={() => onRoleChange(role.id)}
+            >
+              <span className="readiness-segmented__label">{t(role.labelKey)}</span>
+              <span className="readiness-segmented__focus">{t(role.focusKey)}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="readiness-annex">
+        <p className="readiness-annex__title">{t('readiness.verifia.annexIII.title')}</p>
+        <p className="readiness-annex__hint">{t('readiness.verifia.annexIII.hint')}</p>
+        <ul className="readiness-annex__list">
+          {ANNEX_III_USE_CASES.map((useCase) => (
+            <li key={useCase.id} className="readiness-annex__item">
+              <label htmlFor={`annex-${useCase.id}`}>
+                <input
+                  id={`annex-${useCase.id}`}
+                  type="checkbox"
+                  checked={Boolean(annexUseCases[useCase.id])}
+                  onChange={() => onAnnexToggle(useCase.id)}
+                />
+                <span>{t(useCase.labelKey)}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {!isValidRegulatoryRole(regulatoryRole) && (
+        <p className="readiness-hint">{t('readiness.verifia.setup.roleRequired')}</p>
+      )}
+      {isValidRegulatoryRole(regulatoryRole) && !hasAnnexSelection(annexUseCases) && (
+        <p className="readiness-hint">{t('readiness.verifia.setup.annexRequired')}</p>
+      )}
+
+      <div className="readiness-actions">
+        <button
+          type="button"
+          className="readiness-btn readiness-btn--primary"
+          disabled={!canContinue}
+          onClick={onContinue}
+        >
+          {t('readiness.verifia.setup.continue')}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function exportAssessmentProfileFile(profile) {
+  const blob = new Blob([JSON.stringify(profile, null, 2)], {
+    type: 'application/json',
+  });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = `verifia-assessment-${Date.now()}.json`;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
 function ResultsPanel({
   t,
   overallIndex,
+  overallIndexRaw,
   dimensionScores,
+  dimensionScoresRaw,
+  friaScore,
   stateHash,
   sector,
+  regulatoryRole,
+  annexUseCases,
+  assessmentProfile,
   hashPending,
   hashError,
+  onExportProfile,
+  onPreviewPassport,
+  onDownloadPassport,
+  onPrintSummary,
+  passportLoading,
+  passportReady,
 }) {
   const percent =
     typeof overallIndex === 'number' && Number.isFinite(overallIndex)
       ? (overallIndex * 100).toFixed(2)
       : null;
+
+  const rawDisplay =
+    typeof overallIndexRaw === 'number' && Number.isFinite(overallIndexRaw)
+      ? overallIndexRaw
+      : null;
+
+  const roleLabel = REGULATORY_ROLES.find((role) => role.id === regulatoryRole);
+  const selectedAnnex = ANNEX_III_USE_CASES.filter((item) => annexUseCases?.[item.id]);
 
   return (
     <section className="readiness-results" aria-labelledby="readiness-results-title">
@@ -558,6 +821,27 @@ function ResultsPanel({
       </h2>
       <p className="readiness-results__subtitle">{t('readiness.resultsSubtitle')}</p>
 
+      {roleLabel && (
+        <p className="readiness-meta">
+          <strong>{t('readiness.verifia.results.regulatoryRole')}:</strong>{' '}
+          {t(roleLabel.labelKey)}
+        </p>
+      )}
+
+      {selectedAnnex.length > 0 && (
+        <p className="readiness-meta">
+          <strong>{t('readiness.verifia.results.annexUseCases')}:</strong>{' '}
+          {selectedAnnex.map((item) => t(item.labelKey)).join(' · ')}
+        </p>
+      )}
+
+      {typeof friaScore === 'number' && (
+        <p className="readiness-meta">
+          <strong>{t('readiness.verifia.results.friaScore')}:</strong>{' '}
+          {(friaScore * 100).toFixed(2)}%
+        </p>
+      )}
+
       {percent != null && (
         <p className="readiness-results__overall">
           {t('readiness.overallIndex')}{' '}
@@ -565,12 +849,27 @@ function ResultsPanel({
         </p>
       )}
 
+      {rawDisplay != null && (
+        <p className="readiness-raw-score">
+          {t('readiness.verifia.results.overallIndexRaw')}: {rawDisplay}
+        </p>
+      )}
+
       <h3 className="readiness-page__eyebrow">{t('readiness.dimensionScores')}</h3>
       <ul className="readiness-scores">
+        <li>
+          <span>{t(FRIA_DIMENSION.nameKey)}</span>
+          <span>
+            {typeof friaScore === 'number' ? `${(friaScore * 100).toFixed(2)}%` : '—'}
+          </span>
+        </li>
         {OIARF_DIMENSIONS.map((dimension) => {
-          const score = dimensionScores?.[dimension.key];
+          const score =
+            dimensionScoresRaw?.[dimension.key] ?? dimensionScores?.[dimension.key];
           const display =
-            typeof score === 'number' ? `${(score * 100).toFixed(1)}%` : '—';
+            typeof score === 'number'
+              ? `${(score * 100).toFixed(typeof dimensionScoresRaw?.[dimension.key] === 'number' ? 4 : 1)}%`
+              : '—';
           return (
             <li key={dimension.key}>
               <span>{t(dimension.nameKey)}</span>
@@ -597,6 +896,42 @@ function ResultsPanel({
           : t('readiness.sectorNone')}
       </p>
 
+      {assessmentProfile && (
+        <div className="readiness-actions">
+          <button
+            type="button"
+            className="readiness-btn readiness-btn--primary"
+            disabled={passportLoading || !passportReady}
+            onClick={onDownloadPassport}
+          >
+            {t('readiness.verifia.passport.downloadJsonLd')}
+          </button>
+          <button
+            type="button"
+            className="readiness-btn readiness-btn--ghost"
+            disabled={passportLoading || !passportReady}
+            onClick={onPreviewPassport}
+          >
+            {t('readiness.verifia.passport.preview')}
+          </button>
+          <button
+            type="button"
+            className="readiness-btn readiness-btn--ghost"
+            disabled={passportLoading || !passportReady}
+            onClick={onPrintSummary}
+          >
+            {t('readiness.verifia.passport.printSummary')}
+          </button>
+          <button
+            type="button"
+            className="readiness-btn readiness-btn--ghost"
+            onClick={() => onExportProfile(assessmentProfile)}
+          >
+            {t('readiness.verifia.results.exportProfile')}
+          </button>
+        </div>
+      )}
+
       <p className="readiness-ledger">
         {interpolate(t('readiness.ledgerCaption'), { host: LEDGER_HOST })}
       </p>
@@ -612,59 +947,111 @@ function ReadinessDashboardInner() {
   const [hydrated, setHydrated] = useState(false);
   const [answers, setAnswers] = useState(() => createEmptyAnswers());
   const [sector, setSector] = useState(null);
+  const [regulatoryRole, setRegulatoryRole] = useState(null);
+  const [annexUseCases, setAnnexUseCases] = useState(() => createEmptyAnnexUseCases());
+  const [setupComplete, setSetupComplete] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [stateHash, setStateHash] = useState(null);
   const [overallIndex, setOverallIndex] = useState(null);
+  const [overallIndexRaw, setOverallIndexRaw] = useState(null);
   const [dimensionScores, setDimensionScores] = useState(null);
+  const [dimensionScoresRaw, setDimensionScoresRaw] = useState(null);
+  const [friaScore, setFriaScore] = useState(null);
+  const [assessmentProfile, setAssessmentProfile] = useState(null);
   const [hashPending, setHashPending] = useState(false);
   const [hashError, setHashError] = useState(null);
   const [sealToken, setSealToken] = useState(0);
+  const [passportModalOpen, setPassportModalOpen] = useState(false);
+  const [ledgerAnchored, setLedgerAnchored] = useState(false);
+  const postedHashRef = useRef(null);
+
+  const { passport: auditPassport, loading: passportLoading } = useAuditPassport(
+    assessmentProfile?.stateHash ? assessmentProfile : null,
+  );
 
   useEffect(() => {
     document.title = t('page_titles.readiness');
   }, [t, language]);
 
   useEffect(() => {
-    const persisted = loadPersistedSession();
-    if (persisted) {
-      setAnswers(persisted.answers);
-      setSector(persisted.sector);
-      setCompleted(Boolean(persisted.completed));
-      setStateHash(persisted.stateHash);
-      setOverallIndex(
-        typeof persisted.overallIndex === 'number' ? persisted.overallIndex : null,
-      );
-      if (persisted.completed && persisted.answers) {
-        const composite = computeMcdaComposite(persisted.answers);
-        setDimensionScores(composite.dimensionScores);
-        if (persisted.overallIndex == null) {
-          setOverallIndex(composite.overallIndex);
+    let cancelled = false;
+
+    (async () => {
+      const persisted = await loadPersistedSession();
+      if (cancelled) return;
+
+      if (persisted) {
+        setAnswers(persisted.answers);
+        setSector(persisted.sector);
+        setRegulatoryRole(persisted.regulatoryRole ?? null);
+        setAnnexUseCases(persisted.annexUseCases ?? createEmptyAnnexUseCases());
+        setSetupComplete(Boolean(persisted.setupComplete));
+        setCompleted(Boolean(persisted.completed));
+        setStateHash(persisted.stateHash);
+        setLedgerAnchored(Boolean(persisted.ledgerAnchored));
+        setOverallIndex(
+          typeof persisted.overallIndex === 'number' ? persisted.overallIndex : null,
+        );
+        setOverallIndexRaw(
+          typeof persisted.overallIndexRaw === 'number'
+            ? persisted.overallIndexRaw
+            : persisted.overallIndex,
+        );
+        setDimensionScoresRaw(persisted.dimensionScoresRaw ?? null);
+        setAssessmentProfile(persisted.assessmentProfile ?? null);
+        if (persisted.stateHash && persisted.ledgerAnchored) {
+          postedHashRef.current = persisted.stateHash;
+        }
+        if (persisted.completed && persisted.answers) {
+          const composite = computeMcdaComposite(persisted.answers);
+          const compositeRaw = computeMcdaComposite(persisted.answers, { unrounded: true });
+          setDimensionScores(composite.dimensionScores);
+          setDimensionScoresRaw(
+            persisted.dimensionScoresRaw ?? compositeRaw.dimensionScores,
+          );
+          setFriaScore(computeDimensionScore(persisted.answers, FRIA_DIMENSION));
+          if (persisted.overallIndex == null) {
+            setOverallIndex(composite.overallIndex);
+          }
+          if (persisted.overallIndexRaw == null) {
+            setOverallIndexRaw(compositeRaw.overallIndex);
+          }
         }
       }
-    }
-    setHydrated(true);
+      setHydrated(true);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
-    if (!hydrated) return;
+    if (!hydrated || !setupComplete) return;
 
     const raw = searchParams.get('dimension');
     const normalized = normalizeDimensionParam(raw);
     if (normalized) return;
 
-    const persisted = loadPersistedSession();
-    const fallback = persisted?.activeDimension ?? DEFAULT_DIMENSION_KEY;
+    const persisted = peekPersistedSession();
+    const fallback = persisted?.activeDimension ?? DEFAULT_ASSESSMENT_DIMENSION_KEY;
     setSearchParams({ dimension: fallback }, { replace: true });
-  }, [hydrated, searchParams, setSearchParams]);
+  }, [hydrated, setupComplete, searchParams, setSearchParams]);
 
-  const activeDimensionKey =
-    normalizeDimensionParam(searchParams.get('dimension')) ?? DEFAULT_DIMENSION_KEY;
-  const dimension = getDimensionByKey(activeDimensionKey);
-  const dimensionIndex = DIMENSION_KEYS.indexOf(activeDimensionKey);
-  const previousKey = getPreviousDimensionKey(activeDimensionKey);
-  const nextKey = getNextDimensionKey(activeDimensionKey);
-  const dimensionComplete = isDimensionComplete(answers, activeDimensionKey);
-  const assessmentComplete = isAssessmentComplete(answers);
+  const activeDimensionKey = setupComplete
+    ? normalizeDimensionParam(searchParams.get('dimension')) ??
+      DEFAULT_ASSESSMENT_DIMENSION_KEY
+    : DEFAULT_ASSESSMENT_DIMENSION_KEY;
+  const dimension = setupComplete ? getDimensionByKey(activeDimensionKey) : null;
+  const dimensionIndex = ASSESSMENT_DIMENSION_KEYS.indexOf(activeDimensionKey);
+  const previousKey = setupComplete ? getPreviousDimensionKey(activeDimensionKey) : null;
+  const nextKey = setupComplete ? getNextDimensionKey(activeDimensionKey) : null;
+  const dimensionComplete =
+    setupComplete && dimension
+      ? isDimensionComplete(answers, activeDimensionKey)
+      : false;
+  const assessmentComplete = setupComplete && isAssessmentComplete(answers);
+  const setupReady = isSetupComplete(regulatoryRole, annexUseCases);
 
   const persistSnapshot = useCallback(
     (partial) => {
@@ -672,13 +1059,35 @@ function ReadinessDashboardInner() {
         activeDimension: activeDimensionKey,
         answers,
         sector,
+        regulatoryRole,
+        annexUseCases,
+        setupComplete,
         completed,
         stateHash,
         overallIndex,
+        overallIndexRaw,
+        dimensionScoresRaw,
+        assessmentProfile,
+        ledgerAnchored,
+        sealedAt: assessmentProfile?.sealedAt ?? null,
         ...partial,
       });
     },
-    [activeDimensionKey, answers, sector, completed, stateHash, overallIndex],
+    [
+      activeDimensionKey,
+      answers,
+      sector,
+      regulatoryRole,
+      annexUseCases,
+      setupComplete,
+      completed,
+      stateHash,
+      overallIndex,
+      overallIndexRaw,
+      dimensionScoresRaw,
+      assessmentProfile,
+      ledgerAnchored,
+    ],
   );
 
   const goToDimension = useCallback(
@@ -699,19 +1108,32 @@ function ReadinessDashboardInner() {
           activeDimension: activeDimensionKey,
           answers: next,
           sector,
+          regulatoryRole,
+          annexUseCases,
+          setupComplete,
           completed: false,
           stateHash: null,
           overallIndex: null,
+          overallIndexRaw: null,
+          dimensionScoresRaw: null,
+          assessmentProfile: null,
+          ledgerAnchored: false,
         });
         return next;
       });
       setCompleted(false);
       setStateHash(null);
+      setLedgerAnchored(false);
+      postedHashRef.current = null;
       setOverallIndex(null);
+      setOverallIndexRaw(null);
       setDimensionScores(null);
+      setDimensionScoresRaw(null);
+      setFriaScore(null);
+      setAssessmentProfile(null);
       setHashError(null);
     },
-    [activeDimensionKey, sector],
+    [activeDimensionKey, sector, regulatoryRole, annexUseCases, setupComplete],
   );
 
   const handleSectorChange = useCallback(
@@ -721,20 +1143,87 @@ function ReadinessDashboardInner() {
       setSector(nextSector);
       setCompleted(false);
       setStateHash(null);
+      setLedgerAnchored(false);
+      postedHashRef.current = null;
+      setAssessmentProfile(null);
       persistSession({
         activeDimension: activeDimensionKey,
         answers,
         sector: nextSector,
+        regulatoryRole,
+        annexUseCases,
+        setupComplete,
         completed: false,
         stateHash: null,
         overallIndex: null,
+        overallIndexRaw: null,
+        dimensionScoresRaw: null,
+        assessmentProfile: null,
+        ledgerAnchored: false,
       });
     },
-    [activeDimensionKey, answers],
+    [activeDimensionKey, answers, regulatoryRole, annexUseCases, setupComplete],
   );
 
+  const handleRoleChange = useCallback(
+    (roleId) => {
+      setRegulatoryRole(roleId);
+      setCompleted(false);
+      setStateHash(null);
+      setLedgerAnchored(false);
+      postedHashRef.current = null;
+      setAssessmentProfile(null);
+      persistSnapshot({
+        regulatoryRole: roleId,
+        completed: false,
+        stateHash: null,
+        overallIndex: null,
+        overallIndexRaw: null,
+        dimensionScoresRaw: null,
+        assessmentProfile: null,
+        ledgerAnchored: false,
+      });
+    },
+    [persistSnapshot],
+  );
+
+  const handleAnnexToggle = useCallback(
+    (useCaseId) => {
+      setAnnexUseCases((prev) => {
+        const next = { ...prev, [useCaseId]: !prev[useCaseId] };
+        persistSnapshot({
+          annexUseCases: next,
+          completed: false,
+          stateHash: null,
+          overallIndex: null,
+          overallIndexRaw: null,
+          dimensionScoresRaw: null,
+          assessmentProfile: null,
+          ledgerAnchored: false,
+        });
+        return next;
+      });
+      setCompleted(false);
+      setStateHash(null);
+      setLedgerAnchored(false);
+      postedHashRef.current = null;
+      setAssessmentProfile(null);
+    },
+    [persistSnapshot],
+  );
+
+  const handleSetupContinue = useCallback(() => {
+    if (!setupReady) return;
+    setSetupComplete(true);
+    setSearchParams({ dimension: DEFAULT_ASSESSMENT_DIMENSION_KEY }, { replace: true });
+    persistSnapshot({
+      setupComplete: true,
+      activeDimension: DEFAULT_ASSESSMENT_DIMENSION_KEY,
+    });
+  }, [setupReady, persistSnapshot, setSearchParams]);
+
   useEffect(() => {
-    if (!hydrated || !assessmentComplete) return undefined;
+    if (!hydrated || !setupComplete || !assessmentComplete) return undefined;
 
     let cancelled = false;
     setHashPending(true);
@@ -743,28 +1232,102 @@ function ReadinessDashboardInner() {
     (async () => {
       try {
         const composite = computeMcdaComposite(answers);
-        const { stateHash: hash } = await packageAnonymousTelemetry(answers, sector);
+        const compositeRaw = computeMcdaComposite(answers, { unrounded: true });
+        const fria = computeDimensionScore(answers, FRIA_DIMENSION);
+        const { stateHash: hash } = await packageAnonymousTelemetry(answers, {
+          sector,
+          regulatoryRole,
+          annexUseCases,
+        });
+
         if (cancelled) return;
 
+        if (postedHashRef.current === hash) {
+          setHashPending(false);
+          return;
+        }
+
+        const annexIIISection3 = Object.keys(annexUseCases ?? {})
+          .filter((id) => annexUseCases[id] === true)
+          .sort();
+
+        const ledgerResult = await streamComplianceToLedger({
+          hash,
+          trackType: LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS,
+          score: Math.round(compositeRaw.overallIndexPercent),
+          timestamp: new Date().toISOString(),
+          regulatoryRole,
+          annexIIISection3,
+          tierId: 'oiarf_readiness',
+        });
+
+        if (cancelled) return;
+
+        const anchored = ledgerResult?.anchored === true;
+        if (anchored) {
+          postedHashRef.current = hash;
+        }
+
+        const profile = buildAssessmentProfile({
+          answers,
+          sector,
+          regulatoryRole,
+          annexUseCases,
+          stateHash: hash,
+          ledgerAnchored: anchored,
+          ledgerStatus: anchored
+            ? LEDGER_ANCHOR_STATUS.ANCHORED
+            : LEDGER_ANCHOR_STATUS.LOCAL_FALLBACK,
+        });
+
         setDimensionScores(composite.dimensionScores);
+        setDimensionScoresRaw(compositeRaw.dimensionScores);
+        setFriaScore(fria);
         setOverallIndex(composite.overallIndex);
+        setOverallIndexRaw(compositeRaw.overallIndex);
         setStateHash(hash);
+        setLedgerAnchored(anchored);
+        setAssessmentProfile(profile);
         setCompleted(true);
         persistSession({
           activeDimension: activeDimensionKey,
           answers,
           sector,
+          regulatoryRole,
+          annexUseCases,
+          setupComplete: true,
           completed: true,
           stateHash: hash,
           overallIndex: composite.overallIndex,
+          overallIndexRaw: compositeRaw.overallIndex,
+          dimensionScoresRaw: compositeRaw.dimensionScores,
+          assessmentProfile: profile,
+          ledgerAnchored: anchored,
+          ledgerStatus: profile.ledgerStatus,
+          sealedAt: profile.sealedAt,
         });
       } catch {
         if (!cancelled) {
           setHashError('hash');
           setCompleted(true);
           const composite = computeMcdaComposite(answers);
+          const compositeRaw = computeMcdaComposite(answers, { unrounded: true });
           setDimensionScores(composite.dimensionScores);
+          setDimensionScoresRaw(compositeRaw.dimensionScores);
+          setFriaScore(computeDimensionScore(answers, FRIA_DIMENSION));
           setOverallIndex(composite.overallIndex);
+          setOverallIndexRaw(compositeRaw.overallIndex);
+          setLedgerAnchored(false);
+          setAssessmentProfile(
+            buildAssessmentProfile({
+              answers,
+              sector,
+              regulatoryRole,
+              annexUseCases,
+              ledgerAnchored: false,
+              ledgerStatus: LEDGER_ANCHOR_STATUS.LOCAL_FALLBACK,
+            }),
+          );
         }
       } finally {
         if (!cancelled) setHashPending(false);
@@ -774,32 +1337,108 @@ function ReadinessDashboardInner() {
     return () => {
       cancelled = true;
     };
-  }, [hydrated, assessmentComplete, answers, sector, activeDimensionKey, sealToken]);
+  }, [
+    hydrated,
+    setupComplete,
+    assessmentComplete,
+    answers,
+    sector,
+    regulatoryRole,
+    annexUseCases,
+    activeDimensionKey,
+    sealToken,
+  ]);
+
+  const handleDownloadPassport = useCallback(() => {
+    if (!auditPassport) return;
+    downloadAuditPassportJsonLd(auditPassport);
+  }, [auditPassport]);
+
+  const handlePrintSummary = useCallback(() => {
+    if (!auditPassport) return;
+    printComplianceSummary(auditPassport, {
+      title: t('readiness.verifia.passport.printTitle'),
+      subtitle: t('readiness.verifia.passport.printSubtitle'),
+    });
+  }, [auditPassport, t]);
 
   const handleRestart = () => {
     clearPersistedSession();
     const empty = createEmptyAnswers();
     setAnswers(empty);
     setSector(null);
+    setRegulatoryRole(null);
+    setAnnexUseCases(createEmptyAnnexUseCases());
+    setSetupComplete(false);
     setCompleted(false);
     setStateHash(null);
     setOverallIndex(null);
+    setOverallIndexRaw(null);
     setDimensionScores(null);
+    setDimensionScoresRaw(null);
+    setFriaScore(null);
+    setAssessmentProfile(null);
+    setPassportModalOpen(false);
     setHashError(null);
     setHashPending(false);
+    setLedgerAnchored(false);
+    postedHashRef.current = null;
     setSealToken((token) => token + 1);
-    setSearchParams({ dimension: DEFAULT_DIMENSION_KEY }, { replace: true });
+    setSearchParams({}, { replace: true });
     persistSession({
-      activeDimension: DEFAULT_DIMENSION_KEY,
+      activeDimension: DEFAULT_ASSESSMENT_DIMENSION_KEY,
       answers: empty,
       sector: null,
+      regulatoryRole: null,
+      annexUseCases: createEmptyAnnexUseCases(),
+      setupComplete: false,
       completed: false,
       stateHash: null,
       overallIndex: null,
+      overallIndexRaw: null,
+      dimensionScoresRaw: null,
+      assessmentProfile: null,
+      ledgerAnchored: false,
     });
   };
 
-  if (!hydrated || !dimension) {
+  if (!hydrated) {
+    return <ReadinessLoadingFallback t={t} />;
+  }
+
+  if (!setupComplete) {
+    return (
+      <div className="readiness-page" dir={rtl ? 'rtl' : 'ltr'}>
+        <style>{READINESS_STYLES}</style>
+
+        <p className="readiness-page__eyebrow">VerifIA · Risk Engine</p>
+        <h1 className="readiness-page__title">{t('readiness.title')}</h1>
+        <p className="readiness-page__subtitle">{t('readiness.subtitle')}</p>
+
+        <SetupPanel
+          t={t}
+          regulatoryRole={regulatoryRole}
+          annexUseCases={annexUseCases}
+          onRoleChange={handleRoleChange}
+          onAnnexToggle={handleAnnexToggle}
+          onContinue={handleSetupContinue}
+          canContinue={setupReady}
+        />
+
+        <div className="readiness-actions">
+          <button
+            type="button"
+            className="readiness-btn readiness-btn--danger"
+            onClick={handleRestart}
+          >
+            {t('readiness.restart')}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!dimension) {
     return <ReadinessLoadingFallback t={t} />;
   }
 
@@ -807,20 +1446,20 @@ function ReadinessDashboardInner() {
     <div className="readiness-page" dir={rtl ? 'rtl' : 'ltr'}>
       <style>{READINESS_STYLES}</style>
 
-      <p className="readiness-page__eyebrow">OIARF · 2.0.0</p>
+      <p className="readiness-page__eyebrow">VerifIA · Risk Engine</p>
       <h1 className="readiness-page__title">{t('readiness.title')}</h1>
       <p className="readiness-page__subtitle">{t('readiness.subtitle')}</p>
 
       <p className="readiness-page__progress">
         {interpolate(t('readiness.progress'), {
           current: dimensionIndex + 1,
-          total: DIMENSION_KEYS.length,
+          total: ASSESSMENT_DIMENSION_KEYS.length,
         })}
         <span aria-hidden="true"> · </span>
         <strong>
           {interpolate(t('readiness.progressPlain'), {
             current: dimensionIndex + 1,
-            total: DIMENSION_KEYS.length,
+            total: ASSESSMENT_DIMENSION_KEYS.length,
           })}
         </strong>
       </p>
@@ -939,13 +1578,32 @@ function ReadinessDashboardInner() {
         <ResultsPanel
           t={t}
           overallIndex={overallIndex}
+          overallIndexRaw={overallIndexRaw}
           dimensionScores={dimensionScores}
+          dimensionScoresRaw={dimensionScoresRaw}
+          friaScore={friaScore}
           stateHash={stateHash}
           sector={sector}
+          regulatoryRole={regulatoryRole}
+          annexUseCases={annexUseCases}
+          assessmentProfile={assessmentProfile}
           hashPending={hashPending}
           hashError={hashError}
+          onExportProfile={exportAssessmentProfileFile}
+          onPreviewPassport={() => setPassportModalOpen(true)}
+          onDownloadPassport={handleDownloadPassport}
+          onPrintSummary={handlePrintSummary}
+          passportLoading={passportLoading}
+          passportReady={Boolean(auditPassport)}
         />
       )}
+
+      <AuditPassportModal
+        open={passportModalOpen}
+        onClose={() => setPassportModalOpen(false)}
+        assessmentProfile={assessmentProfile}
+        t={t}
+      />
     </div>
   );
 }

@@ -396,7 +396,7 @@ export const EXAM_SCENARIO_MATRIX_EN = [
     tier: "Level 03",
     category: "Institutional Partner Certification",
     scenarioText:
-      "Upon conferral of the Level 03 Institutional Partner Badge, the partner must enable public verification at https://safeai.report/verification linking candidate credentials to WaqfLedger.tech records. A batch of three credentials fails hash reconciliation due to clock-skew during examination submission. Which certification finalization protocol is authoritative?",
+      "Upon conferral of the Level 03 Institutional Partner Badge, the partner must enable public verification at https://safeai.report/verify linking candidate credentials to WaqfLedger.tech records. A batch of three credentials fails hash reconciliation due to clock-skew during examination submission. Which certification finalization protocol is authoritative?",
     options: [
       "Issue badges immediately and correct ledger entries opportunistically when convenient.",
       "Withhold public verification activation until hash reconciliation succeeds, re-seal examination artifacts with SHA-256 tamper-evident state hashing under the Sovereign Algorithmic Governance Ledger protocol, and document remediation in the institutional partner audit record before credential release.",

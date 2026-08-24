@@ -77,6 +77,7 @@ export function resolveSeededVerificationRecord(normalizedHash) {
     timestamp: ledgerEntry.timestamp,
     stateHash: normalizedHash.toLowerCase(),
     registryAuthority: SAFEAI_MASTER_CONFIG.infrastructure.ledgerHost,
+    trackType: 'ARTICLE_4_LITERACY_EXAM',
   };
 }
 
@@ -131,5 +132,6 @@ export async function resolveVerificationRecord(normalizedHash) {
     registryAuthority:
       attestation.registryAuthority
       ?? SAFEAI_MASTER_CONFIG.infrastructure.ledgerHost,
+    trackType: attestation.trackType ?? null,
   };
 }

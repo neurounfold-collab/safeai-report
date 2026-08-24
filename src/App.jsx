@@ -1,9 +1,15 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import { SAFEAI_MASTER_CONFIG } from './config/constants.js';
 import AppShell from './layouts/AppShell.jsx';
 import DashboardLayout from './layouts/DashboardLayout.jsx';
+import {
+  getActiveLanguage,
+  normalizeLanguage,
+  setActiveLanguage,
+  SUPPORTED_LANGUAGES,
+} from './i18n/index.js';
+import { applyRouteSeo, LANGUAGE_CHANGE_EVENT } from './utils/seoMetadata.js';
 
 const HomeView = lazy(() => import('./features/pages/HomeView.jsx'));
 const AcademyView = lazy(() => import('./features/pages/AcademyView.jsx'));
@@ -16,7 +22,13 @@ const CorporateLegalView = lazy(() => import('./features/pages/CorporateLegalVie
 const TermsView = lazy(() => import('./features/pages/TermsView.jsx'));
 const PrivacyView = lazy(() => import('./features/pages/PrivacyView.jsx'));
 const AdminDashboardView = lazy(() => import('./features/pages/AdminDashboardView.jsx'));
-const ReadinessDashboard = lazy(() => import('./features/readiness/ReadinessDashboard.jsx'));
+const ReadinessView = lazy(() => import('./features/pages/ReadinessView.jsx'));
+
+function VerificationRedirect() {
+  const [searchParams] = useSearchParams();
+  const suffix = searchParams.toString();
+  return <Navigate to={suffix ? `/verify?${suffix}` : '/verify'} replace />;
+}
 
 function PublicShellRoute({ children }) {
   return <AppShell>{children}</AppShell>;
@@ -25,12 +37,6 @@ function PublicShellRoute({ children }) {
 function EnterpriseShellRoute({ children }) {
   return <DashboardLayout>{children}</DashboardLayout>;
 }
-
-const BRAND_TITLE = SAFEAI_MASTER_CONFIG?.branding?.name ?? 'safeAI.report';
-const BRAND_PLATFORM_CLAIM =
-  SAFEAI_MASTER_CONFIG?.branding?.platformClaim ??
-  'Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR)';
-const BRAND_META_DESCRIPTION = `${BRAND_TITLE} — ${BRAND_PLATFORM_CLAIM}`;
 
 /** Non-blocking skeleton while route chunks hydrate — reserves main viewport height to avoid CLS/white flash. */
 function RouteLoadingFallback() {
@@ -82,14 +88,32 @@ function RouteLoadingFallback() {
   );
 }
 
-/** Global document head — authoritative safeAI.report tab branding. */
+/**
+ * Route-aware document head: localized title / Open Graph / Twitter / hreflang / JSON-LD.
+ * Honours `?lang=` so GEO crawlers receive the matching EN / FR / ES / AR preview.
+ */
 function AppHelmet() {
+  const { pathname } = useLocation();
+  const [searchParams] = useSearchParams();
+
   useEffect(() => {
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', BRAND_META_DESCRIPTION);
-    }
-  }, []);
+    const langParam = searchParams.get('lang');
+    if (!langParam) return;
+
+    const normalized = normalizeLanguage(langParam);
+    if (!SUPPORTED_LANGUAGES.includes(normalized)) return;
+    if (getActiveLanguage() === normalized) return;
+
+    setActiveLanguage(normalized);
+    window.dispatchEvent(new CustomEvent(LANGUAGE_CHANGE_EVENT));
+  }, [searchParams]);
+
+  useEffect(() => {
+    const syncHead = () => applyRouteSeo(pathname, getActiveLanguage());
+    syncHead();
+    window.addEventListener(LANGUAGE_CHANGE_EVENT, syncHead);
+    return () => window.removeEventListener(LANGUAGE_CHANGE_EVENT, syncHead);
+  }, [pathname, searchParams]);
 
   return null;
 }
@@ -148,6 +172,7 @@ function AppRoutes() {
             </PublicShellRoute>
           }
         />
+        <Route path="/verification" element={<VerificationRedirect />} />
         <Route
           path="/academic-centers"
           element={
@@ -218,7 +243,7 @@ function AppRoutes() {
           path="/readiness"
           element={
             <PublicShellRoute>
-              <ReadinessDashboard />
+              <ReadinessView />
             </PublicShellRoute>
           }
         />

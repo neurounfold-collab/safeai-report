@@ -35,7 +35,7 @@
       "title": "¡Acabo de obtener mi insignia oficial de certificación en alfabetización IA Artículo 4!",
       "summary": "Verificado por L'Institut Article 4 (A4I). Cumplimiento auditado mediante WaqfLedger.tech.",
       "hashtags": "AILiteracy EUAIAct SafeAI RegTech",
-      "verificationUrl": "https://safeai.report/verification"
+      "verificationUrl": "https://safeai.report/verify"
     }
   },
   "monetization": {
@@ -90,7 +90,19 @@
     "help": "Ayuda y soporte",
     "privacy": "Política de privacidad y declaración de linaje de datos",
     "terms": "Condiciones del servicio",
-    "readiness": "Madurez institucional OIARF — safeAI.report"
+    "readiness": "Madurez institucional OIARF — safeAI.report",
+    "exam": "Examen Artículo 4 — Evaluación de alfabetización IA en 30 escenarios"
+  },
+  "seo": {
+    "imageAlt": "safeAI.report — TOEFL de la alfabetización en IA · L'Institut Article 4 (A4I)",
+    "descriptions": {
+      "home": "SafeAI Framework — el TOEFL de la alfabetización en IA. Gobernanza soberana y alfabetización del desplegador (EN / FR / ES / AR) bajo L'Institut Article 4 (A4I). Reglamento (UE) 2024/1689 Anexo III sección 3, Artículo 4, ISO/IEC 42001 AIMS. DOI 10.5281/zenodo.21516198. RNA W343030686 · SIRET 92288647800010.",
+      "academy": "Academia soberana para la alfabetización del desplegador del Artículo 4. Evaluación de 30 escenarios bajo L'Institut Article 4 (A4I), registrada en WaqfLedger.tech.",
+      "exam": "Examen oficial del Artículo 4 en 30 escenarios. Puntuación de supervisión humana y sellado SHA-256 en WaqfLedger.tech.",
+      "readiness": "Motor de riesgo VerifIA — clasificación Anexo III §3, FRIA artículo 27 y diagnóstico MCDA OIARF. Descargue el Audit Passport™ VerifIA tras el sellado.",
+      "industrial": "Apoyo a la investigación institucional y patrocinio de nodos para centros académicos que despliegan IA educativa de alto riesgo.",
+      "verify": "Portal público de verificación criptográfica. Inspeccione hashes SHA-256 en WaqfLedger.tech. Los hashes de examen del Artículo 4 exportan un recibo de atestación de Deployer; los Audit Passport™ VerifIA se emiten solo para sellos OIARF de preparación institucional."
+    }
   },
   "nav": {
     "home": "Inicio",
@@ -133,12 +145,12 @@
   },
   "landing": {
     "hero": {
-      "announcementBadge": "Estándar de alfabetización y cumplimiento de desplegadores — Artículo 4 de la Ley de IA de la UE — Aplicación estatutaria: agosto de 2026",
-      "citationLead": "safeAI.report es la plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR) que opera el estándar TOEFL AI Literacy — 30 escenarios diagnósticos, 3 vías de gobernanza, umbral de aprobación 85 %, registro SHA-256 vía WaqfLedger.tech — bajo L'INSTITUT ARTICLE 4 (A4I).",
-      "headline": "Audite el riesgo de IA institucional. Ancle sus evidencias de cumplimiento.",
-      "subheadline": "Despliegue el Open Institutional AI Readiness Framework (OIARF) para ejecutar evaluaciones de madurez basadas en evidencia en todo su campus. Evalúe la alfabetización de la fuerza laboral, el linaje de datos y los controles de gobernanza mediante un pipeline de retención cero de datos asegurado por verificación criptográfica a prueba de manipulación.",
+      "announcementBadge": "IA educativa de alto riesgo — Ley de IA de la UE (Anexo III, Sección 3) y norma de garantía ISO/IEC 42001",
+      "citationLead": "Motor VerifIA de evidencias y garantía para IA educativa de alto impacto — garantía soberana de desplegadores bajo L'INSTITUT ARTICLE 4 (A4I), con procedencia criptográfica anclada en WaqfLedger.tech.",
+      "headline": "Evidencia de cumplimiento automatizada y garantía algorítmica para IA educativa.",
+      "subheadline": "VerifIA orquesta una arquitectura de garantía soberana de 3 capas — Evidencia de cumplimiento (Artículos 9–15 e ISO/IEC 42001 AIMS), Garantía algorítmica (paridad de sesgos y telemetría de deriva), y Procedencia criptográfica (sellado SHA-256 determinista vía WaqfLedger) — para sistemas de IA educativa de alto riesgo del Anexo III Sección 3.",
       "universalOpenAccess": "Nivel open access: 3 vías diagnósticas (Nivel 01–03), 30 escenarios por examen, 0 USD de tarifa de evaluación pública.",
-      "diagnosticDashboardCta": "Iniciar diagnóstico institucional gratuito (matriz A4-ALAM) ➔",
+      "diagnosticDashboardCta": "Iniciar Laboratorio de Garantía VerifIA ➔",
       "executiveBriefingCta": "Solicitar briefing ejecutivo a puerta cerrada (registro de acceso) ➔",
       "architecture": {
         "ariaLabel": "Arquitectura unificada de dos capas",
@@ -147,6 +159,34 @@
         "integrityTitle": "La capa de integridad (motor WaqfLedger)",
         "integrityDetails": "Ancle su telemetría de cumplimiento. Genere un recibo de verificación a prueba de manipulación que coincida con su puntuación de evaluación sin redondear. Su línea base queda bloqueada criptográficamente en un registro de ciencia abierta de beneficio público, garantizando integridad de auditoría completa sin exposición de datos."
       }
+    },
+    "verifia": {
+      "pipelineSectionTitle": "Pipeline de garantía de 3 capas",
+      "pipelineAriaLabel": "Pipeline de garantía VerifIA de tres capas",
+      "pipeline": {
+        "layer1": {
+          "title": "Capa 1: Evidencia de cumplimiento",
+          "description": "Documentación Artículos 9–15 de la Ley de IA de la UE e ISO/IEC 42001 AIMS, registros de gestión de riesgos y SOP de supervisión humana del Artículo 14."
+        },
+        "layer2": {
+          "title": "Capa 2: Garantía algorítmica",
+          "description": "Pruebas empíricas de sesgo, análisis de paridad por subgrupo y controles de deriva de falsos positivos en cohortes protegidas."
+        },
+        "layer3": {
+          "title": "Capa 3: Procedencia criptográfica",
+          "description": "Sellado de estado SHA-256 determinista con anclaje inmutable vía WaqfLedger.tech."
+        }
+      },
+      "workflowSectionTitle": "Flujo de módulos VerifIA Suite",
+      "workflowAriaLabel": "Ciclo de vida de módulos VerifIA desde ingestión de IA hasta audit passport",
+      "workflow": {
+        "ingestion": "Ingestión IA",
+        "riskEngine": "Motor de riesgo",
+        "assuranceLab": "Laboratorio de garantía",
+        "evidenceVault": "Bóveda de evidencias",
+        "auditPassport": "Audit Passport™"
+      },
+      "flywheelCallout": "Contribuya métricas de referencia anonimizadas al Barómetro Nacional de IA A4I para desbloquear acceso diagnóstico premium permanente para su campus."
     },
     "waqfLedgerBadge": "Impulsado por el motor del Consorcio WaqfLedger de Acceso Abierto — Un registro de confianza permanente de beneficio público dedicado a mantener la integridad criptográfica de los registros globales de cumplimiento de IA.",
     "framework": {
@@ -238,7 +278,7 @@
       "stateHash": "Hash de estado criptográfico",
       "ledgerHost": "Red de registro"
     },
-    "verificationUrl": "https://safeai.report/verification",
+    "verificationUrl": "https://safeai.report/verify",
     "portal": {
       "pageTitle": "Registro soberano de procedencia y portal de verificación",
       "pageSubtitle": "Nodo de inspección directa del registro para auditorías corporativas independientes, seguimiento de acreditación institucional y validación de certificación del Artículo 4 de la Ley de IA de la UE.",
@@ -263,7 +303,8 @@
         "timestamp": "Fecha",
         "registryAuthority": "Autoridad del registro",
         "stateHash": "Hash de estado criptográfico",
-        "waqfLedgerHash": "Hash WaqfLedger"
+        "waqfLedgerHash": "Hash WaqfLedger",
+        "trackType": "Pista del registro"
       },
       "vault": {
         "title": "Bóveda de verificación matemática — Contenedor de auditoría corporativa",
@@ -271,6 +312,20 @@
         "auditCallout": "⚖️ Auditoría de procedencia independiente: no solicitamos confianza ciega. Puede verificar de forma independiente la honestidad criptográfica de esta firma de registro en cualquier terminal local seguro.",
         "copyCommand": "Copiar comando",
         "copySuccess": "Comando copiado al portapapeles."
+      },
+      "passport": {
+        "downloadJson": "Descargar VerifIA Audit Passport™ (.json)",
+        "printSummary": "Exportar resumen de cumplimiento FRIA (.pdf/imprimir)",
+        "printTitle": "Resumen de cumplimiento FRIA",
+        "printSubtitle": "Artículo 27 FRIA — atestación WaqfLedger",
+        "unavailable": "La exportación del pasaporte está disponible tras un sello OIARF de preparación validado.",
+        "readinessOnly": "Este hash es un sello OIARF de preparación. Exporte el Audit Passport™ VerifIA desde la sesión /readiness que lo produjo — /verify confirma el hash WaqfLedger sin reconstruir métricas FRIA."
+      },
+      "attestation": {
+        "downloadJson": "Descargar recibo de atestación Deployer Artículo 4 (.json)",
+        "printSummary": "Exportar recibo de atestación Artículo 4 (.pdf/imprimir)",
+        "printTitle": "Recibo de atestación Deployer — Artículo 4",
+        "printSubtitle": "Examen de alfabetización Artículo 4 de la Ley de IA de la UE — sello WaqfLedger"
       }
     }
   },
@@ -1272,8 +1327,8 @@
     }
   },
   "readiness": {
-    "title": "Evaluación de madurez institucional OIARF",
-    "subtitle": "Diagnóstico MCDA de ocho dimensiones para la madurez de supervisión humana del Artículo 4. Las respuestas permanecen locales; el índice anónimo puede sellarse para registro en WaqfLedger.tech.",
+    "title": "VerifIA Risk Engine — Madurez institucional",
+    "subtitle": "Delimitación del rol regulatorio, clasificación Anexo III §3, FRIA (Artículo 27) y diagnóstico MCDA OIARF de ocho dimensiones. Puntuaciones compuestas sin redondeo y perfiles completos persistidos localmente; sellado anónimo en WaqfLedger.tech.",
     "loading": "Cargando la evaluación de madurez…",
     "progress": "Dimensión {{current}} de {{total}}",
     "progressPlain": "{{current}} / {{total}}",
@@ -1346,6 +1401,137 @@
         "name": "Madurez operativa",
         "focus": "Capacidad, plantilla, eficiencia de recursos en operaciones y SLA de incidentes de IA."
       }
+    },
+    "verifia": {
+      "setup": {
+        "title": "VerifIA Risk Engine — Configuración del diagnóstico",
+        "subtitle": "Seleccione su rol regulatorio y clasifique su sistema de IA educativa según el Anexo III Sección 3 antes de FRIA y las dimensiones OIARF.",
+        "roleLabel": "Rol regulatorio",
+        "roleRequired": "Seleccione un rol regulatorio para continuar.",
+        "annexRequired": "Seleccione al menos un caso de uso educativo del Anexo III §3.",
+        "continue": "Iniciar diagnóstico FRIA"
+      },
+      "roles": {
+        "deployer": {
+          "label": "Desplegador institucional (Universidad / Institución de educación superior)",
+          "focus": "Obligaciones del desplegador (Artículo 26), SOP de supervisión humana (Artículo 14), FRIA (Artículo 27) y alfabetización del personal (Artículo 4)."
+        },
+        "edtech": {
+          "label": "Proveedor EdTech (Editor de software / Desarrollador de IA)",
+          "focus": "Expedientes técnicos completos (Artículos 9–15), gobernanza de datos (Artículo 10) y garantía del modelo ISO 42001."
+        }
+      },
+      "annexIII": {
+        "title": "Anexo III (Sección 3) — Clasificación de casos de uso educativos",
+        "hint": "Seleccione todos los casos de uso de IA educativa de alto riesgo aplicables a su despliegue.",
+        "useCases": {
+          "3a": { "label": "3(a) Admisiones y preselección de candidatos" },
+          "3b": { "label": "3(b) Evaluación de resultados de aprendizaje y calificación de ensayos" },
+          "3c": { "label": "3(c) Evaluación del nivel estudiantil y colocación por aptitud" },
+          "3d": { "label": "3(d) Monitorización conductual y supervisión automatizada" }
+        }
+      },
+      "fria": {
+        "name": "FRIA — Artículo 27",
+        "focus": "Evaluación de impacto en derechos fundamentales — no discriminación, recursos transparentes y minimización de datos.",
+        "prompts": {
+          "q1": "La institución evalúa y mitiga los riesgos de sesgo algorítmico y no discriminación para estudiantes afectados por IA educativa de alto riesgo.",
+          "q2": "Los estudiantes disponen de vías de recurso transparentes y mecanismos documentados de anulación humana cuando decisiones automatizadas afectan su acceso o evaluación.",
+          "q3": "La minimización de datos y las salvaguardas de privacidad de registros estudiantiles limitan la recopilación, retención y exposición inter-sistemas de datos personales."
+        }
+      },
+      "results": {
+        "regulatoryRole": "Rol regulatorio",
+        "annexUseCases": "Casos de uso Anexo III §3",
+        "friaScore": "Puntuación FRIA (Artículo 27)",
+        "overallIndexRaw": "Compuesto MCDA sin redondeo (I_sr)",
+        "exportProfile": "Exportar perfil de evaluación (JSON)"
+      },
+      "passport": {
+        "preview": "Vista previa Audit Passport™",
+        "previewTitle": "Vista previa VerifIA Audit Passport™",
+        "previewSubtitle": "Credencial JSON-LD alineada con passport_schema.json",
+        "downloadJsonLd": "Descargar VerifIA Audit Passport™ (.json)",
+        "printSummary": "Exportar resumen de cumplimiento FRIA (.pdf/imprimir)",
+        "printTitle": "Resumen de cumplimiento FRIA",
+        "printSubtitle": "Artículo 27 FRIA — Anexo III §3 garantía de IA educativa",
+        "loading": "Generando Audit Passport…",
+        "error": "No se pudo generar el Audit Passport en este navegador.",
+        "close": "Cerrar"
+      }
+    }
+  },
+  "verifia": {
+    "suite": {
+      "title": "Suite de garantía VerifIA de 3 capas para IA educativa",
+      "subtitle": "Anexo III Sección 3 de la Ley de IA de la UE — Educación y formación profesional",
+      "regulatoryAnchor": "Garantía de desplegadores de IA educativa de alto riesgo bajo L'INSTITUT ARTICLE 4 (A4I)"
+    },
+    "layers": {
+      "pipelineTitle": "Pipeline de garantía de 3 capas",
+      "layer1": {
+        "title": "Capa 1: Evidencia de cumplimiento",
+        "description": "Documentación de conformidad Artículos 9–15, controles ISO/IEC 42001 AIMS y procedimientos operativos estándar de supervisión humana del Artículo 14."
+      },
+      "layer2": {
+        "title": "Capa 2: Garantía algorítmica",
+        "description": "Análisis de paridad demográfica, curvas de calibración y medición de disparidades en tasas de error entre cohortes protegidas."
+      },
+      "layer3": {
+        "title": "Capa 3: Procedencia criptográfica",
+        "description": "Sellado de estado SHA-256 sin tokens con anclaje inmutable en WaqfLedger.tech."
+      }
+    },
+    "annexIII": {
+      "sectionTitle": "Anexo III Sección 3 — Educación y formación profesional",
+      "sectionSubtitle": "Definiciones oficiales de casos de uso de IA de alto riesgo para desplegadores educativos",
+      "useCases": {
+        "3a": {
+          "title": "Admisión, acceso y clasificación de candidatos",
+          "description": "Algoritmos que determinan decisiones de admisión, acceso a instituciones educativas o clasificación de candidatos."
+        },
+        "3b": {
+          "title": "Evaluación de resultados de aprendizaje y calificación",
+          "description": "Sistemas que evalúan resultados de aprendizaje, asignan calificaciones o dirigen intervenciones pedagógicas."
+        },
+        "3c": {
+          "title": "Nivel educativo y colocación por aptitud",
+          "description": "IA que determina nivel educativo, colocación por aptitud o asignación a vía profesional."
+        },
+        "3d": {
+          "title": "Monitorización conductual y supervisión automatizada",
+          "description": "Monitorización conductual de estudiantes, supervisión remota de exámenes y sistemas automatizados de vigilancia de integridad."
+        }
+      }
+    },
+    "modules": {
+      "registry": {
+        "title": "Registro",
+        "description": "Registro soberano de sistemas de IA educativa e índice de clasificación Anexo III §3."
+      },
+      "riskEngine": {
+        "title": "Motor de riesgo",
+        "description": "Puntuación de IA educativa de alto riesgo frente a vectores de casos de uso del Anexo III Sección 3."
+      },
+      "assuranceLab": {
+        "title": "Laboratorio de garantía",
+        "description": "Ejecución del pipeline de garantía de 3 capas: evidencia de cumplimiento, garantía algorítmica y sellado de procedencia."
+      },
+      "evidenceVault": {
+        "title": "Bóveda de evidencias",
+        "description": "Repositorio inmutable de evidencias de conformidad alineado con Artículos 9–15 e ISO/IEC 42001 AIMS."
+      },
+      "auditPassport": {
+        "title": "Audit Passport™",
+        "description": "Credencial de auditoría criptográfica portátil con sello de procedencia SHA-256 anclado en WaqfLedger."
+      }
+    },
+    "flywheel": {
+      "title": "Volante de datos de acceso permanente",
+      "policyRule": "Se concede acceso base permanente al 100 % al enviar datos de evaluación anonimizados al Barómetro nacional/regional A4I.",
+      "description": "Los contribuyentes institucionales que envían telemetría de evaluación de IA educativa anonimizada al Barómetro nacional/regional A4I reciben acceso base permanente a los módulos de garantía VerifIA — acelerando la evaluación comparativa regulatoria de ciencia abierta bajo el Anexo III Sección 3 de la Ley de IA de la UE.",
+      "destination": "Barómetro nacional/regional A4I",
+      "baselineAccess": "Acceso base permanente al 100 %"
     }
   }
 }

@@ -1,15 +1,27 @@
+# Standard web crawlers
 User-agent: *
 Allow: /
-Allow: /readiness
-Allow: /llms.txt
-Allow: /sitemap.xml
 
-# AI Scraper Explicit Access
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Generative Engine Optimization (GEO) — unrestricted indexing
 User-agent: GPTBot
 Allow: /
+
 User-agent: ClaudeBot
 Allow: /
+
 User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://safeai.report/sitemap.xml

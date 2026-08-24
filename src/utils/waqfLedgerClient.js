@@ -1,4 +1,9 @@
 import { SAFEAI_MASTER_CONFIG } from '../config/constants.js';
+import {
+  LEDGER_TRACK,
+  isOiarfReadinessTrack,
+  normalizeLedgerTrackType,
+} from '../config/ledgerTracks.js';
 
 const LEDGER_REQUEST_TIMEOUT_MS = 15_000;
 
@@ -133,6 +138,7 @@ function attestationIndicatesMatch(payload) {
  *   candidateName?: string | null,
  *   complianceLevel?: string | null,
  *   registryAuthority?: string,
+ *   trackType?: string | null,
  * }>}
  */
 export async function queryLedgerAttestation(hash) {
@@ -192,6 +198,9 @@ export async function queryLedgerAttestation(hash) {
       ),
       registryAuthority:
         SAFEAI_MASTER_CONFIG?.infrastructure?.ledgerHost ?? 'WaqfLedger.tech',
+      trackType: normalizeLedgerTrackType(
+        record.trackType ?? record.track_type ?? payload.trackType ?? payload.track_type,
+      ),
     };
   } catch (error) {
     console.warn('WaqfLedger attestation lookup failed:', error);
@@ -200,33 +209,52 @@ export async function queryLedgerAttestation(hash) {
 }
 
 /**
- * Stream Article 4 compliance validation records to the WaqfLedger serverless core.
+ * Stream compliance records to the WaqfLedger serverless core.
  * Network failures are non-blocking — callers always receive a success flag.
+ * `anchored` is true only for HTTP 200/201 receipts.
  *
- * @returns {Promise<{ success: boolean, status?: number }>}
+ * @returns {Promise<{ success: boolean, status?: number, anchored: boolean }>}
  */
 export async function streamComplianceToLedger(complianceData) {
   try {
     const hash = sanitizeLedgerHash(complianceData?.hash);
     if (!hash) {
       console.warn('WaqfLedger compliance stream skipped: invalid or missing state hash');
-      return { success: false };
+      return { success: false, anchored: false };
     }
+
+    const requestedTrack = normalizeLedgerTrackType(complianceData?.trackType);
+    const trackType = isOiarfReadinessTrack(requestedTrack)
+      ? LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS
+      : LEDGER_TRACK.ARTICLE_4_LITERACY_EXAM;
 
     const payload = {
       hash,
       candidateName:
         typeof complianceData?.candidateName === 'string' && complianceData.candidateName.trim()
           ? complianceData.candidateName.trim()
-          : 'Anonymous Candidate',
+          : (trackType === LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS
+            ? 'Anonymous Deployer'
+            : 'Anonymous Candidate'),
       tierId:
         typeof complianceData?.tierId === 'string' && complianceData.tierId.trim()
           ? complianceData.tierId.trim()
-          : 'level01',
+          : (trackType === LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS
+            ? 'oiarf_readiness'
+            : 'level01'),
       score: sanitizeLedgerScore(complianceData?.score),
       timestamp: sanitizeLedgerTimestamp(complianceData?.timestamp),
-      trackType: 'ARTICLE_4_COMPLIANCE_VALIDATION',
+      trackType,
     };
+
+    if (trackType === LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS) {
+      if (typeof complianceData?.regulatoryRole === 'string') {
+        payload.regulatoryRole = complianceData.regulatoryRole;
+      }
+      if (Array.isArray(complianceData?.annexIIISection3)) {
+        payload.annexIIISection3 = complianceData.annexIIISection3;
+      }
+    }
 
     const response = await fetch(
       resolveWaqfLedgerEndpoint(),
@@ -241,16 +269,17 @@ export async function streamComplianceToLedger(complianceData) {
       },
     );
 
-    if (response.status !== 200 && response.status !== 201) {
+    const anchored = response.status === 200 || response.status === 201;
+    if (!anchored) {
       console.warn(
         `WaqfLedger compliance stream rejected (${response.status})`,
       );
-      return { success: false, status: response.status };
+      return { success: false, status: response.status, anchored: false };
     }
 
-    return { success: true, status: response.status };
+    return { success: true, status: response.status, anchored: true };
   } catch (error) {
     console.warn('WaqfLedger compliance stream failed:', error);
-    return { success: false };
+    return { success: false, anchored: false };
   }
 }

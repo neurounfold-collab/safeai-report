@@ -539,6 +539,231 @@ const HOME_STYLES = `
   border-top: 1px solid var(--home-border);
   min-width: 0;
 }
+
+.home-view__flywheel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  margin-top: 0.25rem;
+  padding: 1rem 1.15rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: linear-gradient(135deg, rgba(120, 90, 10, 0.16) 0%, rgba(15, 23, 42, 0.55) 100%);
+  border-inline-start: 3px solid var(--home-accent);
+  box-shadow: inset 0 1px 0 rgba(201, 162, 39, 0.12);
+}
+
+.home-view__flywheel-label {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(226, 198, 109, 0.95);
+}
+
+.home-view__flywheel-text {
+  margin: 0;
+  font-size: clamp(0.8125rem, 1.6vw, 0.9375rem);
+  line-height: 1.7;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: rgba(248, 250, 252, 0.92);
+}
+
+.home-view__pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vw, 1.35rem);
+  min-width: 0;
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--home-border);
+}
+
+.home-view__pipeline-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+@media (min-width: 720px) {
+  .home-view__pipeline-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+.home-view__pipeline-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 1.15rem 1.2rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--home-border);
+  background: rgba(15, 23, 42, 0.55);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 220ms ease, background-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.home-view__pipeline-card:hover,
+.home-view__pipeline-card:focus-visible {
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.home-view__pipeline-card--active {
+  transform: translateY(-2px);
+}
+
+.home-view__pipeline-card--layer1 {
+  border-color: rgba(94, 234, 212, 0.28);
+  border-inline-start: 3px solid var(--home-accent-teal);
+}
+
+.home-view__pipeline-card--layer1:hover,
+.home-view__pipeline-card--layer1:focus-visible,
+.home-view__pipeline-card--layer1.home-view__pipeline-card--active {
+  border-color: rgba(94, 234, 212, 0.52);
+  background: rgba(15, 23, 42, 0.78);
+  box-shadow: 0 12px 32px rgba(94, 234, 212, 0.12);
+}
+
+.home-view__pipeline-card--layer2 {
+  border-color: rgba(201, 162, 39, 0.28);
+  border-inline-start: 3px solid var(--home-accent);
+}
+
+.home-view__pipeline-card--layer2:hover,
+.home-view__pipeline-card--layer2:focus-visible,
+.home-view__pipeline-card--layer2.home-view__pipeline-card--active {
+  border-color: rgba(201, 162, 39, 0.52);
+  background: rgba(15, 23, 42, 0.78);
+  box-shadow: 0 12px 32px rgba(201, 162, 39, 0.1);
+}
+
+.home-view__pipeline-card--layer3 {
+  border-color: rgba(94, 234, 212, 0.22);
+  border-inline-start: 3px solid #67e8f9;
+}
+
+.home-view__pipeline-card--layer3:hover,
+.home-view__pipeline-card--layer3:focus-visible,
+.home-view__pipeline-card--layer3.home-view__pipeline-card--active {
+  border-color: rgba(103, 232, 249, 0.48);
+  background: rgba(15, 23, 42, 0.78);
+  box-shadow: 0 12px 32px rgba(103, 232, 249, 0.1);
+}
+
+.home-view__pipeline-eyebrow {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--home-muted);
+}
+
+.home-view__pipeline-card--layer1 .home-view__pipeline-eyebrow {
+  color: rgba(94, 234, 212, 0.92);
+}
+
+.home-view__pipeline-card--layer2 .home-view__pipeline-eyebrow {
+  color: rgba(226, 198, 109, 0.95);
+}
+
+.home-view__pipeline-card--layer3 .home-view__pipeline-eyebrow {
+  color: rgba(103, 232, 249, 0.92);
+}
+
+.home-view__pipeline-title {
+  margin: 0;
+  font-size: clamp(0.9375rem, 1.8vw, 1.0625rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.45;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: var(--home-text);
+}
+
+.home-view__pipeline-description {
+  margin: 0;
+  font-size: clamp(0.8125rem, 1.5vw, 0.875rem);
+  line-height: 1.65;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: var(--home-muted);
+}
+
+.home-view__workflow {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vw, 1.35rem);
+  min-width: 0;
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--home-border);
+}
+
+.home-view__workflow-track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.35rem;
+  min-width: 0;
+  padding: 1.15rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--home-border);
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.home-view__workflow-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(11, 15, 25, 0.72);
+  font-size: clamp(0.6875rem, 1.4vw, 0.8125rem);
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: var(--home-text);
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+.home-view__workflow-step:hover {
+  border-color: rgba(94, 234, 212, 0.35);
+  background: rgba(15, 23, 42, 0.88);
+}
+
+.home-view__workflow-step--terminal {
+  border-color: rgba(201, 162, 39, 0.38);
+  color: #e2c66d;
+}
+
+.home-view__workflow-arrow {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--home-accent);
+  opacity: 0.8;
+  user-select: none;
+}
+
+.home-view__workflow-track[dir='rtl'] .home-view__workflow-arrow {
+  transform: scaleX(-1);
+}
 `;
 
 function useHomeTranslator(languageProp) {
@@ -635,6 +860,22 @@ export default function HomeView({ language: languageProp }) {
     t('landing.process.step3'),
   ];
 
+  const pipelineLayers = [
+    { id: 'layer1', modifier: 'layer1' },
+    { id: 'layer2', modifier: 'layer2' },
+    { id: 'layer3', modifier: 'layer3' },
+  ];
+
+  const workflowStepKeys = [
+    'ingestion',
+    'riskEngine',
+    'assuranceLab',
+    'evidenceVault',
+    'auditPassport',
+  ];
+
+  const [activePipelineLayer, setActivePipelineLayer] = useState('layer1');
+
   return (
     <main className="home-view" dir={rtl ? 'rtl' : 'ltr'}>
       <style>{HOME_STYLES}</style>
@@ -642,7 +883,7 @@ export default function HomeView({ language: languageProp }) {
       <div className="home-view__inner">
         <header className="home-view__hero" aria-label={t('landing.hero.headline')}>
           <div className="home-view__hero-content">
-            <div className="home-view__announcement inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300 mb-4">
+            <div className="home-view__announcement inline-flex items-center gap-2 ps-3 pe-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300 mb-4">
               <span className="w-2 h-2 shrink-0 rounded-full bg-teal-400 animate-pulse" aria-hidden="true" />
               <span className="min-w-0 break-words leading-snug">
                 {t('landing.hero.announcementBadge')}
@@ -702,41 +943,88 @@ export default function HomeView({ language: languageProp }) {
             </p>
           </div>
 
-          <section
-            className="home-view__architecture"
-            aria-label={t('landing.hero.architecture.ariaLabel')}
+          <aside
+            className="home-view__flywheel"
+            aria-label={t('verifia.flywheel.title')}
           >
-            <article className="home-view__architecture-card home-view__architecture-card--application">
-              <p className="home-view__architecture-eyebrow">01</p>
-              <h2 className="home-view__architecture-title break-words leading-[1.45]">
-                {t('landing.hero.architecture.applicationTitle')}
-              </h2>
-              <p className="home-view__architecture-details break-words leading-[1.65]">
-                {t('landing.hero.architecture.applicationDetails')}
-              </p>
-            </article>
+            <p className="home-view__flywheel-label">{t('verifia.flywheel.title')}</p>
+            <p className="home-view__flywheel-text break-words leading-[1.7]">
+              {t('landing.verifia.flywheelCallout')}
+            </p>
+          </aside>
 
-            <article className="home-view__architecture-card home-view__architecture-card--integrity">
-              <p className="home-view__architecture-eyebrow">02</p>
-              <h2 className="home-view__architecture-title break-words leading-[1.45]">
-                {t('landing.hero.architecture.integrityTitle')}
-              </h2>
-              <p className="home-view__architecture-details break-words leading-[1.65]">
-                {t('landing.hero.architecture.integrityDetails')}
-              </p>
-            </article>
+          <section
+            className="home-view__pipeline"
+            aria-labelledby="home-pipeline-title"
+          >
+            <h2 id="home-pipeline-title" className="home-view__section-title break-words leading-[1.7]">
+              {t('landing.verifia.pipelineSectionTitle')}
+            </h2>
+            <div
+              className="home-view__pipeline-grid"
+              role="list"
+              aria-label={t('landing.verifia.pipelineAriaLabel')}
+            >
+              {pipelineLayers.map(({ id, modifier }, index) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="listitem"
+                  className={
+                    activePipelineLayer === id
+                      ? `home-view__pipeline-card home-view__pipeline-card--${modifier} home-view__pipeline-card--active`
+                      : `home-view__pipeline-card home-view__pipeline-card--${modifier}`
+                  }
+                  aria-pressed={activePipelineLayer === id}
+                  onClick={() => setActivePipelineLayer(id)}
+                >
+                  <p className="home-view__pipeline-eyebrow">
+                    {String(index + 1).padStart(2, '0')}
+                  </p>
+                  <h3 className="home-view__pipeline-title break-words leading-[1.45]">
+                    {t(`landing.verifia.pipeline.${id}.title`)}
+                  </h3>
+                  <p className="home-view__pipeline-description break-words leading-[1.65]">
+                    {t(`landing.verifia.pipeline.${id}.description`)}
+                  </p>
+                </button>
+              ))}
+            </div>
           </section>
 
           <section
-            className="home-view__framework"
-            aria-labelledby="home-framework-title"
+            className="home-view__workflow"
+            aria-labelledby="home-workflow-title"
           >
-            <h2 id="home-framework-title" className="home-view__framework-title break-words leading-[1.7]">
-              {t('landing.framework.title')}
+            <h2 id="home-workflow-title" className="home-view__section-title break-words leading-[1.7]">
+              {t('landing.verifia.workflowSectionTitle')}
             </h2>
-            <p className="home-view__framework-description break-words leading-[1.7]">
-              {t('landing.framework.description')}
-            </p>
+            <div
+              className="home-view__workflow-track"
+              dir={rtl ? 'rtl' : 'ltr'}
+              role="list"
+              aria-label={t('landing.verifia.workflowAriaLabel')}
+            >
+              {workflowStepKeys.map((stepKey, index) => (
+                <React.Fragment key={stepKey}>
+                  {index > 0 && (
+                    <span className="home-view__workflow-arrow px-1" aria-hidden="true">
+                      ──►
+                    </span>
+                  )}
+                  <span
+                    role="listitem"
+                    className={
+                      stepKey === 'auditPassport'
+                        ? 'home-view__workflow-step home-view__workflow-step--terminal'
+                        : 'home-view__workflow-step'
+                    }
+                  >
+                    {t(`landing.verifia.workflow.${stepKey}`)}
+                  </span>
+                </React.Fragment>
+              ))}
+            </div>
           </section>
         </header>
 
@@ -751,7 +1039,7 @@ export default function HomeView({ language: languageProp }) {
             {(processSteps || []).map((label, index) => (
               <React.Fragment key={label}>
                 {index > 0 && (
-                  <span className="home-view__process-arrow" aria-hidden="true">
+                  <span className="home-view__process-arrow rtl:scale-x-[-1]" aria-hidden="true">
                     ➔
                   </span>
                 )}
@@ -781,7 +1069,7 @@ export default function HomeView({ language: languageProp }) {
             </p>
             <Link
               to="/academic-centers"
-              className="inline-flex min-w-0 max-w-full items-center justify-center self-center rounded-xl border border-teal-500/20 bg-slate-950/80 px-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
+              className="inline-flex min-w-0 max-w-full items-center justify-center self-center rounded-xl border border-teal-500/20 bg-slate-950/80 ps-6 pe-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
             >
               <span className="min-w-0 break-words leading-[1.7]">{t('landing.collaboration.cta')}</span>
             </Link>

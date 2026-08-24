@@ -102,7 +102,7 @@ export const SAFEAI_MASTER_CONFIG = {
       title: "I just earned my Official Article 4 AI Literacy Certification Badge!",
       summary: "Verified by L'Institut Article 4 (A4I). Compliance audited via WaqfLedger.tech.",
       hashtags: ["AILiteracy", "EUAIAct", "SafeAI", "RegTech"],
-      verificationUrl: "https://safeai.report/verification"
+      verificationUrl: "https://safeai.report/verify"
     }
   },
   evaluationTiers: {
@@ -172,6 +172,112 @@ export const SAFEAI_MASTER_CONFIG = {
       ],
       consortiumFooter:
         'Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records.',
+    },
+  },
+  /**
+   * VerifIA 3-Layer Assurance Suite — EU AI Act Annex III Section 3 (Education & Vocational Training).
+   * Authoritative registry for high-risk educational AI deployer assurance under L'INSTITUT ARTICLE 4 (A4I).
+   */
+  verifIA: {
+    suiteId: 'verifia_educational_assurance_v1',
+    suiteName: 'VerifIA 3-Layer Assurance Suite for Educational AI',
+    regulatoryAnchor: 'EU AI Act Annex III Section 3 — Education and Vocational Training',
+    highRiskClassification: 'Annex III §3 High-Risk Educational AI System',
+    annexIII: {
+      section: 3,
+      title: 'Education and Vocational Training',
+      useCases: {
+        '3a': {
+          id: '3a',
+          key: 'admissionsAccessRanking',
+          label: 'Admissions, access, and candidate ranking algorithms',
+          articleRef: 'Annex III §3(a)',
+        },
+        '3b': {
+          id: '3b',
+          key: 'learningOutcomeEvaluation',
+          label: 'Learning outcome evaluation, grading, and pedagogical steering',
+          articleRef: 'Annex III §3(b)',
+        },
+        '3c': {
+          id: '3c',
+          key: 'educationalLevelDetermination',
+          label: 'Educational level determination and aptitude placement',
+          articleRef: 'Annex III §3(c)',
+        },
+        '3d': {
+          id: '3d',
+          key: 'behavioralMonitoringProctoring',
+          label: 'Student behavioral monitoring and automated proctoring',
+          articleRef: 'Annex III §3(d)',
+        },
+      },
+    },
+    assurancePipeline: {
+      title: '3-Layer Assurance Pipeline',
+      layers: {
+        layer1: {
+          id: 1,
+          key: 'complianceEvidence',
+          label: 'Layer 1: Compliance Evidence',
+          scope: ['Articles 9–15', 'ISO/IEC 42001 AIMS controls', 'Article 14 Human Oversight SOPs'],
+          ledgerAnchor: 'WaqfLedger.tech',
+        },
+        layer2: {
+          id: 2,
+          key: 'algorithmicAssurance',
+          label: 'Layer 2: Algorithmic Assurance',
+          scope: [
+            'Demographic parity',
+            'Calibration curves',
+            'Error-rate disparities',
+          ],
+        },
+        layer3: {
+          id: 3,
+          key: 'cryptographicProvenance',
+          label: 'Layer 3: Cryptographic Provenance',
+          scope: ['Tokenless SHA-256 state sealing', 'WaqfLedger anchoring'],
+          encryptionProtocol: 'SHA-256 tamper-evident state hashing',
+        },
+      },
+    },
+    modules: {
+      registry: {
+        key: 'registry',
+        label: 'Registry',
+        description: 'Sovereign educational AI system registration and Annex III §3 classification index',
+      },
+      riskEngine: {
+        key: 'riskEngine',
+        label: 'Risk Engine',
+        description: 'High-risk educational AI scoring against Annex III Section 3 use-case vectors',
+      },
+      assuranceLab: {
+        key: 'assuranceLab',
+        label: 'Assurance Lab',
+        description: '3-layer assurance pipeline execution: compliance evidence, algorithmic assurance, provenance sealing',
+      },
+      evidenceVault: {
+        key: 'evidenceVault',
+        label: 'Evidence Vault',
+        description: 'Immutable conformity evidence repository aligned with Articles 9–15 and ISO/IEC 42001 AIMS',
+      },
+      auditPassport: {
+        key: 'auditPassport',
+        label: 'Audit Passport™',
+        description: 'Portable cryptographic audit credential with WaqfLedger-anchored SHA-256 provenance seal',
+      },
+    },
+    permanentAccessDataFlywheel: {
+      policyId: 'permanent_access_data_flywheel_v1',
+      enabled: true,
+      baselineAccessPercent: 100,
+      rule:
+        '100% permanent baseline access is granted upon submitting anonymized evaluation data to the A4I National/Regional Barometer.',
+      trigger: 'anonymizedEvaluationDataSubmission',
+      destination: "A4I National/Regional Barometer",
+      academicAuthority: "L'INSTITUT ARTICLE 4 (A4I)",
     },
   },
 };
