@@ -12,6 +12,8 @@ import {
 import { applyRouteSeo, LANGUAGE_CHANGE_EVENT } from './utils/seoMetadata.js';
 
 const HomeView = lazy(() => import('./features/pages/HomeView.jsx'));
+const AuthPortal = lazy(() => import('./features/auth/components/AuthPortal.jsx'));
+const AlamMatrixBrief = lazy(() => import('./features/docs/AlamMatrixBrief.jsx'));
 const AcademyView = lazy(() => import('./features/pages/AcademyView.jsx'));
 const ExamPlayer = lazy(() => import('./features/exam/components/ExamPlayer.jsx'));
 const PartnerOverview = lazy(() => import('./features/dashboard/components/PartnerOverview.jsx'));
@@ -134,7 +136,15 @@ function AppRoutes() {
           path="/access"
           element={
             <PublicShellRoute>
-              <HomeView />
+              <AuthPortal />
+            </PublicShellRoute>
+          }
+        />
+        <Route
+          path="/docs/a4-alam"
+          element={
+            <PublicShellRoute>
+              <AlamMatrixBrief />
             </PublicShellRoute>
           }
         />

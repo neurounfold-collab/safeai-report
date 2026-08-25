@@ -13,7 +13,7 @@ OIARF operationalizes deployer literacy verification under **EU AI Act Article 4
 | Portal | [safeAI.report](https://safeai.report) |
 | Academic authority | L'INSTITUT ARTICLE 4 (A4I) |
 | Regulatory track | EU AI Act Article 4 — human competence and oversight |
-| Languages | English · French · Spanish |
+| Languages | English · French · Spanish · Arabic (quadlingual; Arabic UI is RTL) |
 
 ---
 
@@ -27,16 +27,20 @@ OIARF equips institutions to measure, evidence, and continuously improve readine
 
 Authoritative schema: [`schemas/institutional-readiness-spec.json`](schemas/institutional-readiness-spec.json)
 
-| # | Dimension | Focus |
-| --- | --- | --- |
-| 1 | **Leadership** | Executive sponsorship, strategic AI direction, and board-level accountability |
-| 2 | **Governance** | Policies, decision rights, and institutional AI control structures |
-| 3 | **AI Literacy** | Human competence under EU AI Act Article 4 (A4-ALAM pillars) |
-| 4 | **Technology** | Systems architecture, capability maturity, and integration readiness |
-| 5 | **Data Readiness** | Provenance, quality, lineage, and lawful processing capacity |
-| 6 | **Risk & Compliance** | Statutory alignment, risk classification, and auditability |
-| 7 | **Workforce Culture** | Organizational norms, escalation practice, and continuous learning |
-| 8 | **Operational Readiness** | Runtime capacity, resource allocation, and delivery efficiency |
+| # | Dimension | \(W_d\) | Focus |
+| --- | --- | --- | --- | --- |
+| 1 | **Leadership** | 0.14 | Executive sponsorship, strategic AI direction, and board-level accountability |
+| 2 | **Governance** | 0.14 | Policies, decision rights, and institutional AI control structures |
+| 3 | **AI Literacy** | 0.15 | Human competence under EU AI Act Article 4 (A4-ALAM pillars) |
+| 4 | **Technology** | 0.11 | Systems architecture, capability maturity, and integration readiness |
+| 5 | **Data Readiness** | 0.12 | Provenance, quality, lineage, and lawful processing capacity |
+| 6 | **Risk & Compliance** | 0.14 | Statutory alignment, risk classification, and auditability |
+| 7 | **Workforce Culture** | 0.10 | Organizational norms, escalation practice, and continuous learning |
+| 8 | **Operational Readiness** | 0.10 | Runtime capacity, resource allocation, and delivery efficiency |
+
+### Languages — Quadlingual operator surface
+
+The portal, A4-ALAM exam matrices, and SEO hreflang ship as **EN / FR / ES / AR**. Arabic uses `dir="rtl"` document architecture (`src/i18n/index.js`). Literacy competency is language-invariant (identical scenario IDs and option indices across locales).
 
 ### Dimension 8 — Operational Readiness (technical efficiency)
 
@@ -73,7 +77,15 @@ where `Pp` is the pillar performance ratio and `wp` is the cohort-specific weigh
 
 **Role-specific weights were initially derived through expert judgment and are intended to be empirically refined using continuous institutional validation datasets.**
 
-Cohort profiles (ExL, CLL, OEL) and weight vectors are declared in [`schemas/scoring-engine.json.txt`](schemas/scoring-engine.json.txt). Institutional certification applies the registry threshold defined in that schema (default **85%**).
+Cohort profiles (ExL, CLL, OEL) and weight vectors are declared in [`schemas/scoring-engine.json.txt`](schemas/scoring-engine.json.txt) and must match the live grader in [`api/grade-exam.js`](api/grade-exam.js):
+
+| Cohort | P1 | P2 | P3 | P4 |
+| --- | --- | --- | --- | --- |
+| **ExL** (Executive Layer) | 0.30 | 0.30 | 0.20 | 0.20 |
+| **CLL** (Compliance & Legal Layer) | 0.10 | 0.50 | 0.20 | 0.20 |
+| **OEL** (Operational & Engineering Layer) | 0.40 | 0.10 | 0.40 | 0.10 |
+
+Institutional certification applies the registry threshold defined in that schema (default **85%**).
 
 ---
 
@@ -94,8 +106,9 @@ Public verification surface: [safeAI.report/verify](https://safeai.report/verify
 | `schemas/institutional-readiness-spec.json` | OIARF eight-dimension readiness specification (`2.0.0-OIARF`) |
 | `schemas/scoring-engine.json.txt` | A4-ALAM MCDA cohort weights and pass threshold |
 | `src/config/constants.js` | Authoritative branding, pricing, and infrastructure registry |
-| `src/utils/scoringEngine.js` | Adaptive MCDA composite literacy calculation |
+| `api/grade-exam.js` | Authoritative A4-ALAM MCDA grading and WaqfLedger seal |
 | `src/features/exam/` | 30-scenario Article 4 diagnostic instrument |
+| `src/features/readiness/data/oiarfAssessment.js` | Runtime OIARF eight-dimension weights |
 | `public/llms.txt` | Machine-readable open-access research summary |
 
 ---

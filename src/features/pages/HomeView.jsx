@@ -919,7 +919,7 @@ export default function HomeView({ language: languageProp }) {
           <div className="home-view__cta-row">
             <div className="home-view__cta-split">
               <Link
-                to="/academy"
+                to="/readiness"
                 className="home-view__cta-glass home-view__cta-glass--diagnostic"
               >
                 <span className="min-w-0 break-words leading-[1.7]">

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthTranslator } from '../auth/hooks/useAuthTranslator.js';
-
-export const ADMIN_SESSION_KEY = 'safeai_admin_active_session';
+import { establishAdminSession } from './utils/adminConfig.js';
 export const ADMIN_DASHBOARD_PATH = '/admin';
 
 const TERMINAL_LINE_COUNT = 8;
@@ -269,7 +268,7 @@ export default function AdminLogin({ onAuthenticated }) {
     const trimmedUsername = username.trim();
 
     if (trimmedUsername === EXPECTED_USER && password === EXPECTED_PASS) {
-      sessionStorage.setItem('safeai_admin_active_session', 'true');
+      establishAdminSession();
       setError(null);
       onAuthenticated?.();
       navigate('/admin');

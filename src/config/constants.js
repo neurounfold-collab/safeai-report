@@ -10,7 +10,13 @@ function envString(key, fallback) {
   return typeof value === 'string' && value.trim().length > 0 ? value.trim() : fallback;
 }
 
-/** Production-safe endpoint defaults — never rely solely on host .env injection. */
+/**
+ * Production-safe endpoint defaults — never rely solely on host .env injection.
+ * Canonical WaqfLedger log path (client logger + serverless grader):
+ *   https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance
+ * Alternate host form (env-overridable via VITE_WAQFLEDGER_API_ENDPOINT /
+ * WAQFLEDGER_ENDPOINT): https://api.waqfledger.tech/api/log-compliance
+ */
 const DEPLOYMENT_DEFAULTS = {
   waqfLedgerApiEndpoint: 'https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance',
   waqfLedgerVerifyEndpoint: 'https://waqfledger-api.vercel.app/api/v1/ledger/verify',

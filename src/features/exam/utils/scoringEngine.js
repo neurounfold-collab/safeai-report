@@ -5,7 +5,7 @@
  * Authoritative MCDA grading, pass/fail, SHA-256 hashing, and WaqfLedger sealing
  * are performed exclusively by POST /api/grade-exam (api/grade-exam.js).
  *
- * Remaining exports support documentation (AlamMatrixBrief), cohort UI labels,
+ * Remaining exports support documentation (`/docs/a4-alam` AlamMatrixBrief), cohort UI labels,
  * and score-band display. Do not call calculateExamScore / createWaqfLedgerPayload
  * from the examination player — answer keys are not present in the client bundle.
  */

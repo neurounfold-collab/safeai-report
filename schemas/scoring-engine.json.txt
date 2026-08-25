@@ -32,32 +32,33 @@
     }
   },
   "scopeNote": "Compute cost, tokenization overhead, and related infrastructure efficiency indicators belong under Dimension 8 (Operational Readiness)—not under P1–P4.",
+  "runtimeAuthority": "api/grade-exam.js",
   "cohort_profiles": {
     "ExL": {
       "name": "Executive Layer",
       "weights": {
-        "p1_structural_ai_competency": 0.20,
-        "p2_risk_recognition_transparency": 0.40,
-        "p3_human_oversight_boundaries": 0.10,
-        "p4_accountability_ethical_governance": 0.30
+        "p1_structural_ai_competency": 0.30,
+        "p2_risk_recognition_transparency": 0.30,
+        "p3_human_oversight_boundaries": 0.20,
+        "p4_accountability_ethical_governance": 0.20
       }
     },
     "CLL": {
       "name": "Compliance & Legal Layer",
       "weights": {
-        "p1_structural_ai_competency": 0.25,
-        "p2_risk_recognition_transparency": 0.35,
-        "p3_human_oversight_boundaries": 0.30,
-        "p4_accountability_ethical_governance": 0.10
+        "p1_structural_ai_competency": 0.10,
+        "p2_risk_recognition_transparency": 0.50,
+        "p3_human_oversight_boundaries": 0.20,
+        "p4_accountability_ethical_governance": 0.20
       }
     },
     "OEL": {
       "name": "Operational & Engineering Layer",
       "weights": {
-        "p1_structural_ai_competency": 0.35,
-        "p2_risk_recognition_transparency": 0.15,
-        "p3_human_oversight_boundaries": 0.20,
-        "p4_accountability_ethical_governance": 0.30
+        "p1_structural_ai_competency": 0.40,
+        "p2_risk_recognition_transparency": 0.10,
+        "p3_human_oversight_boundaries": 0.40,
+        "p4_accountability_ethical_governance": 0.10
       }
     }
   }

@@ -10,21 +10,33 @@
 - Portal: https://safeai.report
 - Assessment Engine: https://safeai.report/readiness
 - Specification Repository: https://github.com/neurounfold-collab/safeai-report
+- Operator languages: English · French · Spanish · Arabic (quadlingual; Arabic UI is RTL)
+- Runtime weight authority: src/features/readiness/data/oiarfAssessment.js
+
+## Languages (Quadlingual)
+Operator UI, exam matrices, and SEO hreflang ship as **EN / FR / ES / AR**. Arabic uses `dir="rtl"` document architecture.
+
+Arabic character tokenization compute-cost overhead (**+300% to +600%** relative to Latin-script baselines) is modeled exclusively under **Dimension 8 (Operational Readiness)** as a technical resource-allocation efficiency metric. It is **not** an A4-ALAM literacy competency criterion.
 
 ## The 8 OIARF Dimensions
-1. Leadership & Strategy (Weight: 0.15)
-2. Governance (Weight: 0.15)
-3. AI Literacy & A4-ALAM Competencies (Weight: 0.20)
-4. Technology Infrastructure (Weight: 0.10)
-5. Data Readiness (Weight: 0.10)
-6. Risk & Compliance Alignment (Weight: 0.15)
-7. Workforce & Culture (Weight: 0.05)
-8. Operational Readiness & Compute Efficiency (Weight: 0.10)
+Runtime MCDA weights \(W_d\) (sum = 1.00):
+
+1. Leadership (Weight: 0.14)
+2. Governance (Weight: 0.14)
+3. AI Literacy & A4-ALAM Competencies (Weight: 0.15)
+4. Technology (Weight: 0.11)
+5. Data Readiness (Weight: 0.12)
+6. Risk & Compliance (Weight: 0.14)
+7. Workforce Culture (Weight: 0.10)
+8. Operational Readiness (Weight: 0.10) — includes Arabic tokenization compute-cost overhead as a technical efficiency metric only
 
 ## Mathematical Composite
 Isr = Sum(W_d * D_d) for d = 1 to 8.
 
+A4-ALAM literacy exam composite (role-adaptive): Sc = Sum(w_i * P_i) for pillars P1–P4. Runtime cohort vectors (api/grade-exam.js): ExL [0.30, 0.30, 0.20, 0.20] · CLL [0.10, 0.50, 0.20, 0.20] · OEL [0.40, 0.10, 0.40, 0.10]. Institutional certification threshold: 85%.
+
 ## Integrity Layer
 - Engine: WaqfLedger Open-Access Consortium Engine
+- Log endpoint: https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance
 - Verification: SHA-256 tamper-evident hash receipts
 - Data Policy: Zero-data retention (processed in-memory at the edge).

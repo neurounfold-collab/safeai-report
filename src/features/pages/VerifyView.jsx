@@ -28,7 +28,7 @@ const TERMINAL_LINE_LENGTH = 64;
 const RAW_METADATA_CONTRACT = {
   assessment_id: 'A4-ALAM-2026-X992',
   role_id: 'CLL_COMPLIANCE_LEGAL',
-  composite_score: 83.5,
+  composite_score: 88.5,
 };
 
 const RAW_METADATA_JSON = JSON.stringify(RAW_METADATA_CONTRACT);
@@ -546,7 +546,6 @@ function CopyableVerifyCommand({ command, copyLabel, copiedLabel }) {
   return (
     <div className="flex min-w-0 flex-col gap-2">
       <div className="verify-view__command-header">
-        <p className="verify-view__command-label">{copyLabel}</p>
         <button type="button" className="verify-view__copy-button" onClick={handleCopy}>
           {copied ? copiedLabel : copyLabel}
         </button>

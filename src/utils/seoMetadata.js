@@ -132,6 +132,7 @@ export const PRIMARY_ROUTES = Object.freeze([
 
 const PATH_ALIASES = Object.freeze({
   '/access': '/',
+  '/docs/a4-alam': '/academy',
   '/centers': '/academic-centers',
   '/industrial': '/academic-centers',
 });

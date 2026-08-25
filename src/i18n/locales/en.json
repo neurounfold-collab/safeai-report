@@ -140,7 +140,7 @@
     "support": "Support",
     "contact": "Contact Us",
     "registrarContact": "Contact Office of the Registrar",
-    "compliance_statement": "Quadlingual Sovereign AI Governance & Deployer Literacy Platform (EN / FR / ES / AR). Developed under the academic authority of Professor Adel El Bouzagaoui. Processing by Global Capital Intelligence LLC.",
+    "compliance_statement": "Developed under the academic authority of Professor Adel El Bouzagaoui. Processing by Global Capital Intelligence LLC.",
     "poweredBy": "Powered by the WaqfLedger Open-Access Consortium Engine — A permanent, public-benefit trust registry dedicated to maintaining the cryptographic integrity of global AI compliance records."
   },
   "landing": {
@@ -150,7 +150,7 @@
       "headline": "Automated Compliance Evidence & Algorithmic Assurance for Educational AI.",
       "subheadline": "VerifIA orchestrates a sovereign 3-layer assurance architecture — Compliance Evidence (Articles 9–15 & ISO/IEC 42001 AIMS), Algorithmic Assurance (bias parity & drift telemetry), and Cryptographic Provenance (deterministic SHA-256 sealing via WaqfLedger) — for Annex III Section 3 high-risk educational AI systems.",
       "universalOpenAccess": "Open-access tier: 3 diagnostic tracks (Level 01–03), 30 scenarios per examination, 0 USD public evaluation fee.",
-      "diagnosticDashboardCta": "Launch VerifIA Assurance Lab ➔",
+      "diagnosticDashboardCta": "Launch VerifIA Diagnostic Engine ➔",
       "executiveBriefingCta": "Request Closed-Door Executive Briefing (Access Registry) ➔",
       "architecture": {
         "ariaLabel": "Unified dual-layer architecture",
@@ -251,7 +251,8 @@
       "emailPlaceholder": "Enter your authorized academic center domain email...",
       "passcodeLabel": "Security Access Passcode",
       "passcodePlaceholder": "Enter your B2B workspace security passcode...",
-      "submit": "Authenticate B2B Workspace"
+      "submit": "Authenticate B2B Workspace",
+      "errorInvalid": "Invalid registrar credentials. Verify the institutional passcode and retry."
     },
     "tokenGuide": {
       "title": "Universal Open-Access Evaluation Gateway",
@@ -310,7 +311,7 @@
         "title": "Mathematical Verification Vault — Corporate Audit Container",
         "rawPayloadLabel": "Un-Hashed Raw Metadata Contract (Pre-Digest Canonical Layout)",
         "auditCallout": "⚖️ Independent Provenance Audit: We do not request blind trust. You can independently verify the cryptographic honesty of this ledger signature in any secure local terminal shell.",
-        "copyCommand": "Copy Command",
+        "copyCommand": "Copy Terminal Command",
         "copySuccess": "Command copied to clipboard."
       },
       "passport": {
@@ -818,7 +819,7 @@
         },
         "q4": {
           "question": "What is the Advanced AI Literacy track for legal professionals?",
-          "answer": "An upcoming Udemy micro-credential syllabus for judges, magistrates, and legal professionals covering deployer liability, high-risk AI classification, judicial human-oversight architecture, and cryptographic credential verification."
+          "answer": "An upcoming Executive Micro-Credential Series for judges, magistrates, and legal professionals covering deployer liability, high-risk AI classification, and cryptographic verification."
         }
       }
     },

@@ -12,8 +12,14 @@ import { tmpdir } from 'node:os';
 
 const PASS_THRESHOLD = 85.0;
 const LEDGER_TIMEOUT_MS = 12_000;
+/**
+ * Canonical WaqfLedger log path — must stay in lockstep with
+ * SAFEAI_MASTER_CONFIG.infrastructure.waqfLedgerApiEndpoint
+ * (src/config/constants.js). Override via WAQFLEDGER_ENDPOINT.
+ * Alternate host form: https://api.waqfledger.tech/api/log-compliance
+ */
 const DEFAULT_WAQFLEDGER_ENDPOINT =
-  'https://waqfledger-api.vercel.app/api/log-compliance';
+  'https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance';
 
 /** Unified cohort weights: Sc = Σ(wi × Pi) for pillars P1–P4. */
 const COHORT_WEIGHTS = Object.freeze({

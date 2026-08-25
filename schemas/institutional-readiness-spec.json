@@ -6,7 +6,8 @@
   "portal": "https://safeai.report",
   "academicAuthority": "L'INSTITUT ARTICLE 4 (A4I)",
   "regulatoryTrack": "EU AI Act Article 4 — human competence and oversight",
-  "languages": ["en", "fr", "es"],
+  "languages": ["en", "fr", "es", "ar"],
+  "languagePolicy": "Quadlingual operator UI (EN / FR / ES / AR) with Arabic RTL document direction. Arabic character tokenization compute-cost overhead (+300% to +600% vs Latin-script baselines) is modeled exclusively under Dimension 8 (Operational Readiness) as a technical resource-allocation efficiency metric — not as an A4-ALAM literacy criterion.",
   "mission": "The Open Institutional AI Readiness Framework (OIARF) is an open-methodology, evidence-informed framework designed to assess organizational preparedness for responsible AI adoption. SafeAI.report serves as the open-access portal for the framework's digital diagnostics.",
   "scoringEngine": {
     "model": "quantitatively structured Multi-Criteria Decision Analysis (MCDA) model using role-specific weight allocations.",

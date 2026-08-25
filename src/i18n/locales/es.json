@@ -140,7 +140,7 @@
     "support": "Soporte",
     "contact": "Contáctenos",
     "registrarContact": "Contactar la Oficina del Registrador",
-    "compliance_statement": "Plataforma cuatrilingüe soberana de gobernanza de IA y alfabetización de desplegadores (EN / FR / ES / AR). Desarrollado bajo la autoridad académica del Profesor Adel El Bouzagaoui. Procesamiento por Global Capital Intelligence LLC.",
+    "compliance_statement": "Desarrollado bajo la autoridad académica del Profesor Adel El Bouzagaoui. Procesamiento por Global Capital Intelligence LLC.",
     "poweredBy": "Impulsado por el motor del Consorcio WaqfLedger de Acceso Abierto — Un registro de confianza permanente de beneficio público dedicado a mantener la integridad criptográfica de los registros globales de cumplimiento de IA."
   },
   "landing": {
@@ -150,7 +150,7 @@
       "headline": "Evidencia de cumplimiento automatizada y garantía algorítmica para IA educativa.",
       "subheadline": "VerifIA orquesta una arquitectura de garantía soberana de 3 capas — Evidencia de cumplimiento (Artículos 9–15 e ISO/IEC 42001 AIMS), Garantía algorítmica (paridad de sesgos y telemetría de deriva), y Procedencia criptográfica (sellado SHA-256 determinista vía WaqfLedger) — para sistemas de IA educativa de alto riesgo del Anexo III Sección 3.",
       "universalOpenAccess": "Nivel open access: 3 vías diagnósticas (Nivel 01–03), 30 escenarios por examen, 0 USD de tarifa de evaluación pública.",
-      "diagnosticDashboardCta": "Iniciar Laboratorio de Garantía VerifIA ➔",
+      "diagnosticDashboardCta": "Iniciar el motor diagnóstico VerifIA ➔",
       "executiveBriefingCta": "Solicitar briefing ejecutivo a puerta cerrada (registro de acceso) ➔",
       "architecture": {
         "ariaLabel": "Arquitectura unificada de dos capas",
@@ -251,7 +251,8 @@
       "emailPlaceholder": "Introduzca el correo de dominio de su centro académico autorizado...",
       "passcodeLabel": "Código de acceso de seguridad",
       "passcodePlaceholder": "Introduzca su código de acceso al espacio de trabajo B2B...",
-      "submit": "Autenticar espacio de trabajo B2B"
+      "submit": "Autenticar espacio de trabajo B2B",
+      "errorInvalid": "Credenciales de registrador no válidas. Verifique el código de acceso institucional e inténtelo de nuevo."
     },
     "tokenGuide": {
       "title": "Puerta de evaluación open access universal",
@@ -310,7 +311,7 @@
         "title": "Bóveda de verificación matemática — Contenedor de auditoría corporativa",
         "rawPayloadLabel": "Contrato de metadatos sin hash (diseño canónico pre-digest)",
         "auditCallout": "⚖️ Auditoría de procedencia independiente: no solicitamos confianza ciega. Puede verificar de forma independiente la honestidad criptográfica de esta firma de registro en cualquier terminal local seguro.",
-        "copyCommand": "Copiar comando",
+        "copyCommand": "Copiar comando del terminal",
         "copySuccess": "Comando copiado al portapapeles."
       },
       "passport": {
@@ -818,7 +819,7 @@
         },
         "q4": {
           "question": "¿Qué es la vía avanzada de alfabetización en IA para profesionales legales?",
-          "answer": "Un syllabus de microcredencial Udemy próximo para jueces, magistrados y profesionales legales que cubre responsabilidad del desplegador, clasificación de IA de alto riesgo, arquitectura de supervisión humana judicial y verificación criptográfica de credenciales."
+          "answer": "Una próxima serie de microcredenciales ejecutivas para jueces, magistrados y profesionales legales que cubre la responsabilidad del desplegador, la clasificación de IA de alto riesgo y la verificación criptográfica."
         }
       }
     },

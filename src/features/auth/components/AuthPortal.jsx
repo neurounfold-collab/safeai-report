@@ -1,6 +1,10 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthTranslator } from '../hooks/useAuthTranslator.js';
+import {
+  establishAdminSession,
+  verifyRegistrarAccess,
+} from '../../admin/utils/adminConfig.js';
 
 /** Mock wireframe routes — replaced once router registry is centralized. */
 const AUTH_ROUTES = {
@@ -277,6 +281,17 @@ const AUTH_PORTAL_STYLES = `
 .auth-portal__submit--registrar:hover:not(:disabled) {
   box-shadow: 0 10px 24px rgba(201, 162, 39, 0.24);
 }
+
+.auth-portal__error {
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.12);
+  color: #fca5a5;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
 `;
 
 /**
@@ -291,6 +306,7 @@ export default function AuthPortal({ language: languageProp, embedded = false })
   const [partnerId, setPartnerId] = useState('');
   const [registrarEmail, setRegistrarEmail] = useState('');
   const [registrarPasscode, setRegistrarPasscode] = useState('');
+  const [registrarError, setRegistrarError] = useState('');
 
   const handleExamineeSubmit = useCallback(
     (event) => {
@@ -313,9 +329,16 @@ export default function AuthPortal({ language: languageProp, embedded = false })
 
       if (!email || !passcode) return;
 
+      if (!verifyRegistrarAccess(email, passcode)) {
+        setRegistrarError(t('auth.registrar.errorInvalid'));
+        return;
+      }
+
+      establishAdminSession();
+      setRegistrarError('');
       navigate(AUTH_ROUTES.DASHBOARD);
     },
-    [navigate, registrarEmail, registrarPasscode],
+    [navigate, registrarEmail, registrarPasscode, t],
   );
 
   const examineeReady = examineeEmail.trim().length > 0;
@@ -439,6 +462,11 @@ export default function AuthPortal({ language: languageProp, embedded = false })
               className="auth-portal__form"
               onSubmit={handleRegistrarSubmit}
             >
+              {registrarError ? (
+                <p className="auth-portal__error" role="alert" aria-live="assertive">
+                  {registrarError}
+                </p>
+              ) : null}
               <div className="auth-portal__field">
                 <label className="auth-portal__label" htmlFor="auth-registrar-email">
                   {t('auth.registrar.emailLabel')}
@@ -451,7 +479,10 @@ export default function AuthPortal({ language: languageProp, embedded = false })
                   autoComplete="username"
                   value={registrarEmail}
                   placeholder={t('auth.registrar.emailPlaceholder')}
-                  onChange={(event) => setRegistrarEmail(event.target.value)}
+                  onChange={(event) => {
+                    setRegistrarEmail(event.target.value);
+                    if (registrarError) setRegistrarError('');
+                  }}
                 />
               </div>
 
@@ -467,7 +498,10 @@ export default function AuthPortal({ language: languageProp, embedded = false })
                   autoComplete="current-password"
                   value={registrarPasscode}
                   placeholder={t('auth.registrar.passcodePlaceholder')}
-                  onChange={(event) => setRegistrarPasscode(event.target.value)}
+                  onChange={(event) => {
+                    setRegistrarPasscode(event.target.value);
+                    if (registrarError) setRegistrarError('');
+                  }}
                 />
               </div>
 
