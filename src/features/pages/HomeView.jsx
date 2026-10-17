@@ -680,6 +680,92 @@ const HOME_STYLES = `
   color: rgba(103, 232, 249, 0.92);
 }
 
+.home-view__offer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 720px) {
+  .home-view__offer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.home-view__offer-card {
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-view__offer-price {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: var(--home-text);
+}
+
+.home-view__offer-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.home-view__pipeline-card--layer2 .home-view__offer-cta {
+  color: rgba(226, 198, 109, 0.95);
+}
+
+.home-view__pipeline-card--layer1 .home-view__offer-cta {
+  color: rgba(94, 234, 212, 0.92);
+}
+
+.home-view__offer-cta span {
+  transition: transform 220ms ease;
+}
+
+.home-view__offer-card:hover .home-view__offer-cta span,
+.home-view__offer-card:focus-visible .home-view__offer-cta span {
+  transform: translateX(0.35rem);
+}
+
+.home-view[dir="rtl"] .home-view__offer-card:hover .home-view__offer-cta span,
+.home-view[dir="rtl"] .home-view__offer-card:focus-visible .home-view__offer-cta span {
+  transform: translateX(-0.35rem);
+}
+
+.home-view__research-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  width: 100%;
+  min-width: 0;
+  padding: 1.15rem 1.2rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(94, 234, 212, 0.28);
+  background: rgba(15, 23, 42, 0.55);
+  box-shadow: 0 12px 32px rgba(94, 234, 212, 0.08), inset 0 1px 0 rgba(94, 234, 212, 0.12);
+}
+
+.home-view__research-title {
+  margin: 0;
+  font-size: clamp(1.0625rem, 2vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: var(--home-text);
+}
+
 .home-view__pipeline-title {
   margin: 0;
   font-size: clamp(0.9375rem, 1.8vw, 1.0625rem);
@@ -1073,6 +1159,70 @@ export default function HomeView({ language: languageProp }) {
             >
               <span className="min-w-0 break-words leading-[1.7]">{t('landing.collaboration.cta')}</span>
             </Link>
+          </article>
+        </section>
+
+        <section className="home-view__pipeline" aria-labelledby="home-commercial-title">
+          <h2 id="home-commercial-title" className="home-view__section-title break-words leading-[1.7]">
+            Commercial Desk — Arabic AI Observatory Division
+          </h2>
+          <div className="home-view__offer-grid">
+            <a
+              href="https://safeai.gumroad.com/l/arabic-ai-audit"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="home-view__pipeline-card home-view__pipeline-card--layer2 home-view__offer-card"
+            >
+              <p className="home-view__pipeline-eyebrow">Automated System Audit</p>
+              <p className="home-view__offer-price">$199</p>
+              <p className="home-view__pipeline-description">
+                Deploy a structured system audit for institutional AI oversight evidence.
+              </p>
+              <span className="home-view__offer-cta">
+                Deploy Audit
+                <span aria-hidden="true">→</span>
+              </span>
+            </a>
+            <a
+              href="https://safeai.gumroad.com/l/arabic-ai-redteam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="home-view__pipeline-card home-view__pipeline-card--layer1 home-view__offer-card"
+            >
+              <p className="home-view__pipeline-eyebrow">Red-Teaming Matrix</p>
+              <p className="home-view__offer-price">$149</p>
+              <p className="home-view__pipeline-description">
+                Acquire the red-teaming matrix for structured adversarial review of deployed systems.
+              </p>
+              <span className="home-view__offer-cta">
+                Acquire Suite
+                <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          </div>
+        </section>
+
+        <section className="home-view__pipeline" aria-labelledby="home-research-title">
+          <h2 id="home-research-title" className="home-view__section-title break-words leading-[1.7]">
+            Institutional Research &amp; Whitepapers
+          </h2>
+          <article className="home-view__research-card">
+            <h3 className="home-view__research-title">
+              L&apos;Institut Article 4 — Sovereign Research Publications
+            </h3>
+            <p className="home-view__pipeline-eyebrow">Featured whitepaper</p>
+            <h3 className="home-view__pipeline-title">
+              Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments
+            </h3>
+            <p className="home-view__pipeline-description">
+              This paper examines multi-dialect stress-testing of enterprise language systems, the cross-border privacy boundary between Saudi PDPL and European processing, and the human-oversight duties that EU AI Act Article 4 places on deployers.
+            </p>
+            <a
+              href="mailto:support@safeai.report?subject=Request%20Sovereign%20AI%20Assurance%20Whitepaper"
+              className="inline-flex min-w-0 max-w-full items-center justify-center self-start rounded-xl border border-teal-500/20 bg-slate-950/80 ps-6 pe-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
+            >
+              <span className="min-w-0 break-words leading-[1.7]">Read whitepaper</span>
+            </a>
           </article>
         </section>
 

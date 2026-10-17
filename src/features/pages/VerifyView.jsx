@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { createTranslator, getActiveLanguage } from '../../i18n/index.js';
 import { isValidSha256HexHash } from '../verify/utils/waqfLedgerSimulator.js';
+import { lookupObservatoryBenchmark } from '../../utils/waqfLedgerClient.js';
 import { resolveVerificationRecord } from '../verify/utils/verificationRegistry.js';
 import {
   LEDGER_TRACK,
@@ -283,6 +284,12 @@ const VERIFY_VIEW_STYLES = `
   background: rgba(127, 29, 29, 0.35);
   border-bottom-color: rgba(248, 113, 113, 0.35);
   color: #fecaca;
+}
+
+.verify-view__status-bar--remediation {
+  background: rgba(120, 53, 15, 0.4);
+  border-bottom-color: rgba(251, 191, 36, 0.4);
+  color: #fde68a;
 }
 
 .verify-view__receipt-body {
@@ -654,7 +661,11 @@ export default function VerifyView({ language: languageProp }) {
       return 'verify.portal.validationModified';
     }
 
-    if (onSubmit && !isValidSha256HexHash(trimmed)) {
+    if (
+      onSubmit
+      && !isValidSha256HexHash(trimmed)
+      && !lookupObservatoryBenchmark(trimmed)
+    ) {
       return 'verify.portal.validationInvalid';
     }
 
@@ -712,7 +723,9 @@ export default function VerifyView({ language: languageProp }) {
     let cancelled = false;
     setPassportBusy(true);
 
-    const mintPromise = canMintAuditPassport(verificationResult)
+    const mintPromise = verificationResult.observatoryBenchmark
+      ? Promise.resolve({ kind: 'observatory', doc: null })
+      : canMintAuditPassport(verificationResult)
       ? generateAuditPassport(verificationResult).then((doc) => ({ kind: 'passport', doc }))
       : isOiarfReadinessTrack(verificationResult.trackType)
         ? Promise.resolve({ kind: 'oiarf-hash-only', doc: null })
@@ -808,9 +821,16 @@ export default function VerifyView({ language: languageProp }) {
       : verificationResult?.candidateName;
 
   const scoreDisplay =
-    verificationResult?.verified && verificationResult.score != null
-      ? `${verificationResult.score}%`
-      : '—';
+    verificationResult?.verified && verificationResult.scoreLabel
+      ? verificationResult.scoreLabel
+      : verificationResult?.verified && verificationResult.score != null
+        ? `${verificationResult.score}%`
+        : '—';
+
+  const observatoryStatusClass =
+    verificationResult?.status === 'REMEDIATION_REQUIRED'
+      ? 'verify-view__status-bar verify-view__status-bar--remediation'
+      : 'verify-view__status-bar';
 
   return (
     <div className="verify-view">
@@ -842,7 +862,7 @@ export default function VerifyView({ language: languageProp }) {
               aria-invalid={inputInvalid}
               autoComplete="off"
               spellCheck={false}
-              maxLength={64}
+              maxLength={128}
             />
             <button type="submit" className="verify-view__submit" disabled={isScanning}>
               {t('verify.portal.searchButton')}
@@ -863,10 +883,41 @@ export default function VerifyView({ language: languageProp }) {
 
           {showResult && verificationResult?.verified && (
             <article className="verify-view__receipt" aria-live="polite">
-              <p className="verify-view__status-bar">{t('verify.portal.statusValid')}</p>
+              <p className={verificationResult?.observatoryBenchmark ? observatoryStatusClass : 'verify-view__status-bar'}>
+                {verificationResult?.observatoryBenchmark
+                  ? verificationResult.status
+                  : t('verify.portal.statusValid')}
+              </p>
               <div className="verify-view__receipt-body">
                 <h3 className="verify-view__receipt-title">{t('verify.portal.receiptTitle')}</h3>
                 <dl className="verify-view__grid">
+                  {verificationResult?.certificateId ? (
+                    <div className="verify-view__field">
+                      <dt className="verify-view__field-label">
+                        {t('verify.portal.fields.certificateId')}
+                      </dt>
+                      <dd className="verify-view__field-value">{verificationResult.certificateId}</dd>
+                    </div>
+                  ) : null}
+
+                  {verificationResult?.system ? (
+                    <div className="verify-view__field verify-view__field--full">
+                      <dt className="verify-view__field-label">
+                        {t('verify.portal.fields.system')}
+                      </dt>
+                      <dd className="verify-view__field-value">{verificationResult.system}</dd>
+                    </div>
+                  ) : null}
+
+                  {verificationResult?.status ? (
+                    <div className="verify-view__field">
+                      <dt className="verify-view__field-label">
+                        {t('verify.portal.fields.status')}
+                      </dt>
+                      <dd className="verify-view__field-value">{verificationResult.status}</dd>
+                    </div>
+                  ) : null}
+
                   <div className="verify-view__field">
                     <dt className="verify-view__field-label">
                       {t('verify.portal.fields.score')}
@@ -874,14 +925,16 @@ export default function VerifyView({ language: languageProp }) {
                     <dd className="verify-view__field-value">{scoreDisplay}</dd>
                   </div>
 
-                  <div className="verify-view__field">
-                    <dt className="verify-view__field-label">
-                      {t('verify.portal.fields.timestamp')}
-                    </dt>
-                    <dd className="verify-view__field-value">
-                      {formatLedgerTimestamp(verificationResult?.timestamp)}
-                    </dd>
-                  </div>
+                  {verificationResult?.observatoryBenchmark ? null : (
+                    <div className="verify-view__field">
+                      <dt className="verify-view__field-label">
+                        {t('verify.portal.fields.timestamp')}
+                      </dt>
+                      <dd className="verify-view__field-value">
+                        {formatLedgerTimestamp(verificationResult?.timestamp)}
+                      </dd>
+                    </div>
+                  )}
 
                   {candidateDisplayName ? (
                     <div className="verify-view__field">
@@ -964,7 +1017,7 @@ export default function VerifyView({ language: languageProp }) {
                       </button>
                     </>
                   ) : null}
-                  {!auditPassport && !article4Receipt && !passportBusy ? (
+                  {!auditPassport && !article4Receipt && !passportBusy && !verificationResult?.observatoryBenchmark ? (
                     <p className="verify-view__waqf-caption">
                       {t('verify.portal.passport.readinessOnly')}
                     </p>

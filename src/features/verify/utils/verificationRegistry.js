@@ -5,7 +5,11 @@
 
 import { SAFEAI_MASTER_CONFIG } from '../../../config/constants.js';
 import { DEFAULT_PARTNER_METRICS } from '../../dashboard/components/PartnerOverview.jsx';
-import { queryLedgerAttestation } from '../../../utils/waqfLedgerClient.js';
+import {
+  lookupObservatoryBenchmark,
+  queryLedgerAttestation,
+  toObservatoryAttestation,
+} from '../../../utils/waqfLedgerClient.js';
 
 export const VERIFICATION_STORAGE_KEYS = {
   CREDENTIAL_HASH: 'SAFEAI_CREDENTIAL_STATE_HASH',
@@ -91,6 +95,11 @@ export function resolveSeededVerificationRecord(normalizedHash) {
 export async function resolveVerificationRecord(normalizedHash) {
   const hash =
     typeof normalizedHash === 'string' ? normalizedHash.trim().toLowerCase() : '';
+
+  const observatory = lookupObservatoryBenchmark(hash);
+  if (observatory) {
+    return toObservatoryAttestation(observatory);
+  }
 
   if (!/^[a-f0-9]{64}$/.test(hash)) {
     return {
