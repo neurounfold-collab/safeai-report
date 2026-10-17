@@ -199,6 +199,28 @@
       "step2": "2. Runtime d'évaluation Cisco en 30 scénarios",
       "step3": "3. Ancrage de provenance du registre cryptographique sur WaqfLedger.tech"
     },
+    "commercial": {
+      "title": "Bureau commercial — Division de l'Observatoire arabe de l'IA",
+      "audit": {
+        "title": "Audit automatisé de système",
+        "description": "Déployer un audit de système structuré au service des preuves de supervision institutionnelle de l'IA.",
+        "cta": "Déployer l'audit"
+      },
+      "redteam": {
+        "title": "Matrice de red teaming",
+        "description": "Acquérir la matrice de red teaming pour un examen contradictoire structuré des systèmes déployés.",
+        "cta": "Acquérir la suite"
+      }
+    },
+    "research": {
+      "kicker": "Recherche institutionnelle et livres blancs",
+      "heading": "L'Institut Article 4 — Publications de recherche souveraine",
+      "featured": "Livre blanc à la une",
+      "paperTitle": "Assurance souveraine de l'IA : évaluation de la dérive dialectale, de l'économie des jetons et de la conformité à la PDPL dans les déploiements d'entreprise MENA-UE",
+      "summary": "Ce document examine les essais de résistance multi-dialectes des systèmes linguistiques d'entreprise, la frontière de confidentialité transfrontalière entre la PDPL saoudienne et le traitement européen, ainsi que les obligations de supervision humaine que l'article 4 du règlement européen sur l'IA impose aux déployeurs.",
+      "read": "Lire le livre blanc",
+      "leaderboard": "Ouvrir le classement de référence en direct"
+    },
     "collaboration": {
       "title": "Registre de contribution à la recherche institutionnelle",
       "body": "Nœuds d'infrastructure volontaires : filière institutionnelle 3 500 USD/an · 50 jetons d'examen · parrainage de nœuds WaqfLedger.tech. Filières diagnostiques Niveau 01–03 : 0 USD de frais d'évaluation.",

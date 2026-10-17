@@ -766,6 +766,37 @@ const HOME_STYLES = `
   color: var(--home-text);
 }
 
+.home-view__research-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.home-view__research-leaderboard {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  color: rgba(94, 234, 212, 0.82);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.home-view__research-leaderboard:hover,
+.home-view__research-leaderboard:focus-visible {
+  color: var(--home-accent-teal);
+}
+
+.home-view[dir='rtl'] .home-view__research-leaderboard span[aria-hidden='true'] {
+  transform: scaleX(-1);
+}
+
 .home-view__pipeline-title {
   margin: 0;
   font-size: clamp(0.9375rem, 1.8vw, 1.0625rem);
@@ -1164,7 +1195,7 @@ export default function HomeView({ language: languageProp }) {
 
         <section className="home-view__pipeline" aria-labelledby="home-commercial-title">
           <h2 id="home-commercial-title" className="home-view__section-title break-words leading-[1.7]">
-            Commercial Desk — Arabic AI Observatory Division
+            {t('landing.commercial.title')}
           </h2>
           <div className="home-view__offer-grid">
             <a
@@ -1173,13 +1204,13 @@ export default function HomeView({ language: languageProp }) {
               rel="noopener noreferrer"
               className="home-view__pipeline-card home-view__pipeline-card--layer2 home-view__offer-card"
             >
-              <p className="home-view__pipeline-eyebrow">Automated System Audit</p>
+              <p className="home-view__pipeline-eyebrow">{t('landing.commercial.audit.title')}</p>
               <p className="home-view__offer-price">$199</p>
               <p className="home-view__pipeline-description">
-                Deploy a structured system audit for institutional AI oversight evidence.
+                {t('landing.commercial.audit.description')}
               </p>
               <span className="home-view__offer-cta">
-                Deploy Audit
+                {t('landing.commercial.audit.cta')}
                 <span aria-hidden="true">→</span>
               </span>
             </a>
@@ -1189,13 +1220,13 @@ export default function HomeView({ language: languageProp }) {
               rel="noopener noreferrer"
               className="home-view__pipeline-card home-view__pipeline-card--layer1 home-view__offer-card"
             >
-              <p className="home-view__pipeline-eyebrow">Red-Teaming Matrix</p>
+              <p className="home-view__pipeline-eyebrow">{t('landing.commercial.redteam.title')}</p>
               <p className="home-view__offer-price">$149</p>
               <p className="home-view__pipeline-description">
-                Acquire the red-teaming matrix for structured adversarial review of deployed systems.
+                {t('landing.commercial.redteam.description')}
               </p>
               <span className="home-view__offer-cta">
-                Acquire Suite
+                {t('landing.commercial.redteam.cta')}
                 <span aria-hidden="true">→</span>
               </span>
             </a>
@@ -1204,25 +1235,36 @@ export default function HomeView({ language: languageProp }) {
 
         <section className="home-view__pipeline" aria-labelledby="home-research-title">
           <h2 id="home-research-title" className="home-view__section-title break-words leading-[1.7]">
-            Institutional Research &amp; Whitepapers
+            {t('landing.research.kicker')}
           </h2>
           <article className="home-view__research-card">
             <h3 className="home-view__research-title">
-              L&apos;Institut Article 4 — Sovereign Research Publications
+              {t('landing.research.heading')}
             </h3>
-            <p className="home-view__pipeline-eyebrow">Featured whitepaper</p>
+            <p className="home-view__pipeline-eyebrow">{t('landing.research.featured')}</p>
             <h3 className="home-view__pipeline-title">
-              Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments
+              {t('landing.research.paperTitle')}
             </h3>
             <p className="home-view__pipeline-description">
-              This paper examines multi-dialect stress-testing of enterprise language systems, the cross-border privacy boundary between Saudi PDPL and European processing, and the human-oversight duties that EU AI Act Article 4 places on deployers.
+              {t('landing.research.summary')}
             </p>
-            <a
-              href="mailto:support@safeai.report?subject=Request%20Sovereign%20AI%20Assurance%20Whitepaper"
-              className="inline-flex min-w-0 max-w-full items-center justify-center self-start rounded-xl border border-teal-500/20 bg-slate-950/80 ps-6 pe-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
-            >
-              <span className="min-w-0 break-words leading-[1.7]">Read whitepaper</span>
-            </a>
+            <div className="home-view__research-actions">
+              <a
+                href="mailto:support@safeai.report?subject=Request%20Sovereign%20AI%20Assurance%20Whitepaper"
+                className="inline-flex min-w-0 max-w-full items-center justify-center self-start rounded-xl border border-teal-500/20 bg-slate-950/80 ps-6 pe-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
+              >
+                <span className="min-w-0 break-words leading-[1.7]">{t('landing.research.read')}</span>
+              </a>
+              <a
+                href="https://huggingface.co/spaces/helloadel/arabic-ai-observatory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-view__research-leaderboard"
+              >
+                <span className="min-w-0 break-words">{t('landing.research.leaderboard')}</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
           </article>
         </section>
 

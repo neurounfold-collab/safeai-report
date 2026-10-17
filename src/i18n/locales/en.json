@@ -199,6 +199,28 @@
       "step2": "2. Cisco-Grade 30-Scenario Evaluation Runtime",
       "step3": "3. Cryptographic Registry Provenance Anchoring on WaqfLedger.tech"
     },
+    "commercial": {
+      "title": "Commercial Desk — Arabic AI Observatory Division",
+      "audit": {
+        "title": "Automated System Audit",
+        "description": "Deploy a structured system audit for institutional AI oversight evidence.",
+        "cta": "Deploy Audit"
+      },
+      "redteam": {
+        "title": "Red-Teaming Matrix",
+        "description": "Acquire the red-teaming matrix for structured adversarial review of deployed systems.",
+        "cta": "Acquire Suite"
+      }
+    },
+    "research": {
+      "kicker": "Institutional Research & Whitepapers",
+      "heading": "L'Institut Article 4 — Sovereign Research Publications",
+      "featured": "Featured whitepaper",
+      "paperTitle": "Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments",
+      "summary": "This paper examines multi-dialect stress-testing of enterprise language systems, the cross-border privacy boundary between Saudi PDPL and European processing, and the human-oversight duties that EU AI Act Article 4 places on deployers.",
+      "read": "Read whitepaper",
+      "leaderboard": "Open Live Benchmark Leaderboard"
+    },
     "collaboration": {
       "title": "Institutional Research Contribution Registry",
       "body": "Voluntary infrastructure nodes: USD 3,500/year institutional track · 50 examination tokens · WaqfLedger.tech node sponsorship. Diagnostic tiers Level 01–03: 0 USD evaluation fee.",

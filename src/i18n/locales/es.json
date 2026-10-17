@@ -199,6 +199,28 @@
       "step2": "2. Runtime de evaluación Cisco de 30 escenarios",
       "step3": "3. Anclaje de procedencia del registro criptográfico en WaqfLedger.tech"
     },
+    "commercial": {
+      "title": "Mesa comercial — División del Observatorio Árabe de IA",
+      "audit": {
+        "title": "Auditoría automatizada de sistemas",
+        "description": "Despliegue una auditoría de sistemas estructurada para la evidencia de supervisión institucional de la IA.",
+        "cta": "Desplegar auditoría"
+      },
+      "redteam": {
+        "title": "Matriz de red teaming",
+        "description": "Adquiera la matriz de red teaming para una revisión adversarial estructurada de los sistemas desplegados.",
+        "cta": "Adquirir la suite"
+      }
+    },
+    "research": {
+      "kicker": "Investigación institucional y libros blancos",
+      "heading": "L'Institut Article 4 — Publicaciones de investigación soberana",
+      "featured": "Libro blanco destacado",
+      "paperTitle": "Aseguramiento soberano de la IA: evaluación de la deriva dialectal, la economía de tokens y el cumplimiento de la PDPL en despliegues empresariales MENA-UE",
+      "summary": "Este documento examina las pruebas de estrés multidialectales de los sistemas lingüísticos empresariales, el límite de privacidad transfronterizo entre la PDPL saudí y el tratamiento europeo, y los deberes de supervisión humana que el artículo 4 de la Ley de IA de la UE impone a los responsables del despliegue.",
+      "read": "Leer el libro blanco",
+      "leaderboard": "Abrir la clasificación de referencia en vivo"
+    },
     "collaboration": {
       "title": "Registro de contribución a investigación institucional",
       "body": "Nodos de infraestructura voluntarios: vía institucional 3.500 USD/año · 50 tokens de examen · patrocinio de nodos WaqfLedger.tech. Vías diagnósticas Nivel 01–03: 0 USD de tarifa de evaluación.",
