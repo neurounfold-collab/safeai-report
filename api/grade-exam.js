@@ -16,10 +16,11 @@ const LEDGER_TIMEOUT_MS = 12_000;
  * Canonical WaqfLedger log path — must stay in lockstep with
  * SAFEAI_MASTER_CONFIG.infrastructure.waqfLedgerApiEndpoint
  * (src/config/constants.js). Override via WAQFLEDGER_ENDPOINT.
- * Alternate host form: https://api.waqfledger.tech/api/log-compliance
  */
 const DEFAULT_WAQFLEDGER_ENDPOINT =
-  'https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance';
+  'https://api.waqfledger.tech/api/log-compliance';
+const WAQFLEDGER_PUBLIC_VERIFY_ORIGIN = 'https://waqfledger.tech';
+const WAQFLEDGER_FRAMEWORKS = Object.freeze(['EU_AI_ACT_ART_4', 'ISO_42001']);
 
 /** Unified cohort weights: Sc = Σ(wi × Pi) for pillars P1–P4. */
 const COHORT_WEIGHTS = Object.freeze({
@@ -242,19 +243,17 @@ async function sealOnWaqfLedger(canonicalPayload, hash) {
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      Authorization: `Bearer ${apiSecret}`,
     };
-
-    if (apiSecret) {
-      headers.Authorization = `Bearer ${apiSecret}`;
-    }
 
     const response = await fetch(endpoint, {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        ...canonicalPayload,
+        assessmentId: canonicalPayload.assessmentId,
+        score: canonicalPayload.score,
+        frameworks: [...WAQFLEDGER_FRAMEWORKS],
         hash,
-        stateHash: hash,
       }),
       signal: controller.signal,
     });
@@ -263,11 +262,25 @@ async function sealOnWaqfLedger(canonicalPayload, hash) {
       throw new Error(`WaqfLedger rejected seal (${response.status})`);
     }
 
+    let trackingId = '';
+    try {
+      const receipt = await response.json();
+      if (receipt && typeof receipt.trackingId === 'string') {
+        trackingId = receipt.trackingId.trim();
+      }
+    } catch {
+      trackingId = '';
+    }
+
     return {
       sealed: true,
       mode: 'remote',
       ledgerStatus: 'remote_sealed',
       remoteStatus: response.status,
+      trackingId,
+      verificationUrl: trackingId
+        ? `${WAQFLEDGER_PUBLIC_VERIFY_ORIGIN}/verify?id=${encodeURIComponent(trackingId)}`
+        : '',
     };
   } catch (error) {
     const sealRecord = {
@@ -283,7 +296,7 @@ async function sealOnWaqfLedger(canonicalPayload, hash) {
       console.error('[grade-exam] Fallback storage failed', fallbackError);
     }
 
-    return { sealed: true, mode: 'local', ledgerStatus: 'local_fallback' };
+    return { sealed: true, mode: 'local', ledgerStatus: 'local_fallback', trackingId: '', verificationUrl: '' };
   } finally {
     clearTimeout(timeoutId);
   }
@@ -359,6 +372,8 @@ export default async function handler(req, res) {
     const assessmentId = `A4-ALAM-2026-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
 
     const canonicalPayload = {
+      assessmentId,
+      score: parseFloat(calculatedScore.toFixed(2)),
       assessment_id: assessmentId,
       cohort: cohort || 'CLL_COMPLIANCE_LEGAL',
       composite_score: parseFloat(calculatedScore.toFixed(2)),
@@ -369,7 +384,16 @@ export default async function handler(req, res) {
       timestamp,
     };
 
-    const hash = sha256Hex(canonicalPayload);
+    const hash = sha256Hex({
+      assessment_id: assessmentId,
+      cohort: canonicalPayload.cohort,
+      composite_score: canonicalPayload.composite_score,
+      examinee_name: canonicalPayload.examinee_name,
+      language: canonicalPayload.language,
+      passed,
+      security_breach: breachFlag,
+      timestamp,
+    });
     const ledgerResult = await sealOnWaqfLedger(canonicalPayload, hash);
 
     sendJson(res, 200, {
@@ -379,6 +403,8 @@ export default async function handler(req, res) {
       hash,
       timestamp,
       assessmentId,
+      trackingId: ledgerResult.trackingId || undefined,
+      verificationUrl: ledgerResult.verificationUrl || undefined,
       sealMode: ledgerResult.mode,
       ledgerStatus: ledgerResult.ledgerStatus,
       securityBreach: breachFlag,

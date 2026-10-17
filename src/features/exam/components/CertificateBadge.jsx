@@ -134,9 +134,19 @@ function resolveLedgerBadgeMode(ledgerStatus) {
  * @param {string} props.tierId — Certification tier (e.g. "Level 01").
  * @param {string | null} props.stateHash — 64-character SHA-256 verification state hash.
  * @param {'remote_sealed' | 'local_fallback' | 'anchored' | 'local' | null | undefined} props.ledgerStatus
+ * @param {string | null | undefined} [props.trackingId]
+ * @param {string | null | undefined} [props.verificationUrl]
  * @param {(key: string) => string} props.t — i18n translator.
  */
-export default function CertificateBadge({ candidateName, tierId, stateHash, ledgerStatus, t }) {
+export default function CertificateBadge({
+  candidateName,
+  tierId,
+  stateHash,
+  ledgerStatus,
+  trackingId,
+  verificationUrl,
+  t,
+}) {
   const competencyKey = TIER_COMPETENCY_KEYS[tierId] ?? TIER_COMPETENCY_KEYS['Level 01'];
   const displayHash = stateHash ?? '0'.repeat(64);
   const watermarkText = useMemo(() => buildHashWatermark(displayHash), [displayHash]);
@@ -214,6 +224,24 @@ export default function CertificateBadge({ candidateName, tierId, stateHash, led
             <p className={badgeClassName} role="status">
               {statusLabel}
             </p>
+            {trackingId ? (
+              <p className="mt-2 break-all text-emerald-300/90">
+                Receipt ID: {trackingId}
+              </p>
+            ) : null}
+            {verificationUrl || trackingId ? (
+              <a
+                href={
+                  verificationUrl
+                  || `https://waqfledger.tech/verify?id=${encodeURIComponent(trackingId)}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center rounded-md border border-emerald-400/40 bg-emerald-500/15 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide text-emerald-300 sm:text-xs"
+              >
+                Verify Tamper-Evident Receipt on WaqfLedger
+              </a>
+            ) : null}
           </div>
 
           <div className="flex flex-col items-center justify-end text-center sm:items-end sm:text-right">

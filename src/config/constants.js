@@ -13,13 +13,13 @@ function envString(key, fallback) {
 /**
  * Production-safe endpoint defaults — never rely solely on host .env injection.
  * Canonical WaqfLedger log path (client logger + serverless grader):
- *   https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance
- * Alternate host form (env-overridable via VITE_WAQFLEDGER_API_ENDPOINT /
- * WAQFLEDGER_ENDPOINT): https://api.waqfledger.tech/api/log-compliance
+ *   https://api.waqfledger.tech/api/log-compliance
+ * Override via VITE_WAQFLEDGER_API_ENDPOINT / WAQFLEDGER_ENDPOINT.
  */
 const DEPLOYMENT_DEFAULTS = {
-  waqfLedgerApiEndpoint: 'https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance',
-  waqfLedgerVerifyEndpoint: 'https://waqfledger-api.vercel.app/api/v1/ledger/verify',
+  waqfLedgerApiEndpoint: 'https://api.waqfledger.tech/api/log-compliance',
+  waqfLedgerVerifyEndpoint: 'https://api.waqfledger.tech/api/verify',
+  waqfLedgerPublicVerifyOrigin: 'https://waqfledger.tech',
   emailRouterEndpoint: '/api/contact.php',
   stripeTierAUrl: 'https://donate.stripe.com/eVq9ATfOzfLkaTj3kQ3Nm03',
   stripeTierBUrl: 'https://donate.stripe.com/eVq6oH45R7eO7H76x23Nm04',
@@ -60,6 +60,10 @@ export const SAFEAI_MASTER_CONFIG = {
     waqfLedgerVerifyEndpoint: envString(
       'VITE_WAQFLEDGER_VERIFY_ENDPOINT',
       DEPLOYMENT_DEFAULTS.waqfLedgerVerifyEndpoint,
+    ),
+    waqfLedgerPublicVerifyOrigin: envString(
+      'VITE_WAQFLEDGER_PUBLIC_VERIFY_ORIGIN',
+      DEPLOYMENT_DEFAULTS.waqfLedgerPublicVerifyOrigin,
     ),
     protocol: "Sovereign Algorithmic Governance Ledger",
     encryptionProtocol: "SHA-256 tamper-evident state hashing",

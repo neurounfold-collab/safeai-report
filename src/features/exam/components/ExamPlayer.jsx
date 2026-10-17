@@ -20,7 +20,7 @@ import {
   resolveCompositeScoreBand,
 } from '../utils/scoringEngine.js';
 import { triggerLinkedInSocialUnlock } from '../../../utils/linkedInSocialUnlock.js';
-import { streamComplianceToLedger } from '../../../utils/waqfLedgerClient';
+import { streamComplianceToLedger, buildWaqfLedgerPublicVerifyUrl } from '../../../utils/waqfLedgerClient';
 import { getDomainContext, submitIntakeForm } from '../../../utils/emailRouter.js';
 import CertificateBadge from './CertificateBadge.jsx';
 
@@ -555,6 +555,39 @@ const EXAM_PLAYER_STYLES = `
   border-color: rgba(94, 234, 212, 0.75);
   background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
   transform: translateY(-1px);
+}
+
+.exam-player__waqf-verify {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 26rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  border-radius: 0.75rem;
+  background: rgba(16, 185, 129, 0.12);
+  color: #6ee7b7;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+}
+
+.exam-player__waqf-verify:hover {
+  border-color: rgba(52, 211, 153, 0.7);
+  background: rgba(16, 185, 129, 0.2);
+  color: #a7f3d0;
+}
+
+.exam-player__receipt-id {
+  margin: 0.65rem 0 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: rgba(148, 163, 184, 0.95);
+  word-break: break-all;
 }
 
 .exam-player__waqf-caption {
@@ -1252,6 +1285,8 @@ function resolveCertificationTier(scoreResult, urlTier) {
  *   hash: string;
  *   timestamp: string;
  *   assessmentId: string;
+ *   trackingId?: string;
+ *   verificationUrl?: string;
  *   sealMode?: string;
  *   ledgerStatus?: 'remote_sealed' | 'local_fallback';
  *   securityBreach?: boolean;
@@ -1281,6 +1316,13 @@ function buildServerScoreResult(payload, roleId, urlTier) {
     },
     tierBreakdown: [],
     assessmentId: payload.assessmentId,
+    trackingId: typeof payload.trackingId === 'string' ? payload.trackingId : '',
+    verificationUrl:
+      typeof payload.verificationUrl === 'string' && payload.verificationUrl.trim()
+        ? payload.verificationUrl.trim()
+        : (typeof payload.trackingId === 'string' && payload.trackingId.trim()
+          ? buildWaqfLedgerPublicVerifyUrl(payload.trackingId)
+          : ''),
     sealedAt: payload.timestamp,
     sealMode: payload.sealMode ?? null,
     ledgerStatus,
@@ -1764,6 +1806,14 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         window.localStorage.setItem('SAFEAI_CREDENTIAL_STATE_HASH', payload.hash);
         window.localStorage.setItem('SAFEAI_CERTIFICATION_TIER', result.certificationTier);
         window.localStorage.setItem('SAFEAI_CREDENTIAL_TIMESTAMP', payload.timestamp);
+        if (typeof payload.trackingId === 'string' && payload.trackingId.trim()) {
+          window.localStorage.setItem('SAFEAI_WAQFLEDGER_TRACKING_ID', payload.trackingId.trim());
+          window.localStorage.setItem(
+            'SAFEAI_WAQFLEDGER_VERIFY_URL',
+            payload.verificationUrl
+              || buildWaqfLedgerPublicVerifyUrl(payload.trackingId),
+          );
+        }
       } catch {
         // Storage may be unavailable in hardened browser profiles.
       }
@@ -1979,12 +2029,26 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
         certificationPipelineRef.current.ledgerDispatched = true;
         const ledgerResult = await streamComplianceToLedger({
           hash: hashForLedger,
+          assessmentId: scoreResult?.assessmentId,
           candidateName: readStoredLegalName(),
           tierId: certificationTier,
           score: scoreResult?.composite?.score ?? scoreResult?.weighted?.percentage,
           timestamp: completedAt,
           trackType: LEDGER_TRACK.ARTICLE_4_LITERACY_EXAM,
         });
+        if (ledgerResult?.trackingId) {
+          setScoreResult((current) => (
+            current
+              ? {
+                  ...current,
+                  trackingId: ledgerResult.trackingId,
+                  verificationUrl:
+                    ledgerResult.verificationUrl
+                    || buildWaqfLedgerPublicVerifyUrl(ledgerResult.trackingId),
+                }
+              : current
+          ));
+        }
         if (ledgerStatus !== 'remote_sealed') {
           setLedgerStatus(ledgerResult?.success ? 'remote_sealed' : 'local_fallback');
         }
@@ -2228,6 +2292,8 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
                   tierId={certificationTier}
                   stateHash={stateHash}
                   ledgerStatus={ledgerStatus}
+                  trackingId={scoreResult.trackingId}
+                  verificationUrl={scoreResult.verificationUrl}
                   t={t}
                 />
               ) : (
@@ -2266,6 +2332,25 @@ export default function ExamPlayer({ language: languageProp, candidateName: cand
               </div>
             )}
           </div>
+
+          {scoreResult.trackingId ? (
+            <div className="exam-player__identity-actions" style={{ marginTop: '1.25rem' }}>
+              <p className="exam-player__receipt-id">
+                Receipt ID: {scoreResult.trackingId}
+              </p>
+              <a
+                className="exam-player__waqf-verify"
+                href={
+                  scoreResult.verificationUrl
+                  || buildWaqfLedgerPublicVerifyUrl(scoreResult.trackingId)
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Verify Tamper-Evident Receipt on WaqfLedger
+              </a>
+            </div>
+          ) : null}
         </div>
 
         <p className="exam-player__lock-notice" role="status">

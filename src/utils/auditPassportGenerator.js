@@ -22,6 +22,10 @@ const ISSUER =
   SAFEAI_MASTER_CONFIG?.legalAnchors?.academicInstitution ??
   "L'INSTITUT ARTICLE 4 (A4I)";
 const VERIFY_ORIGIN = 'https://safeai.report/verify';
+const PUBLIC_VERIFY_ORIGIN =
+  INFRA.waqfLedgerPublicVerifyOrigin ?? 'https://waqfledger.tech';
+const GOVERNANCE_STANDARD =
+  "L'Institut Article 4 (AI Literacy & Article 4 Frameworks)";
 
 const ANNEX_III_IDS = Object.freeze(['3a', '3b', '3c', '3d']);
 
@@ -274,6 +278,7 @@ export async function buildAuditPassport(assessmentProfile, options = {}) {
           INFRA.encryptionProtocol ?? 'SHA-256 tamper-evident state hashing',
         log_endpoint: INFRA.waqfLedgerApiEndpoint ?? null,
         verify_endpoint: INFRA.waqfLedgerVerifyEndpoint ?? null,
+        tracking_id: profile.trackingId ?? null,
         anchored,
         status: anchorStatus,
       },
@@ -287,7 +292,10 @@ export async function buildAuditPassport(assessmentProfile, options = {}) {
   };
 
   const evidencePackageSha256 = await computeSha256Hex(stripEvidenceHashes(unsignedPassport));
-  const verificationUrl = `${VERIFY_ORIGIN}?hash=${encodeURIComponent(stateHash)}`;
+  const trackingId = typeof profile.trackingId === 'string' ? profile.trackingId : '';
+  const verificationUrl = trackingId
+    ? buildPublicVerifyUrl(trackingId)
+    : `${VERIFY_ORIGIN}?hash=${encodeURIComponent(stateHash)}`;
 
   return {
     ...unsignedPassport,
@@ -362,10 +370,13 @@ export async function generateArticle4AttestationReceipt(attestation) {
     waqfledger_seal: {
       host: LEDGER_ENGINE,
       hash: stateHash,
+      tracking_id: attestation.trackingId ?? null,
       anchored,
       status: anchored ? LEDGER_ANCHOR_STATUS.ANCHORED : LEDGER_ANCHOR_STATUS.LOCAL_FALLBACK,
       verify_endpoint: INFRA.waqfLedgerVerifyEndpoint ?? null,
-      verification_url: `${VERIFY_ORIGIN}?hash=${encodeURIComponent(stateHash)}`,
+      verification_url: attestation.trackingId
+        ? buildPublicVerifyUrl(attestation.trackingId)
+        : `${VERIFY_ORIGIN}?hash=${encodeURIComponent(stateHash)}`,
     },
   };
 
@@ -394,6 +405,32 @@ function escapeHtml(value) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function buildPublicVerifyUrl(trackingId, fallbackUrl = '') {
+  if (typeof trackingId === 'string' && trackingId.trim()) {
+    return `${String(PUBLIC_VERIFY_ORIGIN).replace(/\/$/, '')}/verify?id=${encodeURIComponent(trackingId.trim())}`;
+  }
+  return typeof fallbackUrl === 'string' ? fallbackUrl : '';
+}
+
+function qrMarkup(url) {
+  if (!url) return '';
+  const src = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(url)}`;
+  return `<img class="qr" alt="WaqfLedger verification QR" width="120" height="120" src="${src}" />`;
+}
+
+function governanceExportHeaderHtml({ trackingId, verificationUrl }) {
+  const url = buildPublicVerifyUrl(trackingId, verificationUrl);
+  return `
+  <header class="export-header">
+    <p><strong>Governance Standard:</strong> ${escapeHtml(GOVERNANCE_STANDARD)}</p>
+    <p><strong>Receipt ID:</strong> ${escapeHtml(trackingId || '—')}</p>
+    <p><strong>Public verification:</strong> ${
+      url ? `<a href="${escapeHtml(url)}">${escapeHtml(url)}</a>` : '—'
+    }</p>
+    ${qrMarkup(url)}
+  </header>`;
 }
 
 /**
@@ -462,10 +499,16 @@ export function printComplianceSummary(passport, labels = {}) {
     th { background: #f5f5f5; }
     .meta { font-size: 0.8125rem; color: #444; }
     .hash { font-family: ui-monospace, monospace; font-size: 0.72rem; word-break: break-all; }
+    .export-header { border: 1px solid #d1d5db; padding: 0.85rem 1rem; margin: 0 0 1.25rem; background: #f8fafc; }
+    .export-header .qr { display: block; margin-top: 0.65rem; }
     @media print { body { margin: 1rem; } }
   </style>
 </head>
 <body>
+  ${governanceExportHeaderHtml({
+    trackingId: anchor.tracking_id ?? passport.trackingId,
+    verificationUrl: provenance.verification_url,
+  })}
   <h1>${escapeHtml(title)}</h1>
   <p class="meta">${escapeHtml(subtitle)}</p>
   <p><strong>Passport ID:</strong> ${escapeHtml(passport.passport_id)}</p>
@@ -537,10 +580,16 @@ export function printArticle4AttestationReceipt(receipt, labels = {}) {
     p { margin: 0.35rem 0; }
     .meta { font-size: 0.8125rem; color: #444; }
     .hash { font-family: ui-monospace, monospace; font-size: 0.72rem; word-break: break-all; }
+    .export-header { border: 1px solid #d1d5db; padding: 0.85rem 1rem; margin: 0 0 1.25rem; background: #f8fafc; }
+    .export-header .qr { display: block; margin-top: 0.65rem; }
     @media print { body { margin: 1rem; } }
   </style>
 </head>
 <body>
+  ${governanceExportHeaderHtml({
+    trackingId: seal.tracking_id ?? receipt.trackingId,
+    verificationUrl: seal.verification_url,
+  })}
   <h1>${escapeHtml(title)}</h1>
   <p class="meta">${escapeHtml(subtitle)}</p>
   <p><strong>Track:</strong> ${escapeHtml(receipt.track ?? 'Article 4 Deployer Literacy')}</p>

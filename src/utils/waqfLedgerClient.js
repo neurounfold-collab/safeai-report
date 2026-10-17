@@ -6,13 +6,16 @@ import {
 } from '../config/ledgerTracks.js';
 
 const LEDGER_REQUEST_TIMEOUT_MS = 15_000;
+export const WAQFLEDGER_FRAMEWORKS = Object.freeze(['EU_AI_ACT_ART_4', 'ISO_42001']);
 
 /** In-bundle fallback when config hydration is incomplete on static hosts. */
 const FALLBACK_WAQFLEDGER_ENDPOINT =
-  'https://waqfledger-api.vercel.app/api/v1/ledger/log-compliance';
+  'https://api.waqfledger.tech/api/log-compliance';
 
 const FALLBACK_WAQFLEDGER_VERIFY_ENDPOINT =
-  'https://waqfledger-api.vercel.app/api/v1/ledger/verify';
+  'https://api.waqfledger.tech/api/verify';
+
+const FALLBACK_PUBLIC_VERIFY_ORIGIN = 'https://waqfledger.tech';
 
 function resolveWaqfLedgerEndpoint() {
   return (
@@ -35,7 +38,7 @@ function resolveWaqfLedgerVerifyEndpoint() {
     const logUrl = new URL(resolveWaqfLedgerEndpoint());
     logUrl.pathname = logUrl.pathname.replace(/\/log-compliance\/?$/i, '/verify');
     if (!/\/verify\/?$/i.test(logUrl.pathname)) {
-      logUrl.pathname = '/api/v1/ledger/verify';
+      logUrl.pathname = '/api/verify';
     }
     logUrl.search = '';
     logUrl.hash = '';
@@ -45,6 +48,38 @@ function resolveWaqfLedgerVerifyEndpoint() {
   }
 }
 
+function resolvePublicVerifyOrigin() {
+  const configured = SAFEAI_MASTER_CONFIG?.infrastructure?.waqfLedgerPublicVerifyOrigin;
+  if (typeof configured === 'string' && configured.trim()) {
+    return configured.trim().replace(/\/$/, '');
+  }
+  return FALLBACK_PUBLIC_VERIFY_ORIGIN;
+}
+
+/**
+ * Direct public receipt URL consumed by auditors and PDF export headers.
+ * @param {unknown} trackingId
+ * @returns {string}
+ */
+export function buildWaqfLedgerPublicVerifyUrl(trackingId) {
+  if (typeof trackingId !== 'string' || !trackingId.trim()) return '';
+  return `${resolvePublicVerifyOrigin()}/verify?id=${encodeURIComponent(trackingId.trim())}`;
+}
+
+function resolveClientApiSecret() {
+  const viteSecret = import.meta.env?.VITE_WAQFLEDGER_API_SECRET;
+  if (typeof viteSecret === 'string' && viteSecret.trim()) {
+    return viteSecret.trim();
+  }
+  return '';
+}
+
+function extractTrackingId(payload) {
+  if (!payload || typeof payload !== 'object') return '';
+  const value = payload.trackingId ?? payload.tracking_id;
+  return typeof value === 'string' ? value.trim() : '';
+}
+
 /**
  * @param {unknown} value
  * @returns {number}
@@ -52,25 +87,6 @@ function resolveWaqfLedgerVerifyEndpoint() {
 function sanitizeLedgerScore(value) {
   const parsed = Number.parseInt(String(value ?? ''), 10);
   return Number.isFinite(parsed) ? parsed : 0;
-}
-
-/**
- * @param {unknown} value
- * @returns {string}
- */
-function sanitizeLedgerTimestamp(value) {
-  if (typeof value === 'string' && value.trim()) {
-    const epochMs = Date.parse(value.trim());
-    if (Number.isFinite(epochMs)) {
-      return new Date(epochMs).toISOString();
-    }
-  }
-
-  if (value instanceof Date && Number.isFinite(value.getTime())) {
-    return value.toISOString();
-  }
-
-  return new Date().toISOString();
 }
 
 /**
@@ -213,7 +229,13 @@ export async function queryLedgerAttestation(hash) {
  * Network failures are non-blocking — callers always receive a success flag.
  * `anchored` is true only for HTTP 200/201 receipts.
  *
- * @returns {Promise<{ success: boolean, status?: number, anchored: boolean }>}
+ * @returns {Promise<{
+ *   success: boolean,
+ *   status?: number,
+ *   anchored: boolean,
+ *   trackingId?: string,
+ *   verificationUrl?: string,
+ * }>}
  */
 export async function streamComplianceToLedger(complianceData) {
   try {
@@ -228,42 +250,34 @@ export async function streamComplianceToLedger(complianceData) {
       ? LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS
       : LEDGER_TRACK.ARTICLE_4_LITERACY_EXAM;
 
+    const assessmentId =
+      typeof complianceData?.assessmentId === 'string' && complianceData.assessmentId.trim()
+        ? complianceData.assessmentId.trim()
+        : (trackType === LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS
+          ? 'OIARF-READINESS'
+          : 'A4-ALAM');
+
     const payload = {
-      hash,
-      candidateName:
-        typeof complianceData?.candidateName === 'string' && complianceData.candidateName.trim()
-          ? complianceData.candidateName.trim()
-          : (trackType === LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS
-            ? 'Anonymous Deployer'
-            : 'Anonymous Candidate'),
-      tierId:
-        typeof complianceData?.tierId === 'string' && complianceData.tierId.trim()
-          ? complianceData.tierId.trim()
-          : (trackType === LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS
-            ? 'oiarf_readiness'
-            : 'level01'),
+      assessmentId,
       score: sanitizeLedgerScore(complianceData?.score),
-      timestamp: sanitizeLedgerTimestamp(complianceData?.timestamp),
-      trackType,
+      frameworks: [...WAQFLEDGER_FRAMEWORKS],
+      hash,
     };
 
-    if (trackType === LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS) {
-      if (typeof complianceData?.regulatoryRole === 'string') {
-        payload.regulatoryRole = complianceData.regulatoryRole;
-      }
-      if (Array.isArray(complianceData?.annexIIISection3)) {
-        payload.annexIIISection3 = complianceData.annexIIISection3;
-      }
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    };
+    const apiSecret = resolveClientApiSecret();
+    if (apiSecret) {
+      headers.Authorization = `Bearer ${apiSecret}`;
     }
 
     const response = await fetch(
       resolveWaqfLedgerEndpoint(),
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+        headers,
         body: JSON.stringify(payload),
         signal: AbortSignal.timeout(LEDGER_REQUEST_TIMEOUT_MS),
       },
@@ -277,7 +291,21 @@ export async function streamComplianceToLedger(complianceData) {
       return { success: false, status: response.status, anchored: false };
     }
 
-    return { success: true, status: response.status, anchored: true };
+    let trackingId = '';
+    try {
+      const receipt = await response.json();
+      trackingId = extractTrackingId(receipt);
+    } catch {
+      trackingId = '';
+    }
+
+    return {
+      success: true,
+      status: response.status,
+      anchored: true,
+      trackingId: trackingId || undefined,
+      verificationUrl: trackingId ? buildWaqfLedgerPublicVerifyUrl(trackingId) : undefined,
+    };
   } catch (error) {
     console.warn('WaqfLedger compliance stream failed:', error);
     return { success: false, anchored: false };

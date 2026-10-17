@@ -2,7 +2,7 @@ import { Component, Suspense, useCallback, useEffect, useRef, useState } from 'r
 import { useSearchParams } from 'react-router-dom';
 import { SAFEAI_MASTER_CONFIG } from '../../config/constants.js';
 import { LEDGER_ANCHOR_STATUS, LEDGER_TRACK } from '../../config/ledgerTracks.js';
-import { streamComplianceToLedger } from '../../utils/waqfLedgerClient.js';
+import { streamComplianceToLedger, buildWaqfLedgerPublicVerifyUrl } from '../../utils/waqfLedgerClient.js';
 import {
   downloadAuditPassportJsonLd,
   printComplianceSummary,
@@ -886,6 +886,25 @@ function ResultsPanel({
         {stateHash || null}
       </p>
 
+      {assessmentProfile?.trackingId ? (
+        <div className="readiness-actions">
+          <p className="readiness-hash">
+            <strong>Receipt ID:</strong> {assessmentProfile.trackingId}
+          </p>
+          <a
+            className="readiness-btn readiness-btn--primary"
+            href={
+              assessmentProfile.verificationUrl
+              || buildWaqfLedgerPublicVerifyUrl(assessmentProfile.trackingId)
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Verify Tamper-Evident Receipt on WaqfLedger
+          </a>
+        </div>
+      ) : null}
+
       <p className="readiness-sector-tag">
         <strong>{t('readiness.sectorTag')}</strong>
         {sector
@@ -1253,6 +1272,7 @@ function ReadinessDashboardInner() {
 
         const ledgerResult = await streamComplianceToLedger({
           hash,
+          assessmentId: `OIARF-${sector || 'UNSCOPED'}`,
           trackType: LEDGER_TRACK.OIARF_INSTITUTIONAL_READINESS,
           score: Math.round(compositeRaw.overallIndexPercent),
           timestamp: new Date().toISOString(),
@@ -1268,6 +1288,7 @@ function ReadinessDashboardInner() {
           postedHashRef.current = hash;
         }
 
+        const trackingId = ledgerResult?.trackingId ?? null;
         const profile = buildAssessmentProfile({
           answers,
           sector,
@@ -1278,6 +1299,7 @@ function ReadinessDashboardInner() {
           ledgerStatus: anchored
             ? LEDGER_ANCHOR_STATUS.ANCHORED
             : LEDGER_ANCHOR_STATUS.LOCAL_FALLBACK,
+          trackingId,
         });
 
         setDimensionScores(composite.dimensionScores);

@@ -18,6 +18,7 @@ import { computeMcdaComposite, computeDimensionScore } from './mcdaComposite.js'
  *   stateHash?: string | null,
  *   ledgerAnchored?: boolean,
  *   ledgerStatus?: string | null,
+ *   trackingId?: string | null,
  *   sealedAt?: string | null,
  * }} input
  */
@@ -29,6 +30,7 @@ export function buildAssessmentProfile({
   stateHash = null,
   ledgerAnchored = false,
   ledgerStatus = null,
+  trackingId = null,
   sealedAt = null,
 }) {
   const composite = computeMcdaComposite(answers, { unrounded: true });
@@ -63,6 +65,10 @@ export function buildAssessmentProfile({
     ledgerStatus:
       ledgerStatus
       ?? (ledgerAnchored ? LEDGER_ANCHOR_STATUS.ANCHORED : LEDGER_ANCHOR_STATUS.LOCAL_FALLBACK),
+    trackingId: trackingId ?? null,
+    verificationUrl: trackingId
+      ? `https://waqfledger.tech/verify?id=${encodeURIComponent(trackingId)}`
+      : null,
     anchored: Boolean(ledgerAnchored),
   };
 }

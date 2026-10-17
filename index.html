@@ -228,6 +228,306 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <section
+      id="commercial-cta"
+      aria-labelledby="commercial-cta-title"
+      class="border-t border-slate-800/80 bg-[#0b0f19] px-4 py-16 text-slate-100 antialiased sm:px-6 lg:px-8"
+    >
+      <div class="mx-auto w-full max-w-5xl">
+        <div class="mb-10 max-w-2xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-teal-300/90">
+            Commercial desk
+          </p>
+          <h2 id="commercial-cta-title" class="mt-3 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+            Assurance instruments
+          </h2>
+          <p class="mt-3 text-sm leading-7 text-slate-400 sm:text-base">
+            Acquire the automated system audit or the red-teaming matrix directly.
+          </p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          <a
+            href="https://safeai.gumroad.com/l/arabic-ai-audit"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex min-h-full flex-col rounded-2xl border border-slate-700/80 bg-[#111c2e] p-7 shadow-[0_18px_50px_rgba(2,6,23,0.35)] transition duration-300 ease-out hover:-translate-y-0.5 hover:border-teal-300/45 hover:shadow-[0_22px_60px_rgba(8,15,30,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-300"
+          >
+            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Automated System Audit
+            </p>
+            <p class="mt-4 text-4xl font-semibold tracking-tight text-slate-50">$199</p>
+            <p class="mt-4 flex-1 text-sm leading-7 text-slate-300">
+              Deploy a structured system audit for institutional AI oversight evidence.
+            </p>
+            <span class="mt-8 inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-teal-200 transition-colors duration-300 group-hover:text-white">
+              Deploy Audit
+              <span class="inline-block transition-transform duration-300 ease-out group-hover:translate-x-1.5" aria-hidden="true">→</span>
+            </span>
+          </a>
+
+          <a
+            href="https://safeai.gumroad.com/l/arabic-ai-redteam"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex min-h-full flex-col rounded-2xl border border-slate-700/80 bg-[#111c2e] p-7 shadow-[0_18px_50px_rgba(2,6,23,0.35)] transition duration-300 ease-out hover:-translate-y-0.5 hover:border-teal-300/45 hover:shadow-[0_22px_60px_rgba(8,15,30,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-300"
+          >
+            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Red-Teaming Matrix
+            </p>
+            <p class="mt-4 text-4xl font-semibold tracking-tight text-slate-50">$149</p>
+            <p class="mt-4 flex-1 text-sm leading-7 text-slate-300">
+              Acquire the red-teaming matrix for structured adversarial review of deployed systems.
+            </p>
+            <span class="mt-8 inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-teal-200 transition-colors duration-300 group-hover:text-white">
+              Acquire Suite
+              <span class="inline-block transition-transform duration-300 ease-out group-hover:translate-x-1.5" aria-hidden="true">→</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="certificate-registry"
+      aria-labelledby="certificate-registry-title"
+      class="border-t border-slate-800/80 bg-[#0b0f19] px-4 py-16 text-slate-100 antialiased sm:px-6 lg:px-8"
+    >
+      <div class="mx-auto w-full max-w-3xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-teal-300/90">
+          Cryptographic registry
+        </p>
+        <h2 id="certificate-registry-title" class="mt-3 text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+          Certificate verification
+        </h2>
+        <p class="mt-3 text-sm leading-7 text-slate-400 sm:text-base">
+          Look up a record by its full Certificate ID or a SHA-256 fragment. Matching ignores letter case.
+        </p>
+
+        <form id="certificate-lookup-form" class="mt-8 flex flex-col gap-3 sm:flex-row" novalidate>
+          <label class="sr-only" for="certificate-lookup-query">Certificate ID or SHA-256 fragment</label>
+          <input
+            id="certificate-lookup-query"
+            name="query"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Certificate ID or SHA-256 fragment"
+            class="min-w-0 flex-1 rounded-xl border border-slate-700/80 bg-[#111c2e] px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-teal-300/50"
+          />
+          <button
+            type="submit"
+            class="rounded-xl border border-teal-300/30 bg-teal-300/10 px-5 py-3 text-sm font-semibold text-teal-100 transition hover:border-teal-200/60 hover:bg-teal-300/20"
+          >
+            Verify record
+          </button>
+        </form>
+
+        <div id="certificate-lookup-result" class="mt-6" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <script>
+      const CERTIFICATES_DB = {
+        "AAO-EXP-202610-36497C9F": {
+          id: "AAO-EXP-202610-36497C9F",
+          readiness: 68.7,
+          verdict: "REMEDIATION_REQUIRED",
+          system: "Multi-District Enterprise Baseline",
+          sha256: "16cde805dcd3199d640f9590d1d8469ac809854b3f9026a3cb43a8a9dff55ab2",
+        },
+        "AAO-STD-202610-884QWEN2": {
+          id: "AAO-STD-202610-884QWEN2",
+          readiness: 88.4,
+          verdict: "CERTIFIED",
+          system: "Qwen 2.5 7B Reference",
+          sha256: "391e0e7cf7b63a3c6cf7013be40a239e75fb5425b7fa25e13a8a5908119eaa0d",
+        },
+        "AAO-AUD-202610-991KSA01": {
+          id: "AAO-AUD-202610-991KSA01",
+          readiness: 94.2,
+          verdict: "CERTIFIED",
+          system: "Sovereign KSA Bilingual RAG Agent",
+          sha256: "bd6230243285158c7389f7e73e6e705cde1bf90469710db4dc1e8c8c08f40a54",
+        },
+      };
+
+      /**
+       * Case-insensitive lookup by full Certificate ID, or by a SHA-256 fragment
+       * of at least six hexadecimal characters that matches exactly one record.
+       * @param {string} query
+       * @returns {{ status: "match", record: object } | { status: "unverified", reason: "empty" | "ambiguous" | "unknown" }}
+       */
+      function lookupCertificate(query) {
+        const normalized = String(query ?? "").trim().toLowerCase();
+        if (!normalized) {
+          return { status: "unverified", reason: "empty" };
+        }
+
+        const records = Object.values(CERTIFICATES_DB);
+        const byId = records.find((record) => record.id.toLowerCase() === normalized);
+        if (byId) {
+          return { status: "match", record: byId };
+        }
+
+        if (!/^[a-f0-9]{6,64}$/.test(normalized)) {
+          return { status: "unverified", reason: "unknown" };
+        }
+
+        const byHash = records.filter((record) => record.sha256.includes(normalized));
+        if (byHash.length === 1) {
+          return { status: "match", record: byHash[0] };
+        }
+
+        return { status: "unverified", reason: byHash.length > 1 ? "ambiguous" : "unknown" };
+      }
+
+      const certificateResult = document.getElementById("certificate-lookup-result");
+
+      function verdictPresentation(verdict) {
+        if (verdict === "CERTIFIED") {
+          return {
+            card: "border-emerald-400/35 bg-emerald-400/5",
+            badge: "border-emerald-400/40 bg-emerald-400/15 text-emerald-200",
+          };
+        }
+        return {
+          card: "border-rose-400/40 bg-amber-400/5",
+          badge: "border-rose-400/45 bg-rose-400/15 text-amber-100",
+        };
+      }
+
+      function renderCertificateResult(outcome) {
+        certificateResult.replaceChildren();
+
+        if (outcome.status !== "match") {
+          const error = document.createElement("div");
+          error.className = "rounded-2xl border border-rose-400/45 bg-rose-950/40 p-6";
+          error.setAttribute("role", "alert");
+
+          const label = document.createElement("p");
+          label.className = "text-xs font-semibold uppercase tracking-[0.16em] text-rose-200";
+          label.textContent = "Unverified";
+
+          const message = document.createElement("p");
+          message.className = "mt-3 text-sm leading-7 text-rose-100";
+          message.textContent = outcome.reason === "ambiguous"
+            ? "That SHA-256 fragment matches more than one record. Enter a longer hash."
+            : outcome.reason === "empty"
+              ? "Enter a full Certificate ID or a SHA-256 fragment to search the registry."
+              : "No registry record matches this Certificate ID or SHA-256 fragment.";
+
+          error.append(label, message);
+          certificateResult.append(error);
+          return;
+        }
+
+        const record = outcome.record;
+        const tone = verdictPresentation(record.verdict);
+        const card = document.createElement("article");
+        card.className = `rounded-2xl border bg-[#111c2e] p-6 shadow-[0_18px_50px_rgba(2,6,23,0.35)] ${tone.card}`;
+
+        const eyebrow = document.createElement("p");
+        eyebrow.className = "text-xs font-semibold uppercase tracking-[0.16em] text-slate-400";
+        eyebrow.textContent = "Registry match";
+
+        const badge = document.createElement("p");
+        badge.className = `mt-4 inline-flex rounded-full border px-3 py-1 text-xs font-semibold tracking-[0.14em] ${tone.badge}`;
+        badge.textContent = record.verdict;
+
+        const system = document.createElement("h3");
+        system.className = "mt-4 text-xl font-semibold tracking-tight text-slate-50";
+        system.textContent = record.system;
+
+        const meta = document.createElement("dl");
+        meta.className = "mt-5 grid gap-4 text-sm sm:grid-cols-2";
+
+        const fields = [
+          ["Certificate ID", record.id],
+          ["Readiness", `${record.readiness.toFixed(1)}/100`],
+          ["SHA-256", record.sha256],
+        ];
+
+        for (const [name, value] of fields) {
+          const wrap = document.createElement("div");
+          wrap.className = name === "SHA-256" ? "sm:col-span-2" : "";
+          const term = document.createElement("dt");
+          term.className = "text-xs font-semibold uppercase tracking-[0.14em] text-slate-500";
+          term.textContent = name;
+          const detail = document.createElement("dd");
+          detail.className = name === "SHA-256"
+            ? "mt-1 break-all font-mono text-xs leading-6 text-slate-300"
+            : "mt-1 font-medium text-slate-100";
+          detail.textContent = value;
+          wrap.append(term, detail);
+          meta.append(wrap);
+        }
+
+        card.append(eyebrow, badge, system, meta);
+        certificateResult.append(card);
+      }
+
+      document.getElementById("certificate-lookup-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const query = new FormData(event.currentTarget).get("query");
+        renderCertificateResult(lookupCertificate(query));
+      });
+    </script>
+
+    <section
+      id="institutional-research"
+      aria-labelledby="institutional-research-title"
+      class="border-t border-slate-800/80 bg-[#0b0f19] px-4 py-16 sm:px-6 lg:px-8"
+    >
+      <div class="mx-auto w-full max-w-5xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-teal-300/90">
+          Institutional Research &amp; Whitepapers
+        </p>
+        <article class="mt-6 rounded-2xl border border-slate-200 bg-white px-6 py-8 text-slate-900 shadow-[0_18px_50px_rgba(2,6,23,0.28)] sm:px-10 sm:py-10">
+          <h2 id="institutional-research-title" class="text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
+            L'Institut Article 4 — Sovereign Research Publications
+          </h2>
+          <div class="mt-8 rounded-xl border border-slate-200 bg-slate-50 p-6 sm:p-7">
+            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+              Featured whitepaper
+            </p>
+            <h3 class="mt-3 text-lg font-semibold leading-snug tracking-tight text-slate-950 sm:text-xl">
+              Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments
+            </h3>
+            <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+              This paper examines multi-dialect stress-testing of enterprise language systems, the cross-border privacy boundary between Saudi PDPL and European processing, and the human-oversight duties that EU AI Act Article 4 places on deployers.
+            </p>
+            <a
+              href="mailto:support@safeai.report?subject=Whitepaper%20request%3A%20Sovereign%20AI%20Assurance"
+              class="mt-6 inline-flex items-center rounded-lg border border-slate-900 bg-transparent px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white"
+            >
+              Read whitepaper
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="border-t border-slate-800/80 bg-[#0b0f19] px-4 py-10 text-slate-300 sm:px-6 lg:px-8">
+      <div class="mx-auto flex w-full max-w-5xl flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+            Institutional inquiries
+          </p>
+          <a
+            href="mailto:support@safeai.report"
+            class="mt-2 inline-flex text-sm font-medium text-slate-100 underline decoration-slate-600 underline-offset-4 transition-colors duration-300 hover:text-teal-200 hover:decoration-teal-300/70"
+          >
+            support@safeai.report
+          </a>
+        </div>
+        <p class="text-sm leading-6 text-slate-400">
+          Powered by the Arabic AI Observatory Engine.
+        </p>
+      </div>
+    </footer>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
