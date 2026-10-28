@@ -17,3 +17,18 @@ keywords:
   - "AI Readiness Index"
   - "WaqfLedger"
 license: "MIT"
+references:
+  - type: report
+    title: "Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments"
+    authors:
+      - family-names: "El Bouzagaoui"
+        given-names: "Adel"
+        affiliation: "L'Institut Article 4"
+    year: 2026
+    publisher:
+      name: "L'Institut Article 4 (A4I)"
+    url: "https://safeai.report/A4I_Sovereign_AI_Assurance_Whitepaper_2026.pdf"
+    identifiers:
+      - type: other
+        value: "A4I-WP-2026-V2.0"
+        description: "Publication ID"

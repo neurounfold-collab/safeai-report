@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { SAFEAI_MASTER_CONFIG } from '../../config/constants.js';
 import { createTranslator, getActiveLanguage, isRtlLanguage } from '../../i18n/index.js';
 import { getDomainContext, submitIntakeForm } from '../../utils/emailRouter.js';
+
+const WHITEPAPER_HREF =
+  SAFEAI_MASTER_CONFIG.publications.sovereignAiAssurance2026.publicPath;
 
 const INTAKE_FLAG_EXECUTIVE_BRIEFING = 'EXECUTIVE_BRIEFING';
 
@@ -1250,7 +1254,10 @@ export default function HomeView({ language: languageProp }) {
             </p>
             <div className="home-view__research-actions">
               <a
-                href="mailto:support@safeai.report?subject=Request%20Sovereign%20AI%20Assurance%20Whitepaper"
+                href={WHITEPAPER_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                type="application/pdf"
                 className="inline-flex min-w-0 max-w-full items-center justify-center self-start rounded-xl border border-teal-500/20 bg-slate-950/80 ps-6 pe-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
               >
                 <span className="min-w-0 break-words leading-[1.7]">{t('landing.research.read')}</span>

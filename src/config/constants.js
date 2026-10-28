@@ -290,4 +290,17 @@ export const SAFEAI_MASTER_CONFIG = {
       academicAuthority: "L'INSTITUT ARTICLE 4 (A4I)",
     },
   },
+  /**
+   * Institutional research publications served from /public.
+   * Featured whitepaper: A4I-WP-2026-V2.0 (5 pages, OIARF v2.0).
+   */
+  publications: {
+    sovereignAiAssurance2026: {
+      id: 'A4I-WP-2026-V2.0',
+      fileName: 'A4I_Sovereign_AI_Assurance_Whitepaper_2026.pdf',
+      publicPath: '/A4I_Sovereign_AI_Assurance_Whitepaper_2026.pdf',
+      title:
+        'Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments',
+    },
+  },
 };
