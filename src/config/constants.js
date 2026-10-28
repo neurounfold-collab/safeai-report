@@ -301,6 +301,11 @@ export const SAFEAI_MASTER_CONFIG = {
       publicPath: '/A4I_Sovereign_AI_Assurance_Whitepaper_2026.pdf',
       title:
         'Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments',
+      doi: '10.5281/zenodo.23737341',
+      doiUrl: 'https://doi.org/10.5281/zenodo.23737341',
+      zenodoUrl: 'https://zenodo.org/records/23737341',
+      citation:
+        'El Bouzagaoui, A. (2026). Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments (OIARF v2.0 & Arabic AI Observatory 521-Scenario Specification). L\'Institut Article 4 (A4I). https://zenodo.org/records/23737341',
     },
   },
 };

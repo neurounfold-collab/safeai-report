@@ -218,7 +218,11 @@
       "featured": "Livre blanc à la une",
       "paperTitle": "Assurance souveraine de l'IA : évaluation de la dérive dialectale, de l'économie des jetons et de la conformité à la PDPL dans les déploiements d'entreprise MENA-UE",
       "summary": "Ce document examine les essais de résistance multi-dialectes des systèmes linguistiques d'entreprise, la frontière de confidentialité transfrontalière entre la PDPL saoudienne, la loi marocaine 09-08 (CNDP) et le traitement européen, ainsi que les obligations de supervision humaine que l'article 4 et l'annexe III (section 3) du règlement européen sur l'IA imposent aux déployeurs institutionnels.",
-      "read": "Lire le livre blanc",
+      "read": "Lire le livre blanc (PDF)",
+      "zenodo": "Voir sur CERN Zenodo (DOI)",
+      "citationLabel": "Citation canonique (APA / BibTeX)",
+      "copyCitation": "Copier la citation",
+      "citationCopied": "Copié",
       "leaderboard": "Ouvrir le classement de référence en direct"
     },
     "collaboration": {

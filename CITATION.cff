@@ -1,13 +1,13 @@
 cff-version: 1.2.0
-message: "If you use this specification or diagnostic engine, please cite it as below."
+message: "If you use this whitepaper, please cite it as below."
 authors:
   - family-names: "El Bouzagaoui"
     given-names: "Adel"
-    affiliation: "L'Institut Article 4"
-title: "Open Institutional AI Readiness Framework (OIARF v2.0.0) & Multi-Criteria Decision Engine"
-version: "v2.0.1-OIARF"
-doi: "10.5281/zenodo.21516198"
-date-released: 2026-07-23
+    affiliation: "L'Institut Article 4 (A4I) & Al Akhawayn University"
+title: "Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments (OIARF v2.0 & Arabic AI Observatory 521-Scenario Specification)"
+version: "2.0.0"
+doi: "10.5281/zenodo.23737341"
+date-released: "2026-10-28"
 url: "https://safeai.report"
 repository-code: "https://github.com/neurounfold-collab/safeai-report"
 keywords:
@@ -17,18 +17,3 @@ keywords:
   - "AI Readiness Index"
   - "WaqfLedger"
 license: "MIT"
-references:
-  - type: report
-    title: "Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments"
-    authors:
-      - family-names: "El Bouzagaoui"
-        given-names: "Adel"
-        affiliation: "L'Institut Article 4"
-    year: 2026
-    publisher:
-      name: "L'Institut Article 4 (A4I)"
-    url: "https://safeai.report/A4I_Sovereign_AI_Assurance_Whitepaper_2026.pdf"
-    identifiers:
-      - type: other
-        value: "A4I-WP-2026-V2.0"
-        description: "Publication ID"

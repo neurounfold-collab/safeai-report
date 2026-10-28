@@ -4,8 +4,8 @@ import { SAFEAI_MASTER_CONFIG } from '../../config/constants.js';
 import { createTranslator, getActiveLanguage, isRtlLanguage } from '../../i18n/index.js';
 import { getDomainContext, submitIntakeForm } from '../../utils/emailRouter.js';
 
-const WHITEPAPER_HREF =
-  SAFEAI_MASTER_CONFIG.publications.sovereignAiAssurance2026.publicPath;
+const WHITEPAPER = SAFEAI_MASTER_CONFIG.publications.sovereignAiAssurance2026;
+const WHITEPAPER_HREF = WHITEPAPER.publicPath;
 
 const INTAKE_FLAG_EXECUTIVE_BRIEFING = 'EXECUTIVE_BRIEFING';
 
@@ -801,6 +801,97 @@ const HOME_STYLES = `
   transform: scaleX(-1);
 }
 
+.home-view__research-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.home-view__research-doi {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 234, 212, 0.45);
+  background: rgba(11, 15, 25, 0.85);
+  color: #5eead4;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-decoration: none;
+  box-shadow: 0 0 18px rgba(94, 234, 212, 0.12);
+}
+
+.home-view__research-doi:hover,
+.home-view__research-doi:focus-visible {
+  border-color: rgba(94, 234, 212, 0.8);
+  color: #ccfbf1;
+}
+
+.home-view__research-doi-id {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.home-view__research-citation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.85rem 0.95rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(11, 15, 25, 0.72);
+}
+
+.home-view__research-citation-label {
+  margin: 0;
+  color: rgba(94, 234, 212, 0.9);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.home-view__research-citation-text {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.home-view__research-copy {
+  align-self: flex-start;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  border-radius: 0.65rem;
+  background: rgba(15, 23, 42, 0.9);
+  color: #5eead4;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0.45rem 0.8rem;
+}
+
+.home-view__research-copy:hover,
+.home-view__research-copy:focus-visible {
+  border-color: rgba(94, 234, 212, 0.7);
+  color: #ccfbf1;
+}
+
 .home-view__pipeline-title {
   margin: 0;
   font-size: clamp(0.9375rem, 1.8vw, 1.0625rem);
@@ -930,6 +1021,37 @@ export default function HomeView({ language: languageProp }) {
   const [intakeSubmitted, setIntakeSubmitted] = useState(false);
   const [intakeSubmitting, setIntakeSubmitting] = useState(false);
   const [intakeSubmitError, setIntakeSubmitError] = useState('');
+  const [citationCopied, setCitationCopied] = useState(false);
+  const citationCopyTimer = useRef(null);
+
+  useEffect(() => () => window.clearTimeout(citationCopyTimer.current), []);
+
+  const copyCanonicalCitation = useCallback(async () => {
+    const citation = WHITEPAPER.citation;
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(citation);
+      copied = true;
+    } catch {
+      const area = document.createElement('textarea');
+      area.value = citation;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      try {
+        copied = document.execCommand('copy');
+      } catch {
+        copied = false;
+      }
+      area.remove();
+    }
+    if (!copied) return;
+    setCitationCopied(true);
+    window.clearTimeout(citationCopyTimer.current);
+    citationCopyTimer.current = window.setTimeout(() => setCitationCopied(false), 2000);
+  }, []);
 
   useEffect(() => {
     document.title = t('page_titles.home');
@@ -1242,9 +1364,22 @@ export default function HomeView({ language: languageProp }) {
             {t('landing.research.kicker')}
           </h2>
           <article className="home-view__research-card">
-            <h3 className="home-view__research-title">
-              {t('landing.research.heading')}
-            </h3>
+            <div className="home-view__research-header">
+              <h3 className="home-view__research-title">
+                {t('landing.research.heading')}
+              </h3>
+              <a
+                href={WHITEPAPER.doiUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-view__research-doi"
+              >
+                <span>DOI</span>
+                <span aria-hidden="true">|</span>
+                <span className="home-view__research-doi-id">{WHITEPAPER.doi}</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
             <p className="home-view__pipeline-eyebrow">{t('landing.research.featured')}</p>
             <h3 className="home-view__pipeline-title">
               {t('landing.research.paperTitle')}
@@ -1252,6 +1387,17 @@ export default function HomeView({ language: languageProp }) {
             <p className="home-view__pipeline-description">
               {t('landing.research.summary')}
             </p>
+            <div className="home-view__research-citation">
+              <p className="home-view__research-citation-label">{t('landing.research.citationLabel')}</p>
+              <p className="home-view__research-citation-text">{WHITEPAPER.citation}</p>
+              <button
+                type="button"
+                className="home-view__research-copy"
+                onClick={copyCanonicalCitation}
+              >
+                {citationCopied ? t('landing.research.citationCopied') : t('landing.research.copyCitation')}
+              </button>
+            </div>
             <div className="home-view__research-actions">
               <a
                 href={WHITEPAPER_HREF}
@@ -1261,6 +1407,15 @@ export default function HomeView({ language: languageProp }) {
                 className="inline-flex min-w-0 max-w-full items-center justify-center self-start rounded-xl border border-teal-500/20 bg-slate-950/80 ps-6 pe-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
               >
                 <span className="min-w-0 break-words leading-[1.7]">{t('landing.research.read')}</span>
+              </a>
+              <a
+                href={WHITEPAPER.zenodoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-w-0 max-w-full items-center justify-center gap-2 self-start rounded-xl border border-teal-500/20 bg-slate-950/80 ps-6 pe-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
+              >
+                <span className="min-w-0 break-words leading-[1.7]">{t('landing.research.zenodo')}</span>
+                <span aria-hidden="true">↗</span>
               </a>
               <a
                 href="https://huggingface.co/spaces/helloadel/arabic-ai-observatory"
