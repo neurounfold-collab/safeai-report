@@ -218,9 +218,10 @@
       "featured": "Libro blanco destacado",
       "paperTitle": "Aseguramiento soberano de la IA: evaluación de la deriva dialectal, la economía de tokens y el cumplimiento de la PDPL en despliegues empresariales MENA-UE",
       "summary": "Este documento examina las pruebas de estrés multidialectales de los sistemas lingüísticos empresariales, el límite de privacidad transfronterizo entre la PDPL saudí, la Ley marroquí 09-08 (CNDP) y el tratamiento europeo, y los deberes de supervisión humana que el artículo 4 y el anexo III (sección 3) de la Ley de IA de la UE imponen a los responsables institucionales del despliegue.",
-      "read": "Leer el libro blanco (PDF)",
-      "zenodo": "Ver en CERN Zenodo (DOI)",
-      "citationLabel": "Cita canónica (APA / BibTeX)",
+      "doiBadge": "CERN Zenodo DOI",
+      "read": "Leer el libro blanco (PDF de 6 páginas)",
+      "zenodo": "Verificar en Zenodo (DOI)",
+      "citationLabel": "Cita académica canónica (APA)",
       "copyCitation": "Copiar la cita",
       "citationCopied": "Copiado",
       "leaderboard": "Abrir la clasificación de referencia en vivo"

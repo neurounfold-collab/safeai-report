@@ -4,10 +4,10 @@ authors:
   - family-names: "El Bouzagaoui"
     given-names: "Adel"
     affiliation: "L'Institut Article 4 (A4I) & Al Akhawayn University"
-title: "Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments (OIARF v2.0 & Arabic AI Observatory 521-Scenario Specification)"
-version: "2.0.0"
+title: "Sovereign AI Assurance: Benchmarking Dialect Drift, Token Economics, and PDPL Compliance in MENA-EU Enterprise Deployments (OIARF v2.1 & Arabic AI Observatory 521-Scenario Specification)"
+version: "2.1.0"
 doi: "10.5281/zenodo.23737341"
-date-released: "2026-10-28"
+date-released: "2026-10-30"
 url: "https://safeai.report"
 repository-code: "https://github.com/neurounfold-collab/safeai-report"
 keywords:

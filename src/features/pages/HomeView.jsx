@@ -1374,7 +1374,7 @@ export default function HomeView({ language: languageProp }) {
                 rel="noopener noreferrer"
                 className="home-view__research-doi"
               >
-                <span>DOI</span>
+                <span>{t('landing.research.doiBadge')}</span>
                 <span aria-hidden="true">|</span>
                 <span className="home-view__research-doi-id">{WHITEPAPER.doi}</span>
                 <span aria-hidden="true">↗</span>
@@ -1409,7 +1409,7 @@ export default function HomeView({ language: languageProp }) {
                 <span className="min-w-0 break-words leading-[1.7]">{t('landing.research.read')}</span>
               </a>
               <a
-                href={WHITEPAPER.zenodoUrl}
+                href={WHITEPAPER.doiUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-w-0 max-w-full items-center justify-center gap-2 self-start rounded-xl border border-teal-500/20 bg-slate-950/80 ps-6 pe-6 py-3.5 text-center text-sm font-semibold leading-[1.7] text-teal-400 shadow-[0_0_24px_rgba(94,234,212,0.08)] backdrop-blur-md transition-all hover:bg-slate-900/60 sm:text-base"
